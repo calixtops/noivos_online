@@ -1,0 +1,111 @@
+import Head from 'next/head';
+import Header from '../components/Header';
+import Footer from '../components/Footer';
+import { motion } from 'framer-motion';
+import { useState, useEffect } from 'react'; // Remova useRef
+
+const weddingDate = new Date('2026-06-06T16:20:00'); // Data do casamento
+
+const Home = () => {
+  const [timeLeft, setTimeLeft] = useState({
+    days: 0,
+    hours: 0,
+    minutes: 0,
+    seconds: 0
+  });
+  
+  // Remove estados e ref do áudio
+  // Remove função togglePlay
+  // Remove useEffect de primeira interação
+
+  useEffect(() => {
+    const timer = setInterval(() => {
+      const now = new Date();
+      const difference = weddingDate.getTime() - now.getTime();
+      
+      if (difference <= 0) {
+        clearInterval(timer);
+        return;
+      }
+      
+      setTimeLeft({
+        days: Math.floor(difference / (1000 * 60 * 60 * 24)),
+        hours: Math.floor((difference % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60)),
+        minutes: Math.floor((difference % (1000 * 60 * 60)) / (1000 * 60)),
+        seconds: Math.floor((difference % (1000 * 60)) / 1000)
+      });
+    }, 1000);
+
+    return () => clearInterval(timer);
+  }, []);
+
+  return (
+    <div className="min-h-screen flex flex-col">
+      <Head>
+        <title>Geórgia & Pedro - Nosso Casamento</title>
+        <meta name="description" content="Celebre conosco o dia mais especial de nossas vidas" />
+        <meta property="og:image" content="/images/og-image.jpg" />
+      </Head>
+
+      <Header />
+      
+      <main className="flex-grow">
+        {/* Banner Principal */}
+        <section 
+          className="h-screen flex items-center justify-center bg-cover bg-center relative"
+          style={{ backgroundImage: "url('/images/banner.jpg')" }}
+        >
+          <div className="absolute inset-0 bg-black/40"></div>
+          <motion.div 
+            className="text-center z-10 text-white px-4"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ duration: 1 }}
+          >
+            <motion.h1 
+              className="text-6xl md:text-8xl font-sans mb-4"
+              initial={{ y: -50 }}
+              animate={{ y: 0 }}
+              transition={{ delay: 0.3 }}
+            >
+              Geórgia & Pedro
+            </motion.h1>
+            <p className="text-xl md:text-2xl mb-8">06 de Junho de 2026</p>
+            
+            {/* Contador Regressivo */}
+            <motion.div 
+              className="flex justify-center space-x-4"
+              initial={{ y: 50, opacity: 0 }}
+              animate={{ y: 0, opacity: 1 }}
+              transition={{ delay: 0.6 }}
+            >
+              <div className="bg-white/20 rounded-lg p-4 backdrop-blur-sm">
+                <span className="text-3xl font-bold">{timeLeft.days}</span>
+                <p>Dias</p>
+              </div>
+              <div className="bg-white/20 rounded-lg p-4 backdrop-blur-sm">
+                <span className="text-3xl font-bold">{timeLeft.hours}</span>
+                <p>Horas</p>
+              </div>
+              <div className="bg-white/20 rounded-lg p-4 backdrop-blur-sm">
+                <span className="text-3xl font-bold">{timeLeft.minutes}</span>
+                <p>Minutos</p>
+              </div>
+              <div className="bg-white/20 rounded-lg p-4 backdrop-blur-sm">
+                <span className="text-3xl font-bold">{timeLeft.seconds}</span>
+                <p>Segundos</p>
+              </div>
+            </motion.div>
+          </motion.div>
+        </section>
+      </main>
+
+      <Footer />
+
+      {/* Remove botão de música */}
+      {/* Remove elemento de áudio */}
+    </div>
+  );
+};
+
+export default Home;

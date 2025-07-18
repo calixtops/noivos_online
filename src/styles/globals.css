@@ -1,0 +1,14 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Estilos globais atualizados */
+body {
+  background-color: #dcfce7 !important; /* verde 100 */
+}
+
+h1 {
+  color: #15803d !important; /* verde 700 */
+  font-size: 2rem !important;
+}
+
