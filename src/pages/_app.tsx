@@ -1,12 +1,18 @@
 import '../styles/globals.css';
 import type { AppProps } from 'next/app';
+import Head from 'next/head';
 import { AudioProvider } from '../contexts/AudioContext';
 
 function MyApp({ Component, pageProps }: AppProps) {
   return (
-    <AudioProvider>
-      <Component {...pageProps} />
-    </AudioProvider>
+    <>
+      <Head>
+        <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+      </Head>
+      <AudioProvider>
+        <Component {...pageProps} />
+      </AudioProvider>
+    </>
   );
 }
 

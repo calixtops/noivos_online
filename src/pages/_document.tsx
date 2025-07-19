@@ -17,10 +17,9 @@ export default function Document() {
         />
         
         {/* Meta tags para performance */}
-        <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
         <meta httpEquiv="x-ua-compatible" content="ie=edge" />
       </Head>
-      <body className="bg-cream-50 text-stone-800">
+      <body className="bg-olive-50 text-gray-800">
         <Main />
         <NextScript />
       </body>
