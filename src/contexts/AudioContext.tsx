@@ -1,14 +1,24 @@
 import React, { createContext, useContext, useState, useRef, useEffect } from 'react';
 
-const AudioContext = createContext(null);
+interface AudioContextType {
+  isPlaying: boolean;
+  togglePlay: () => void;
+}
 
-export function AudioProvider({ children }) {
+const AudioContext = createContext<AudioContextType | null>(null);
+
+export function AudioProvider({ children }: { children: React.ReactNode }) {
   const [isPlaying, setIsPlaying] = useState(false);
-  const audioRef = useRef(null);
+  const [hasInteracted, setHasInteracted] = useState(false);
+  const audioRef = useRef<HTMLAudioElement | null>(null);
 
   const togglePlay = () => {
+    if (!audioRef.current) return;
+    
     if (audioRef.current.paused) {
-      audioRef.current.play();
+      audioRef.current.play().catch(() => {
+        // Silently handle autoplay restrictions
+      });
       setIsPlaying(true);
     } else {
       audioRef.current.pause();
@@ -16,26 +26,30 @@ export function AudioProvider({ children }) {
     }
   };
 
-  // Adiciona detecção de primeira interação
+  // Otimizado - só adiciona listeners se necessário
   useEffect(() => {
+    if (hasInteracted) return;
+
     const handleFirstInteraction = () => {
+      setHasInteracted(true);
       if (audioRef.current && audioRef.current.paused) {
-        audioRef.current.play();
+        audioRef.current.play().catch(() => {
+          // Silently handle autoplay restrictions
+        });
         setIsPlaying(true);
-        // Remove os event listeners após a primeira interação
-        document.removeEventListener('click', handleFirstInteraction);
-        document.removeEventListener('touchstart', handleFirstInteraction);
       }
     };
 
-    document.addEventListener('click', handleFirstInteraction);
-    document.addEventListener('touchstart', handleFirstInteraction);
+    // Usa passive listeners para melhor performance
+    const options = { passive: true, once: true };
+    document.addEventListener('click', handleFirstInteraction, options);
+    document.addEventListener('touchstart', handleFirstInteraction, options);
 
     return () => {
       document.removeEventListener('click', handleFirstInteraction);
       document.removeEventListener('touchstart', handleFirstInteraction);
     };
-  }, []);
+  }, [hasInteracted]);
 
   return (
     <AudioContext.Provider value={{ isPlaying, togglePlay }}>
@@ -43,11 +57,11 @@ export function AudioProvider({ children }) {
       {/* Audio Button - Now only rendered here */}
       <button
         onClick={togglePlay}
-        className="fixed bottom-4 right-4 z-50 bg-sky-400 text-white p-3 rounded-full shadow-lg hover:bg-sky-500 transition-all"
+        className="fixed bottom-4 right-4 z-50 bg-olive-600 text-cream-50 p-3 rounded-full shadow-lg hover:bg-olive-700 transition-all duration-300 hover:scale-105 border border-olive-500"
       >
         {isPlaying ? (
           <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15.536 15.536L2.404 2.404M2.404 15.536L15.536 2.404" />
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 4h4v16H6zM14 4h4v16h-4z" />
           </svg>
         ) : (
           <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">

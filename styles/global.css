@@ -7,5 +7,5 @@ body {
 }
 
 .prose a {
-  @apply text-verde-600 hover:text-verde-800 transition-colors;
+  @apply text-rose-600 hover:text-rose-800 transition-colors;
 }

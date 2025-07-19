@@ -9,6 +9,14 @@
   },
   {
     "id": 2,
+    "name": "Aspirador Robô",
+    "description": "Para ele limpar a casa enquanto vocês namoram no sofá! 🤖",
+    "image": "https://images.tcdn.com.br/img/img_prod/1069936/aspirador_de_po_robo_inteligente_wi_fi_roomba_e5_irobot_2564_1_b3ac5c8c4e6e7f8a3d1b2c9e6f4a7b8d.jpg",
+    "link": "https://www.magazineluiza.com.br/aspirador-robo",
+    "price": 1200
+  },
+  {
+    "id": 3,
     "name": "Conjunto de Panelas Tramontina",
     "description": "Para vocês criarem delícias juntos na cozinha! 👨‍🍳👩‍🍳",
     "image": "/images/presentes/panelas_tramon.jpg",
@@ -16,7 +24,15 @@
     "price": 350
   },
   {
-    "id": 3,
+    "id": 4,
+    "name": "Geladeira Side by Side",
+    "description": "Para guardar todas as sobremesas dos jantares românticos! ❄️",
+    "image": "https://images.tcdn.com.br/img/img_prod/740120/geladeira_refrigerador_electrolux_side_by_side_504l_ss72x_inox_127v_4089_1_d4e5f6a7b8c9d0e1f2a3b4c5d6e7f8a9.jpg",
+    "link": "https://www.magazineluiza.com.br/geladeira-side-by-side",
+    "price": 2800
+  },
+  {
+    "id": 5,
     "name": "Liquidificador Philips Walita",
     "description": "Para vitaminas matinais e smoothies de reconciliação! 🥤",
     "image": "/images/presentes/liquidificador.jpg",
@@ -24,7 +40,15 @@
     "price": 220
   },
   {
-    "id": 4,
+    "id": 6,
+    "name": "Adega Climatizada",
+    "description": "Para guardar os vinhos das comemorações de aniversário de namoro! 🍷",
+    "image": "https://images.tcdn.com.br/img/img_prod/1004075/adega_climatizada_electrolux_acs18_18_garrafas_preta_127v_3421_1_f3a4b5c6d7e8f9a0b1c2d3e4f5a6b7c8.jpg",
+    "link": "https://www.magazineluiza.com.br/adega",
+    "price": 850
+  },
+  {
+    "id": 7,
     "name": "Jogo de Cama King",
     "description": "Porque todo casal merece uma cama king size para dividir! 😴",
     "image": "/images/presentes/jogo_cama.jpg",
@@ -32,7 +56,15 @@
     "price": 180
   },
   {
-    "id": 5,
+    "id": 8,
+    "name": "Cervejeira",
+    "description": "Para ele ter cerveja gelada e ela ter drink gelado! 🍺",
+    "image": "https://images.tcdn.com.br/img/img_prod/740120/cervejeira_electrolux_beer_200l_preta_be20b_127v_3654_1_e9f0a1b2c3d4e5f6a7b8c9d0e1f2a3b4.jpg",
+    "link": "https://www.casasbahia.com.br/cervejeira",
+    "price": 1100
+  },
+  {
+    "id": 9,
     "name": "Aparelho de Jantar 20 peças",
     "description": "Para jantares românticos em casa (e dividir a louça depois)! 🍽️",
     "image": "/images/presentes/aparelho-jantar.jpg",
@@ -40,7 +72,15 @@
     "price": 250
   },
   {
-    "id": 6,
+    "id": 10,
+    "name": "Cooler Coleman",
+    "description": "Para piqueniques românticos e aventuras ao ar livre! 🏕️",
+    "image": "https://images.tcdn.com.br/img/img_prod/668385/cooler_coleman_28qt_26_5_litros_azul_2341_1_c5d6e7f8a9b0c1d2e3f4a5b6c7d8e9f0.jpg",
+    "link": "https://www.coleman.com.br/cooler",
+    "price": 280
+  },
+  {
+    "id": 11,
     "name": "Cafeteira Nespresso",
     "description": "Para acordar com amor... e muito café! ☕ (Vocês dois vão precisar)",
     "image": "/images/presentes/cafeteira.jpg",
@@ -48,7 +88,15 @@
     "price": 650
   },
   {
-    "id": 7,
+    "id": 12,
+    "name": "Vitrola Vintage",
+    "description": "Para tocar vinis românticos e dançar na sala! 🎵",
+    "image": "https://images.tcdn.com.br/img/img_prod/1004075/vitrola_vintage_classic_bluetooth_usb_aux_radio_fm_preta_2987_1_a7b8c9d0e1f2a3b4c5d6e7f8a9b0c1d2.jpg",
+    "link": "https://www.americanas.com.br/vitrola",
+    "price": 450
+  },
+  {
+    "id": 13,
     "name": "Jogo de Taças de Cristal",
     "description": "Para brindar cada mês de casados (e celebrar as conquistas juntos!) 🥂",
     "image": "/images/presentes/tacas.jpg",
@@ -56,7 +104,15 @@
     "price": 160
   },
   {
-    "id": 8,
+    "id": 14,
+    "name": "Estante de Madeira",
+    "description": "Para organizar os livros e memórias do casal! 📚",
+    "image": "https://images.tcdn.com.br/img/img_prod/740120/estante_para_livros_5_prateleiras_madeira_rustica_bege_3214_1_b9c0d1e2f3a4b5c6d7e8f9a0b1c2d3e4.jpg",
+    "link": "https://www.tokstok.com.br/estante",
+    "price": 800
+  },
+  {
+    "id": 15,
     "name": "Aspirador de Pó Vertical",
     "description": "Para dividir as tarefas domésticas de forma justa e prática! 🏠",
     "image": "/images/presentes/aspirador.jpg",
@@ -64,7 +120,15 @@
     "price": 320
   },
   {
-    "id": 9,
+    "id": 16,
+    "name": "Rack para TV",
+    "description": "Para organizar a sala e assistir filmes juntinhos! 📺",
+    "image": "https://images.tcdn.com.br/img/img_prod/740120/rack_para_tv_ate_55_madeira_freijo_com_preto_fosco_4987_1_d5e6f7a8b9c0d1e2f3a4b5c6d7e8f9a0.jpg",
+    "link": "https://www.casasbahia.com.br/rack",
+    "price": 350
+  },
+  {
+    "id": 17,
     "name": "Experiência: Jantar Romântico",
     "description": "Para quando não quiserem cozinhar juntos (ou quando experimentarem uma receita nova)! 🕯️",
     "image": "/images/presentes/jantar.jpg",
@@ -72,7 +136,15 @@
     "price": 250
   },
   {
-    "id": 10,
+    "id": 18,
+    "name": "Poltrona Confortável",
+    "description": "Para ele relaxar enquanto ela escolhe o filme! 🛋️",
+    "image": "https://images.tcdn.com.br/img/img_prod/740120/poltrona_reclinavel_relax_capitone_veludo_bege_6543_1_f1a2b3c4d5e6f7a8b9c0d1e2f3a4b5c6.jpg",
+    "link": "https://www.tokstok.com.br/poltrona",
+    "price": 900
+  },
+  {
+    "id": 19,
     "name": "Mixer de Mão",
     "description": "Para misturar ingredientes... e corações! 💝",
     "image": "/images/presentes/mixer.jpg",
@@ -80,7 +152,15 @@
     "price": 110
   },
   {
-    "id": 11,
+    "id": 20,
+    "name": "Abajur Moderno",
+    "description": "Para criar o clima perfeito nos jantares! 💡",
+    "image": "https://images.tcdn.com.br/img/img_prod/740120/abajur_mesa_cupula_tecido_bege_base_madeira_clara_7654_1_a3b4c5d6e7f8a9b0c1d2e3f4a5b6c7d8.jpg",
+    "link": "https://www.tokstok.com.br/abajur",
+    "price": 180
+  },
+  {
+    "id": 21,
     "name": "Kit Churrasco Tramontina",
     "description": "Para vocês se revezarem na churrasqueira e impressionarem os amigos! 🔥",
     "image": "/images/presentes/faca_churras.jpg",
@@ -88,7 +168,15 @@
     "price": 180
   },
   {
-    "id": 12,
+    "id": 22,
+    "name": "Rede para Descanso",
+    "description": "Para relaxar juntinhos no quintal ou varanda! 🌴",
+    "image": "https://images.tcdn.com.br/img/img_prod/668385/rede_de_descanso_algodao_listrada_colorida_casal_8765_1_e7f8a9b0c1d2e3f4a5b6c7d8e9f0a1b2.jpg",
+    "link": "https://www.magazineluiza.com.br/rede",
+    "price": 150
+  },
+  {
+    "id": 23,
     "name": "Smart Speaker Alexa",
     "description": "Para tocar 'nossa música' sempre que vocês quiserem dançar na cozinha! 🎵",
     "image": "/images/presentes/alexa.jpg",
@@ -96,7 +184,15 @@
     "price": 350
   },
   {
-    "id": 13,
+    "id": 24,
+    "name": "Torre de Som",
+    "description": "Para as festinhas em casa com volume no último! 🔊",
+    "image": "https://images.tcdn.com.br/img/img_prod/740120/caixa_de_som_torre_bluetooth_lg_xboom_rn9_1100w_9876_1_c9d0e1f2a3b4c5d6e7f8a9b0c1d2e3f4.jpg",
+    "link": "https://www.magazineluiza.com.br/torre-som",
+    "price": 750
+  },
+  {
+    "id": 25,
     "name": "Conjunto de Facas de Cozinha",
     "description": "Para cortar legumes, não o orçamento do casamento! 🔪",
     "image": "/images/presentes/tacas.jpg",
@@ -104,7 +200,15 @@
     "price": 200
   },
   {
-    "id": 15,
+    "id": 26,
+    "name": "Quadros Decorativos",
+    "description": "Para deixar a casa com a cara de vocês dois! 🖼️",
+    "image": "https://images.tcdn.com.br/img/img_prod/740120/kit_3_quadros_decorativos_canvas_nature_folhas_verdes_1987_1_a5b6c7d8e9f0a1b2c3d4e5f6a7b8c9d0.jpg",
+    "link": "https://www.tokstok.com.br/quadros",
+    "price": 120
+  },
+  {
+    "id": 27,
     "name": "Cesta de Café da Manhã",
     "description": "Para domingos preguiçosos na cama (literalmente na cama mesmo)! 🛏️",
     "image": "/images/presentes/cesta_cafe.jpg",
@@ -112,19 +216,43 @@
     "price": 150
   },
   {
-    "id": 16,
+    "id": 28,
+    "name": "Home Theater",
+    "description": "Para sessões de cinema em casa com pipoca e muito amor! 🎬",
+    "image": "https://images.tcdn.com.br/img/img_prod/740120/home_theater_samsung_5_1_canais_1000w_bluetooth_ht_j5500_5432_1_b7c8d9e0f1a2b3c4d5e6f7a8b9c0d1e2.jpg",
+    "link": "https://www.casasbahia.com.br/home-theater",
+    "price": 1500
+  },
+  {
+    "id": 29,
     "name": "Conjunto de Malas de Viagem",
-    "description": "Para lua de mel e futuras escapadas românticas juntos! �",
+    "description": "Para lua de mel e futuras escapadas românticas juntos! ✈️",
     "image": "/images/presentes/conjunto-malas.jpg",
     "link": "https://www.americanas.com.br/conjunto-malas",
     "price": 600
   },
   {
-    "id": 18,
+    "id": 30,
+    "name": "Conjunto 4 Cadeiras",
+    "description": "Para receber a família e amigos em casa! 🪑",
+    "image": "https://images.tcdn.com.br/img/img_prod/740120/conjunto_4_cadeiras_estofadas_linho_bege_pes_madeira_clara_6789_1_d3e4f5a6b7c8d9e0f1a2b3c4d5e6f7a8.jpg",
+    "link": "https://www.tokstok.com.br/cadeiras",
+    "price": 800
+  },
+  {
+    "id": 31,
     "name": "Kit de Jardinagem",
     "description": "Para plantar flores e cultivar o amor (literalmente e figurativamente)! 🌱",
     "image": "/images/presentes/jardinagem.jpg",
     "link": "https://www.tokstok.com.br/kit-jardinagem",
     "price": 90
+  },
+  {
+    "id": 32,
+    "name": "Cômoda com Casinha para Pet",
+    "description": "Para o futuro bebê peludo do casal ter seu cantinho! 🐕",
+    "image": "https://images.tcdn.com.br/img/img_prod/668385/comoda_pet_madeira_3_gavetas_com_casinha_integrada_bege_8901_1_f9a0b1c2d3e4f5a6b7c8d9e0f1a2b3c4.jpg",
+    "link": "https://www.petshop.com.br/comoda-pet",
+    "price": 650
   }
 ]

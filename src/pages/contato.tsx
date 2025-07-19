@@ -1,16 +1,16 @@
-// src/pages/contato.tsx
-import React, { useState } from 'react'
-import Head from 'next/head'
-import Header from '../components/Header'
-import Footer from '../components/Footer'
-import { motion } from 'framer-motion'
-
+import React, { useState, useRef, useEffect } from 'react';
+import Head from 'next/head';
+import Header from '../components/Header';
+import Footer from '../components/Footer';
+import { motion, AnimatePresence } from 'framer-motion';
+import { FaUser, FaEnvelope, FaComment, FaHeart, FaCheck, FaExclamationTriangle, FaWhatsapp, FaInstagram, FaMapMarkerAlt, FaPhone } from 'react-icons/fa';
 
 interface FormData {
-  name: string
-  email: string
-  message: string
-  attending: 'yes' | 'no' | 'maybe'
+  name: string;
+  email: string;
+  message: string;
+  attending: 'yes' | 'no' | 'maybe';
+  guests?: number;
 }
 
 const Contato: React.FC = () => {
@@ -19,162 +19,467 @@ const Contato: React.FC = () => {
     email: '',
     message: '',
     attending: 'yes',
-  })
-  const [submitted, setSubmitted] = useState(false)
-  const [isError, setIsError] = useState(false)
+    guests: 1,
+  });
+  const [submitted, setSubmitted] = useState(false);
+  const [isError, setIsError] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
+  const [isVisible, setIsVisible] = useState(false);
+  const sectionRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        setIsVisible(entry.isIntersecting);
+      },
+      { threshold: 0.1 }
+    );
+
+    if (sectionRef.current) {
+      observer.observe(sectionRef.current);
+    }
+
+    return () => {
+      if (sectionRef.current) {
+        observer.unobserve(sectionRef.current);
+      }
+    };
+  }, []);
 
   const handleChange = (
-    e: React.ChangeEvent<
-      HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement
-    >
+    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>
   ) => {
-    const { name, value } = e.target
-    setFormData(prev => ({ ...prev, [name]: value }))
-  }
+    const { name, value } = e.target;
+    setFormData(prev => ({ 
+      ...prev, 
+      [name]: name === 'guests' ? parseInt(value) || 1 : value 
+    }));
+  };
 
   const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault()
-    setIsError(false)
+    e.preventDefault();
+    setIsError(false);
+    setIsLoading(true);
 
     try {
       const res = await fetch('/api/contact', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(formData),
-      })
+      });
 
-      if (!res.ok) throw new Error('Erro no envio')
+      if (!res.ok) throw new Error('Erro no envio');
 
-      setSubmitted(true)
-      // limpa o form após 3s e remove mensagem de sucesso
+      setSubmitted(true);
       setTimeout(() => {
-        setFormData({ name: '', email: '', message: '', attending: 'yes' })
-        setSubmitted(false)
-      }, 3000)
+        setFormData({ name: '', email: '', message: '', attending: 'yes', guests: 1 });
+        setSubmitted(false);
+      }, 5000);
     } catch (error) {
-      console.error(error)
-      setIsError(true)
+      console.error(error);
+      setIsError(true);
+    } finally {
+      setIsLoading(false);
     }
-  }
+  };
+
+  const attendingOptions = [
+    { value: 'yes', label: 'Sim, com certeza! �', color: 'from-olive-500 to-sage-600' },
+    { value: 'maybe', label: 'Ainda não tenho certeza 🤔', color: 'from-stone-400 to-stone-500' },
+    { value: 'no', label: 'Infelizmente não poderei 😔', color: 'from-stone-300 to-stone-400' }
+  ];
 
   return (
-    <div className="min-h-screen flex flex-col">
+    <div className="min-h-screen flex flex-col bg-gradient-to-br from-cream-50 via-cream-25 to-olive-50">
       <Head>
         <title>Contato - Pedro & Geórgia</title>
+        <meta name="description" content="Confirme sua presença no casamento de Pedro e Geórgia - 06 de Junho de 2026" />
+        <meta name="viewport" content="width=device-width, initial-scale=1" />
       </Head>
 
       <Header />
 
-      <main className="container mx-auto px-4 py-8 flex-grow max-w-xl">
-        <motion.h1
-          className="text-3xl sm:text-4xl font-serif text-center text-rose-700 mb-8 sm:mb-12"
-          initial={{ opacity: 0, y: -20 }}
-          animate={{ opacity: 1, y: 0 }}
-        >
-          Confirme sua Presença
-        </motion.h1>
-
-        {submitted && (
-          <motion.div
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            className="bg-green-100 border border-green-400 text-green-700 px-4 py-3 rounded mb-4 text-center text-base sm:text-lg"
-          >
-            Obrigado por confirmar! Estamos ansiosos para vê-lo no nosso casamento.
-          </motion.div>
-        )}
-
-        {isError && (
-          <motion.div
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            className="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded mb-4 text-center text-base sm:text-lg"
-          >
-            Ocorreu um erro ao enviar sua confirmação. Tente novamente.
-          </motion.div>
-        )}
-
-        {!submitted && (
-          <motion.form
-            onSubmit={handleSubmit}
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            className="space-y-6"
-          >
-            <div>
-              <label htmlFor="name" className="block text-gray-700 mb-2 text-base sm:text-lg">
-                Nome Completo
-              </label>
-              <input
-                type="text"
-                id="name"
-                name="name"
-                value={formData.name}
-                onChange={handleChange}
-                required
-                className="w-full px-4 py-2 border border-gray-300 rounded focus:ring-2 focus:ring-rose-300 focus:border-rose-300 text-base sm:text-lg"
-              />
-            </div>
-
-            <div>
-              <label htmlFor="email" className="block text-gray-700 mb-2 text-base sm:text-lg">
-                Email
-              </label>
-              <input
-                type="email"
-                id="email"
-                name="email"
-                value={formData.email}
-                onChange={handleChange}
-                required
-                className="w-full px-4 py-2 border border-gray-300 rounded focus:ring-2 focus:ring-rose-300 focus:border-rose-300 text-base sm:text-lg"
-              />
-            </div>
-
-            <div>
-              <label htmlFor="attending" className="block text-gray-700 mb-2 text-base sm:text-lg">
-                Você comparecerá?
-              </label>
-              <select
-                id="attending"
-                name="attending"
-                value={formData.attending}
-                onChange={handleChange}
-                className="w-full px-4 py-2 border border-gray-300 rounded focus:ring-2 focus:ring-rose-300 focus:border-rose-300 text-base sm:text-lg"
-              >
-                <option value="yes">Sim, com certeza!</option>
-                <option value="no">Infelizmente não poderei</option>
-                <option value="maybe">Ainda não tenho certeza</option>
-              </select>
-            </div>
-
-            <div>
-              <label htmlFor="message" className="block text-gray-700 mb-2 text-base sm:text-lg">
-                Mensagem (opcional)
-              </label>
-              <textarea
-                id="message"
-                name="message"
-                rows={4}
-                value={formData.message}
-                onChange={handleChange}
-                className="w-full px-4 py-2 border border-gray-300 rounded focus:ring-2 focus:ring-rose-300 focus:border-rose-300 text-base sm:text-lg"
-              />
-            </div>
-
-            <button
-              type="submit"
-              className="w-full bg-rose-600 text-white py-3 px-4 rounded hover:bg-rose-700 transition text-base sm:text-lg"
+      <main className="flex-grow">
+        {/* Hero Section */}
+        <section className="relative py-16 sm:py-20 lg:py-24 overflow-hidden">
+          <div className="absolute inset-0 bg-gradient-to-r from-cream-100/50 to-olive-100/50"></div>
+          <div className="relative container mx-auto px-4 sm:px-6 lg:px-8 text-center">
+            <motion.h1 
+              className="text-4xl sm:text-5xl lg:text-6xl font-serif font-bold text-stone-800 mb-6"
+              initial={{ opacity: 0, y: -30 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.8 }}
             >
-              Confirmar Presença
-            </button>
-          </motion.form>
-        )}
+              Confirme sua Presença
+            </motion.h1>
+            
+            <motion.div 
+              className="flex items-center justify-center gap-4 mb-8"
+              initial={{ scale: 0 }}
+              animate={{ scale: 1 }}
+              transition={{ delay: 0.3, duration: 0.6 }}
+            >
+              <div className="h-px bg-gradient-to-r from-transparent via-olive-400 to-transparent flex-1 max-w-32"></div>
+              <motion.div
+                animate={{ 
+                  y: [0, -8, 0],
+                  rotate: [0, 5, -5, 0]
+                }}
+                transition={{ 
+                  duration: 4,
+                  repeat: Infinity,
+                  ease: "easeInOut"
+                }}
+              >
+                <FaHeart className="text-olive-500 text-3xl animate-heartbeat" />
+              </motion.div>
+              <div className="h-px bg-gradient-to-r from-transparent via-olive-400 to-transparent flex-1 max-w-32"></div>
+            </motion.div>
+
+            <motion.p 
+              className="text-xl sm:text-2xl text-stone-600 max-w-3xl mx-auto leading-relaxed"
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.5, duration: 0.8 }}
+            >
+              Sua presença é o presente mais valioso que podemos receber. Confirme sua participação!
+            </motion.p>
+          </div>
+        </section>
+
+        {/* Formulário e Informações */}
+        <section 
+          ref={sectionRef}
+          className="py-16 sm:py-20 px-4 sm:px-6 lg:px-8"
+        >
+          <div className="max-w-6xl mx-auto">
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-12">
+              {/* Formulário */}
+              <motion.div
+                initial={{ opacity: 0, x: -30 }}
+                animate={isVisible ? { opacity: 1, x: 0 } : {}}
+                transition={{ duration: 0.8 }}
+              >
+                <div className="bg-cream rounded-2xl shadow-xl p-6 sm:p-8 border border-olive-200">
+                  <h2 className="text-2xl sm:text-3xl font-serif font-bold text-stone-800 mb-8 text-center">
+                    Formulário de Confirmação
+                  </h2>
+
+                  <AnimatePresence mode="wait">
+                    {submitted && (
+                      <motion.div
+                        key="success"
+                        initial={{ opacity: 0, scale: 0.8 }}
+                        animate={{ opacity: 1, scale: 1 }}
+                        exit={{ opacity: 0, scale: 0.8 }}
+                        className="text-center py-8"
+                      >
+                        <motion.div
+                          className="w-20 h-20 bg-gradient-to-br from-green-500 to-green-600 rounded-full flex items-center justify-center mx-auto mb-6"
+                          animate={{ 
+                            scale: [1, 1.2, 1],
+                            rotate: [0, 360]
+                          }}
+                          transition={{ duration: 1 }}
+                        >
+                          <FaCheck className="text-white text-2xl" />
+                        </motion.div>
+                        <h3 className="text-2xl font-bold text-green-700 mb-4">
+                          Confirmação Recebida!
+                        </h3>
+                        <p className="text-green-600 text-lg leading-relaxed">
+                          Obrigado por confirmar! Estamos ansiosos para celebrar este momento especial com você.
+                        </p>
+                      </motion.div>
+                    )}
+
+                    {isError && (
+                      <motion.div
+                        key="error"
+                        initial={{ opacity: 0, scale: 0.8 }}
+                        animate={{ opacity: 1, scale: 1 }}
+                        exit={{ opacity: 0, scale: 0.8 }}
+                        className="bg-red-50 border border-red-200 rounded-xl p-6 mb-6"
+                      >
+                        <div className="flex items-center gap-3">
+                          <FaExclamationTriangle className="text-red-500 text-xl" />
+                          <div>
+                            <h3 className="text-red-700 font-semibold">Erro no envio</h3>
+                            <p className="text-red-600">Tente novamente ou entre em contato conosco.</p>
+                          </div>
+                        </div>
+                      </motion.div>
+                    )}
+
+                    {!submitted && (
+                      <motion.form
+                        key="form"
+                        onSubmit={handleSubmit}
+                        initial={{ opacity: 0 }}
+                        animate={{ opacity: 1 }}
+                        className="space-y-6"
+                      >
+                        <motion.div
+                          initial={{ opacity: 0, y: 20 }}
+                          animate={{ opacity: 1, y: 0 }}
+                          transition={{ delay: 0.1 }}
+                        >
+                          <label htmlFor="name" className="block text-stone-700 font-semibold mb-3 text-lg">
+                            <FaUser className="inline mr-2 text-olive-500" />
+                            Nome Completo
+                          </label>
+                          <input
+                            type="text"
+                            id="name"
+                            name="name"
+                            value={formData.name}
+                            onChange={handleChange}
+                            required
+                            placeholder="Digite seu nome completo"
+                            className="w-full px-4 py-3 border border-stone-200 rounded-xl focus:ring-2 focus:ring-olive-300 focus:border-olive-300 transition-all duration-300 text-lg bg-sage-50 hover:bg-cream"
+                          />
+                        </motion.div>
+
+                        {/* Email */}
+                        <motion.div
+                          initial={{ opacity: 0, y: 20 }}
+                          animate={{ opacity: 1, y: 0 }}
+                          transition={{ delay: 0.2 }}
+                        >
+                          <label htmlFor="email" className="block text-stone-700 font-semibold mb-3 text-lg">
+                            <FaEnvelope className="inline mr-2 text-olive-500" />
+                            Email
+                          </label>
+                          <input
+                            type="email"
+                            id="email"
+                            name="email"
+                            value={formData.email}
+                            onChange={handleChange}
+                            required
+                            placeholder="seu@email.com"
+                            className="w-full px-4 py-3 border border-stone-200 rounded-xl focus:ring-2 focus:ring-olive-300 focus:border-olive-300 transition-all duration-300 text-lg bg-sage-50 hover:bg-cream"
+                          />
+                        </motion.div>
+
+                        {/* Presença */}
+                        <motion.div
+                          initial={{ opacity: 0, y: 20 }}
+                          animate={{ opacity: 1, y: 0 }}
+                          transition={{ delay: 0.3 }}
+                        >
+                          <label className="block text-stone-700 font-semibold mb-3 text-lg">
+                            <FaHeart className="inline mr-2 text-olive-500" />
+                            Você comparecerá?
+                          </label>
+                          <div className="space-y-3">
+                            {attendingOptions.map((option) => (
+                              <motion.label
+                                key={option.value}
+                                className={`flex items-center p-4 rounded-xl border-2 cursor-pointer transition-all duration-300 ${
+                                  formData.attending === option.value
+                                    ? 'border-olive-500 bg-olive-50'
+                                    : 'border-stone-200 hover:border-olive-300 hover:bg-sage-50'
+                                }`}
+                                whileHover={{ scale: 1.02 }}
+                                whileTap={{ scale: 0.98 }}
+                              >
+                                <input
+                                  type="radio"
+                                  name="attending"
+                                  value={option.value}
+                                  checked={formData.attending === option.value}
+                                  onChange={handleChange}
+                                  className="sr-only"
+                                />
+                                <div className={`w-4 h-4 rounded-full mr-3 ${
+                                  formData.attending === option.value
+                                    ? 'bg-olive-500'
+                                    : 'bg-stone-300'
+                                }`} />
+                                <span className="text-lg">{option.label}</span>
+                              </motion.label>
+                            ))}
+                          </div>
+                        </motion.div>
+
+                        {/* Número de convidados */}
+                        {formData.attending === 'yes' && (
+                          <motion.div
+                            initial={{ opacity: 0, height: 0 }}
+                            animate={{ opacity: 1, height: 'auto' }}
+                            exit={{ opacity: 0, height: 0 }}
+                            transition={{ duration: 0.3 }}
+                          >
+                            <label htmlFor="guests" className="block text-stone-700 font-semibold mb-3 text-lg">
+                              Quantas pessoas virão?
+                            </label>
+                            <select
+                              id="guests"
+                              name="guests"
+                              value={formData.guests}
+                              onChange={handleChange}
+                              className="w-full px-4 py-3 border border-stone-200 rounded-xl focus:ring-2 focus:ring-olive-300 focus:border-olive-300 transition-all duration-300 text-lg bg-sage-50 hover:bg-cream"
+                            >
+                              {[1, 2, 3, 4, 5].map(num => (
+                                <option key={num} value={num}>
+                                  {num} {num === 1 ? 'pessoa' : 'pessoas'}
+                                </option>
+                              ))}
+                            </select>
+                          </motion.div>
+                        )}
+
+                        {/* Mensagem */}
+                        <motion.div
+                          initial={{ opacity: 0, y: 20 }}
+                          animate={{ opacity: 1, y: 0 }}
+                          transition={{ delay: 0.4 }}
+                        >
+                          <label htmlFor="message" className="block text-stone-700 font-semibold mb-3 text-lg">
+                            <FaComment className="inline mr-2 text-olive-500" />
+                            Mensagem (opcional)
+                          </label>
+                          <textarea
+                            id="message"
+                            name="message"
+                            rows={4}
+                            value={formData.message}
+                            onChange={handleChange}
+                            placeholder="Deixe uma mensagem carinhosa para os noivos..."
+                            className="w-full px-4 py-3 border border-stone-200 rounded-xl focus:ring-2 focus:ring-olive-300 focus:border-olive-300 transition-all duration-300 text-lg bg-sage-50 hover:bg-cream resize-none"
+                          />
+                        </motion.div>
+
+                        {/* Botão de envio */}
+                        <motion.button
+                          type="submit"
+                          disabled={isLoading}
+                          className="w-full bg-gradient-to-r from-olive-500 to-sage-600 text-cream py-4 px-6 rounded-xl hover:from-olive-600 hover:to-sage-700 transition-all duration-300 text-lg font-semibold shadow-lg disabled:opacity-50 disabled:cursor-not-allowed"
+                          whileHover={{ scale: 1.02, y: -2 }}
+                          whileTap={{ scale: 0.98 }}
+                          initial={{ opacity: 0, y: 20 }}
+                          animate={{ opacity: 1, y: 0 }}
+                          transition={{ delay: 0.5 }}
+                        >
+                          {isLoading ? (
+                            <div className="flex items-center justify-center gap-2">
+                              <div className="w-5 h-5 border-2 border-cream border-t-transparent rounded-full animate-spin"></div>
+                              Enviando...
+                            </div>
+                          ) : (
+                            'Confirmar Presença'
+                          )}
+                        </motion.button>
+                      </motion.form>
+                    )}
+                  </AnimatePresence>
+                </div>
+              </motion.div>
+
+              {/* Informações de Contato */}
+              <motion.div
+                initial={{ opacity: 0, x: 30 }}
+                animate={isVisible ? { opacity: 1, x: 0 } : {}}
+                transition={{ duration: 0.8, delay: 0.2 }}
+                className="space-y-8"
+              >
+                {/* Contato dos Noivos */}
+                <div className="bg-gradient-to-br from-olive-600 to-sage-700 rounded-2xl p-6 sm:p-8 text-cream">
+                  <h3 className="text-2xl font-serif font-bold mb-6">Fale Conosco</h3>
+                  <div className="space-y-4">
+                    <div className="flex items-center gap-4">
+                      <div className="w-12 h-12 bg-cream/20 rounded-full flex items-center justify-center">
+                        <FaWhatsapp className="text-xl" />
+                      </div>
+                      <div>
+                        <p className="font-semibold">WhatsApp</p>
+                        <p className="text-cream/90">Entre em contato direto</p>
+                      </div>
+                    </div>
+                    
+                    <div className="flex items-center gap-4">
+                      <div className="w-12 h-12 bg-cream/20 rounded-full flex items-center justify-center">
+                        <FaInstagram className="text-xl" />
+                      </div>
+                      <div>
+                        <p className="font-semibold">Instagram</p>
+                        <p className="text-cream/90">@georgia_pedro_casamento</p>
+                      </div>
+                    </div>
+                    
+                    <div className="flex items-center gap-4">
+                      <div className="w-12 h-12 bg-cream/20 rounded-full flex items-center justify-center">
+                        <FaEnvelope className="text-xl" />
+                      </div>
+                      <div>
+                        <p className="font-semibold">Email</p>
+                        <p className="text-cream/90">nosso.casamento@email.com</p>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                {/* Informações do Evento */}
+                <div className="bg-cream rounded-2xl shadow-xl p-6 sm:p-8 border border-olive-200">
+                  <h3 className="text-2xl font-serif font-bold text-stone-800 mb-6">Detalhes do Evento</h3>
+                  <div className="space-y-4">
+                    <div className="flex items-start gap-4">
+                      <FaMapMarkerAlt className="text-olive-500 text-xl mt-1" />
+                      <div>
+                        <p className="font-semibold text-stone-800">Local</p>
+                        <p className="text-stone-600">Casa Branca Eventos</p>
+                        <p className="text-stone-600">R. Do Jangadeiro, 190 - Jacaúna, Aquiraz - CE</p>
+                      </div>
+                    </div>
+                    
+                    <div className="flex items-start gap-4">
+                      <FaHeart className="text-olive-500 text-xl mt-1 animate-pulse-love" />
+                      <div>
+                        <p className="font-semibold text-stone-800">Data e Horário</p>
+                        <p className="text-stone-600">06 de Junho de 2026</p>
+                        <p className="text-stone-600">A partir das 15:30h</p>
+                      </div>
+                    </div>
+                  </div>
+                  
+                  <motion.a
+                    href="/programacao"
+                    className="mt-6 inline-flex items-center gap-2 bg-gradient-to-r from-olive-500 to-sage-600 text-cream px-6 py-3 rounded-full font-semibold hover:from-olive-600 hover:to-sage-700 transition-all duration-300"
+                    whileHover={{ scale: 1.05, y: -2 }}
+                    whileTap={{ scale: 0.95 }}
+                  >
+                    Ver Programação Completa
+                  </motion.a>
+                </div>
+
+                {/* Dicas Importantes */}
+                <div className="bg-gradient-to-br from-sage-50 to-sage-100 rounded-2xl p-6 sm:p-8 border border-sage-200">
+                  <h3 className="text-xl font-serif font-bold text-stone-800 mb-4">🌿 Dicas Importantes</h3>
+                  <ul className="space-y-3 text-stone-700">
+                    <li className="flex items-start gap-3">
+                      <div className="w-2 h-2 bg-olive-500 rounded-full mt-2 flex-shrink-0"></div>
+                      <span>Confirme sua presença até 15 dias antes do evento</span>
+                    </li>
+                    <li className="flex items-start gap-3">
+                      <div className="w-2 h-2 bg-olive-500 rounded-full mt-2 flex-shrink-0"></div>
+                      <span>Dress code: Traje esporte fino</span>
+                    </li>
+                    <li className="flex items-start gap-3">
+                      <div className="w-2 h-2 bg-olive-500 rounded-full mt-2 flex-shrink-0"></div>
+                      <span>Veja opções de hospedagem na aba Pousadas</span>
+                    </li>
+                  </ul>
+                </div>
+              </motion.div>
+            </div>
+          </div>
+        </section>
       </main>
 
       <Footer />
     </div>
-  )
-}
+  );
+};
 
-export default Contato
+export default Contato;
