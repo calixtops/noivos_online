@@ -2,7 +2,7 @@ import Head from 'next/head';
 import Header from '../components/Header';
 import Footer from '../components/Footer';
 import { motion } from 'framer-motion';
-import { useState, useEffect } from 'react'; // Remova useRef
+import { useState, useEffect } from 'react';
 
 const weddingDate = new Date('2026-06-06T16:20:00'); // Data do casamento
 
@@ -13,10 +13,6 @@ const Home = () => {
     minutes: 0,
     seconds: 0
   });
-  
-  // Remove estados e ref do áudio
-  // Remove função togglePlay
-  // Remove useEffect de primeira interação
 
   useEffect(() => {
     const timer = setInterval(() => {
@@ -101,9 +97,6 @@ const Home = () => {
       </main>
 
       <Footer />
-
-      {/* Remove botão de música */}
-      {/* Remove elemento de áudio */}
     </div>
   );
 };

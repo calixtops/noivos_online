@@ -2,7 +2,7 @@
   {
     "id": 1,
     "name": "Jogo de Toalhas",
-    "description": "Conjunto de banho e rosto 100% algodão.",
+    "description": "Para secar juntos depois daqueles banhos românticos! 💕",
     "image": "/images/presentes/conjunto_toalha.jpg",
     "link": "https://www.magazineluiza.com.br/jogo-de-toalhas/p/123456/",
     "price": 120
@@ -10,7 +10,7 @@
   {
     "id": 2,
     "name": "Conjunto de Panelas Tramontina",
-    "description": "Jogo com 5 peças antiaderentes.",
+    "description": "Para vocês criarem delícias juntos na cozinha! 👨‍🍳👩‍🍳",
     "image": "/images/presentes/panelas_tramon.jpg",
     "link": "https://www.tramontina.com.br/conjunto-panelas",
     "price": 350
@@ -18,7 +18,7 @@
   {
     "id": 3,
     "name": "Liquidificador Philips Walita",
-    "description": "Liquidificador potente para sucos e vitaminas.",
+    "description": "Para vitaminas matinais e smoothies de reconciliação! 🥤",
     "image": "/images/presentes/liquidificador.jpg",
     "link": "https://www.amazon.com.br/liquidificador",
     "price": 220
@@ -26,7 +26,7 @@
   {
     "id": 4,
     "name": "Jogo de Cama King",
-    "description": "Lençol, fronha e cobre-leito.",
+    "description": "Porque todo casal merece uma cama king size para dividir! 😴",
     "image": "/images/presentes/jogo_cama.jpg",
     "link": "https://www.americanas.com.br/jogo-de-cama",
     "price": 180
@@ -34,7 +34,7 @@
   {
     "id": 5,
     "name": "Aparelho de Jantar 20 peças",
-    "description": "Porcelana branca, elegante para ocasiões especiais.",
+    "description": "Para jantares românticos em casa (e dividir a louça depois)! 🍽️",
     "image": "/images/presentes/aparelho-jantar.jpg",
     "link": "https://www.casasbahia.com.br/aparelho-jantar",
     "price": 250
@@ -42,7 +42,7 @@
   {
     "id": 6,
     "name": "Cafeteira Nespresso",
-    "description": "Cafeteira automática para cápsulas.",
+    "description": "Para acordar com amor... e muito café! ☕ (Vocês dois vão precisar)",
     "image": "/images/presentes/cafeteira.jpg",
     "link": "https://www.nespresso.com/br/pt/",
     "price": 650
@@ -50,7 +50,7 @@
   {
     "id": 7,
     "name": "Jogo de Taças de Cristal",
-    "description": "Conjunto com 6 taças para vinho.",
+    "description": "Para brindar cada mês de casados (e celebrar as conquistas juntos!) 🥂",
     "image": "/images/presentes/tacas.jpg",
     "link": "https://www.tokstok.com.br/jogo-tacas",
     "price": 160
@@ -58,7 +58,7 @@
   {
     "id": 8,
     "name": "Aspirador de Pó Vertical",
-    "description": "Prático para limpeza diária.",
+    "description": "Para dividir as tarefas domésticas de forma justa e prática! 🏠",
     "image": "/images/presentes/aspirador.jpg",
     "link": "https://www.magazineluiza.com.br/aspirador",
     "price": 320
@@ -66,7 +66,7 @@
   {
     "id": 9,
     "name": "Experiência: Jantar Romântico",
-    "description": "Vale-presente para restaurante.",
+    "description": "Para quando não quiserem cozinhar juntos (ou quando experimentarem uma receita nova)! 🕯️",
     "image": "/images/presentes/jantar.jpg",
     "link": "https://www.ifood.com.br/vale-presente",
     "price": 250
@@ -74,7 +74,7 @@
   {
     "id": 10,
     "name": "Mixer de Mão",
-    "description": "Ideal para preparar molhos e vitaminas.",
+    "description": "Para misturar ingredientes... e corações! 💝",
     "image": "/images/presentes/mixer.jpg",
     "link": "https://www.amazon.com.br/mixer",
     "price": 110
@@ -82,65 +82,49 @@
   {
     "id": 11,
     "name": "Kit Churrasco Tramontina",
-    "description": "Facas, garfos e tábua para churrasco.",
-    "image": "/images/presentes/churrasco.jpg",
+    "description": "Para vocês se revezarem na churrasqueira e impressionarem os amigos! 🔥",
+    "image": "/images/presentes/faca_churras.jpg",
     "link": "https://www.tramontina.com.br/kit-churrasco",
     "price": 180
   },
   {
     "id": 12,
     "name": "Smart Speaker Alexa",
-    "description": "Assistente virtual para casa conectada.",
+    "description": "Para tocar 'nossa música' sempre que vocês quiserem dançar na cozinha! 🎵",
     "image": "/images/presentes/alexa.jpg",
     "link": "https://www.amazon.com.br/alexa",
     "price": 350
   },
   {
     "id": 13,
-    "name": "Conjunto de Facas Chef",
-    "description": "Facas de alta qualidade para cozinha.",
-    "image": "/images/presentes/facas.jpg",
+    "name": "Conjunto de Facas de Cozinha",
+    "description": "Para cortar legumes, não o orçamento do casamento! 🔪",
+    "image": "/images/presentes/tacas.jpg",
     "link": "https://www.casasbahia.com.br/conjunto-facas",
     "price": 200
   },
   {
-    "id": 14,
-    "name": "Relógio de Pulso Masculino",
-    "description": "Relógio elegante com pulseira de couro.",
-    "image": "/images/presentes/relogio.jpg",
-    "link": "https://www.amazon.com.br/relogio-masculino",
-    "price": 400
-  },
-  {
     "id": 15,
     "name": "Cesta de Café da Manhã",
-    "description": "Cesta recheada com delícias para o café.",
-    "image": "/images/presentes/cesta-cafe.jpg",
+    "description": "Para domingos preguiçosos na cama (literalmente na cama mesmo)! 🛏️",
+    "image": "/images/presentes/cesta_cafe.jpg",
     "link": "https://www.magazineluiza.com.br/cesta-cafe-da-manha",
     "price": 150
   },
   {
     "id": 16,
     "name": "Conjunto de Malas de Viagem",
-    "description": "Malas resistentes e práticas para viagens.",
-    "image": "/images/presentes/malas.jpg",
+    "description": "Para lua de mel e futuras escapadas românticas juntos! �",
+    "image": "/images/presentes/conjunto-malas.jpg",
     "link": "https://www.americanas.com.br/conjunto-malas",
     "price": 600
   },
   {
-    "id": 17,
-    "name": "Camiseta Personalizada",
-    "description": "Camiseta com estampa exclusiva.",
-    "image": "/images/presentes/camiseta.jpg",
-    "link": "https://www.camisetaspersonalizadas.com.br/",
-    "price": 80
-  },
-  {
     "id": 18,
-    "name": "Livro de Receitas Gourmet",
-    "description": "Livro com receitas sofisticadas.",
-    "image": "/images/presentes/livro-receitas.jpg",
-    "link": "https://www.amazon.com.br/livro-receitas-gourmet",
-    "price": 70
+    "name": "Kit de Jardinagem",
+    "description": "Para plantar flores e cultivar o amor (literalmente e figurativamente)! 🌱",
+    "image": "/images/presentes/jardinagem.jpg",
+    "link": "https://www.tokstok.com.br/kit-jardinagem",
+    "price": 90
   }
 ]

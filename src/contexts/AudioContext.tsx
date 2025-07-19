@@ -43,7 +43,7 @@ export function AudioProvider({ children }) {
       {/* Audio Button - Now only rendered here */}
       <button
         onClick={togglePlay}
-        className="fixed bottom-4 right-4 z-50 bg-verde-600 text-white p-3 rounded-full shadow-lg hover:bg-verde-700 transition-all"
+        className="fixed bottom-4 right-4 z-50 bg-sky-400 text-white p-3 rounded-full shadow-lg hover:bg-sky-500 transition-all"
       >
         {isPlaying ? (
           <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
