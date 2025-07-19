@@ -3,7 +3,7 @@
     "id": 1,
     "name": "Jogo de Toalhas",
     "description": "Conjunto de banho e rosto 100% algodão.",
-    "image": "/images/presentes/toalhas.jpg",
+    "image": "/images/presentes/conjunto_toalha.jpg",
     "link": "https://www.magazineluiza.com.br/jogo-de-toalhas/p/123456/",
     "price": 120
   },
@@ -11,7 +11,7 @@
     "id": 2,
     "name": "Conjunto de Panelas Tramontina",
     "description": "Jogo com 5 peças antiaderentes.",
-    "image": "/images/presentes/panelas.jpg",
+    "image": "/images/presentes/panelas_tramon.jpg",
     "link": "https://www.tramontina.com.br/conjunto-panelas",
     "price": 350
   },
@@ -25,9 +25,9 @@
   },
   {
     "id": 4,
-    "name": "Jogo de Cama Queen",
+    "name": "Jogo de Cama King",
     "description": "Lençol, fronha e cobre-leito.",
-    "image": "/images/presentes/jogo-cama.jpg",
+    "image": "/images/presentes/jogo_cama.jpg",
     "link": "https://www.americanas.com.br/jogo-de-cama",
     "price": 180
   },
@@ -35,7 +35,7 @@
     "id": 5,
     "name": "Aparelho de Jantar 20 peças",
     "description": "Porcelana branca, elegante para ocasiões especiais.",
-    "image": "/images/presentes/jantar.jpg",
+    "image": "/images/presentes/aparelho-jantar.jpg",
     "link": "https://www.casasbahia.com.br/aparelho-jantar",
     "price": 250
   },
@@ -67,7 +67,7 @@
     "id": 9,
     "name": "Experiência: Jantar Romântico",
     "description": "Vale-presente para restaurante.",
-    "image": "/images/presentes/jantar-romantico.jpg",
+    "image": "/images/presentes/jantar.jpg",
     "link": "https://www.ifood.com.br/vale-presente",
     "price": 250
   },
