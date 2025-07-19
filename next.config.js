@@ -3,44 +3,20 @@ const nextConfig = {
   reactStrictMode: true,
   swcMinify: true,
   
-  // Otimizações de performance
+  // Otimizações básicas
   poweredByHeader: false,
-  generateEtags: false,
   
   // Compressão de imagens
   images: {
     formats: ['image/webp', 'image/avif'],
-    minimumCacheTTL: 60,
     domains: ['images.tcdn.com.br', 'via.placeholder.com'],
   },
   
-  // Otimizações de bundle
-  experimental: {
-    optimizePackageImports: ['react-icons'],
-  },
-  
-  // Headers para cache
+  // Headers básicos para cache
   async headers() {
     return [
       {
-        source: '/(.*)',
-        headers: [
-          {
-            key: 'X-Content-Type-Options',
-            value: 'nosniff',
-          },
-          {
-            key: 'X-Frame-Options',
-            value: 'DENY',
-          },
-          {
-            key: 'X-XSS-Protection',
-            value: '1; mode=block',
-          },
-        ],
-      },
-      {
-        source: '/images/(.*)',
+        source: '/_next/static/(.*)',
         headers: [
           {
             key: 'Cache-Control',
@@ -49,31 +25,6 @@ const nextConfig = {
         ],
       },
     ];
-  },
-  
-  // Webpack otimizações
-  webpack: (config, { dev, isServer }) => {
-    // Otimizações para produção
-    if (!dev && !isServer) {
-      config.optimization.splitChunks = {
-        chunks: 'all',
-        cacheGroups: {
-          vendor: {
-            test: /[\\/]node_modules[\\/]/,
-            name: 'vendors',
-            chunks: 'all',
-          },
-          common: {
-            name: 'common',
-            minChunks: 2,
-            chunks: 'all',
-            enforce: true,
-          },
-        },
-      };
-    }
-    
-    return config;
   },
 };
 
