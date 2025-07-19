@@ -8,7 +8,7 @@ const Programacao = () => {
   const events = [
     {
       title: "Recepção e Festa",
-      date: "06 de Julho de 2026",
+      date: "06 de Junho de 2026",
       time: "16:00",
       location: "Casa Branca Eventos",
       address: "R. Do Jangadeiro, 190 - Jacaúna, Aquiraz - CE",
