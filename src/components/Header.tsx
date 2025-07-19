@@ -64,7 +64,7 @@ const Header = () => {
             <Link href="/" className="group">
               <div className="flex items-center space-x-2">
                 <div className="relative">
-                  <h1 className="text-2xl sm:text-3xl lg:text-4xl font-serif text-olive-600 font-bold tracking-tight">
+                  <h1 className="text-2xl sm:text-3xl lg:text-4xl font-classic text-olive-600 font-medium tracking-wide">
                     Geórgia & Pedro
                   </h1>
                   <motion.div

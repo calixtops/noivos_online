@@ -61,7 +61,13 @@ module.exports = {
       fontFamily: {
         serif: ['"Playfair Display"', '"Times New Roman"', 'serif'],
         sans: ['"Source Sans Pro"', '"Helvetica Neue"', 'Arial', 'sans-serif'],
-        script: ['"Dancing Script"', 'cursive']
+        script: ['"Dancing Script"', 'cursive'],
+        elegant: ['"Cormorant Garamond"', '"Playfair Display"', 'serif'],
+        classic: ['"Crimson Text"', '"Times New Roman"', 'serif'],
+        formal: ['"Libre Baskerville"', '"Georgia"', 'serif']
+      },
+      backgroundImage: {
+        'gradient-radial': 'radial-gradient(var(--tw-gradient-stops))',
       },
       animation: {
         'float': 'float 4s ease-in-out infinite',
