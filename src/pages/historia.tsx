@@ -71,7 +71,7 @@ const Historia = () => {
             Nossos Momentos
           </motion.h2>
           <div className="flex flex-col items-center">
-            <div className="relative w-full max-w-2xl h-[32rem] flex items-center justify-center">
+            <div className="relative w-full max-w-2xl h-[32rem] md:h-[28rem] sm:h-[20rem] xs:h-[14rem] flex items-center justify-center">
               <button
                 onClick={prevPhoto}
                 className="absolute left-0 top-1/2 -translate-y-1/2 bg-white/80 rounded-full p-2 shadow hover:bg-rose-100 transition"
@@ -81,7 +81,7 @@ const Historia = () => {
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
                 </svg>
               </button>
-              <div className="w-full h-[32rem] flex items-center justify-center bg-black rounded-lg shadow">
+              <div className="w-full h-full flex items-center justify-center bg-black rounded-lg shadow">
                 <Image
                   src={galleryPhotos[current].src}
                   alt=""

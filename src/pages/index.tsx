@@ -52,48 +52,48 @@ const Home = () => {
       <main className="flex-grow">
         {/* Banner Principal */}
         <section 
-          className="h-screen flex items-center justify-center bg-cover bg-center relative"
+          className="min-h-[60vh] md:min-h-screen flex items-center justify-center bg-cover bg-center relative"
           style={{ backgroundImage: "url('/images/banner.jpg')" }}
         >
           <div className="absolute inset-0 bg-black/40"></div>
           <motion.div 
-            className="text-center z-10 text-white px-4"
+            className="text-center z-10 text-white px-4 w-full max-w-3xl mx-auto"
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             transition={{ duration: 1 }}
           >
             <motion.h1 
-              className="text-6xl md:text-8xl font-sans mb-4"
+              className="text-4xl sm:text-5xl md:text-6xl lg:text-8xl font-sans mb-4 break-words"
               initial={{ y: -50 }}
               animate={{ y: 0 }}
               transition={{ delay: 0.3 }}
             >
               Geórgia & Pedro
             </motion.h1>
-            <p className="text-xl md:text-2xl mb-8">06 de Junho de 2026</p>
+            <p className="text-lg sm:text-xl md:text-2xl mb-8">06 de Junho de 2026</p>
             
             {/* Contador Regressivo */}
             <motion.div 
-              className="flex justify-center space-x-4"
+              className="flex flex-wrap justify-center gap-2 sm:gap-4"
               initial={{ y: 50, opacity: 0 }}
               animate={{ y: 0, opacity: 1 }}
               transition={{ delay: 0.6 }}
             >
-              <div className="bg-white/20 rounded-lg p-4 backdrop-blur-sm">
-                <span className="text-3xl font-bold">{timeLeft.days}</span>
-                <p>Dias</p>
+              <div className="bg-white/20 rounded-lg p-2 sm:p-4 backdrop-blur-sm min-w-[70px]">
+                <span className="text-xl sm:text-2xl md:text-3xl font-bold">{timeLeft.days}</span>
+                <p className="text-xs sm:text-base">Dias</p>
               </div>
-              <div className="bg-white/20 rounded-lg p-4 backdrop-blur-sm">
-                <span className="text-3xl font-bold">{timeLeft.hours}</span>
-                <p>Horas</p>
+              <div className="bg-white/20 rounded-lg p-2 sm:p-4 backdrop-blur-sm min-w-[70px]">
+                <span className="text-xl sm:text-2xl md:text-3xl font-bold">{timeLeft.hours}</span>
+                <p className="text-xs sm:text-base">Horas</p>
               </div>
-              <div className="bg-white/20 rounded-lg p-4 backdrop-blur-sm">
-                <span className="text-3xl font-bold">{timeLeft.minutes}</span>
-                <p>Minutos</p>
+              <div className="bg-white/20 rounded-lg p-2 sm:p-4 backdrop-blur-sm min-w-[70px]">
+                <span className="text-xl sm:text-2xl md:text-3xl font-bold">{timeLeft.minutes}</span>
+                <p className="text-xs sm:text-base">Minutos</p>
               </div>
-              <div className="bg-white/20 rounded-lg p-4 backdrop-blur-sm">
-                <span className="text-3xl font-bold">{timeLeft.seconds}</span>
-                <p>Segundos</p>
+              <div className="bg-white/20 rounded-lg p-2 sm:p-4 backdrop-blur-sm min-w-[70px]">
+                <span className="text-xl sm:text-2xl md:text-3xl font-bold">{timeLeft.seconds}</span>
+                <p className="text-xs sm:text-base">Segundos</p>
               </div>
             </motion.div>
           </motion.div>
