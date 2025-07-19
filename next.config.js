@@ -3,13 +3,42 @@ const nextConfig = {
   reactStrictMode: false,
   swcMinify: true,
   
+  // Desabilita Fast Refresh para resolver loops infinitos
+  experimental: {
+    forceSwcTransforms: true,
+  },
+  
+  // Webpack config para desabilitar HMR
+  webpack: (config, { dev }) => {
+    if (dev) {
+      config.watchOptions = {
+        poll: 1000,
+        aggregateTimeout: 300,
+      }
+    }
+    return config
+  },
+  
   // Otimizações básicas
   poweredByHeader: false,
   
   // Compressão de imagens
   images: {
     formats: ['image/webp', 'image/avif'],
-    domains: ['images.tcdn.com.br', 'via.placeholder.com'],
+    remotePatterns: [
+      {
+        protocol: 'https',
+        hostname: 'images.tcdn.com.br',
+        port: '',
+        pathname: '/**',
+      },
+      {
+        protocol: 'https',
+        hostname: 'via.placeholder.com',
+        port: '',
+        pathname: '/**',
+      },
+    ],
   },
   
   // Headers básicos para cache

@@ -5,15 +5,15 @@
     "description": "Para secar juntos depois daqueles banhos românticos! 💕",
     "image": "/images/presentes/conjunto_toalha.jpg",
     "link": "https://www.magazineluiza.com.br/jogo-de-toalhas/p/123456/",
-    "price": 120
+    "price": 180
   },
   {
     "id": 2,
     "name": "Aspirador Robô",
-    "description": "Para ele limpar a casa enquanto vocês namoram no sofá! 🤖",
+    "description": "Para limpar a casa enquanto vocês relaxam juntinhos no sofá! 🤖",
     "image": "https://images.tcdn.com.br/img/img_prod/1069936/aspirador_de_po_robo_inteligente_wi_fi_roomba_e5_irobot_2564_1_b3ac5c8c4e6e7f8a3d1b2c9e6f4a7b8d.jpg",
     "link": "https://www.magazineluiza.com.br/aspirador-robo",
-    "price": 1200
+    "price": 1800
   },
   {
     "id": 3,
@@ -21,7 +21,7 @@
     "description": "Para vocês criarem delícias juntos na cozinha! 👨‍🍳👩‍🍳",
     "image": "/images/presentes/panelas_tramon.jpg",
     "link": "https://www.tramontina.com.br/conjunto-panelas",
-    "price": 350
+    "price": 520
   },
   {
     "id": 4,
@@ -29,7 +29,7 @@
     "description": "Para guardar todas as sobremesas dos jantares românticos! ❄️",
     "image": "https://images.tcdn.com.br/img/img_prod/740120/geladeira_refrigerador_electrolux_side_by_side_504l_ss72x_inox_127v_4089_1_d4e5f6a7b8c9d0e1f2a3b4c5d6e7f8a9.jpg",
     "link": "https://www.magazineluiza.com.br/geladeira-side-by-side",
-    "price": 2800
+    "price": 3800
   },
   {
     "id": 5,
@@ -37,7 +37,7 @@
     "description": "Para vitaminas matinais e smoothies de reconciliação! 🥤",
     "image": "/images/presentes/liquidificador.jpg",
     "link": "https://www.amazon.com.br/liquidificador",
-    "price": 220
+    "price": 320
   },
   {
     "id": 6,
@@ -45,7 +45,7 @@
     "description": "Para guardar os vinhos das comemorações de aniversário de namoro! 🍷",
     "image": "https://images.tcdn.com.br/img/img_prod/1004075/adega_climatizada_electrolux_acs18_18_garrafas_preta_127v_3421_1_f3a4b5c6d7e8f9a0b1c2d3e4f5a6b7c8.jpg",
     "link": "https://www.magazineluiza.com.br/adega",
-    "price": 850
+    "price": 1200
   },
   {
     "id": 7,
@@ -58,10 +58,10 @@
   {
     "id": 8,
     "name": "Cervejeira",
-    "description": "Para ele ter cerveja gelada e ela ter drink gelado! 🍺",
+    "description": "Para bebidas sempre geladas e momentos refrescantes! 🍺",
     "image": "https://images.tcdn.com.br/img/img_prod/740120/cervejeira_electrolux_beer_200l_preta_be20b_127v_3654_1_e9f0a1b2c3d4e5f6a7b8c9d0e1f2a3b4.jpg",
     "link": "https://www.casasbahia.com.br/cervejeira",
-    "price": 1100
+    "price": 1500
   },
   {
     "id": 9,
@@ -138,10 +138,10 @@
   {
     "id": 18,
     "name": "Poltrona Confortável",
-    "description": "Para ele relaxar enquanto ela escolhe o filme! 🛋️",
+    "description": "Para relaxar enquanto escolhem o próximo filme juntos! 🛋️",
     "image": "https://images.tcdn.com.br/img/img_prod/740120/poltrona_reclinavel_relax_capitone_veludo_bege_6543_1_f1a2b3c4d5e6f7a8b9c0d1e2f3a4b5c6.jpg",
     "link": "https://www.tokstok.com.br/poltrona",
-    "price": 900
+    "price": 1200
   },
   {
     "id": 19,
@@ -254,5 +254,101 @@
     "image": "https://images.tcdn.com.br/img/img_prod/668385/comoda_pet_madeira_3_gavetas_com_casinha_integrada_bege_8901_1_f9a0b1c2d3e4f5a6b7c8d9e0f1a2b3c4.jpg",
     "link": "https://www.petshop.com.br/comoda-pet",
     "price": 650
+  },
+  {
+    "id": 33,
+    "name": "Manta de Sofá",
+    "description": "Para vocês se aconchegarem juntos durante os filmes! 🛋️",
+    "image": "https://images.tcdn.com.br/img/img_prod/740120/manta_sofa_soft_flannel_casal_cinza_claro_9234_1_a1b2c3d4e5f6a7b8c9d0e1f2a3b4c5d6.jpg",
+    "link": "https://www.tokstok.com.br/manta-sofa",
+    "price": 180
+  },
+  {
+    "id": 34,
+    "name": "Edredom King Size",
+    "description": "Para noites quentinhas e sonhos compartilhados! 😴",
+    "image": "https://images.tcdn.com.br/img/img_prod/740120/edredom_king_size_microfibra_bege_com_detalhes_florais_8765_1_b2c3d4e5f6a7b8c9d0e1f2a3b4c5d6e7.jpg",
+    "link": "https://www.casasbahia.com.br/edredom-king",
+    "price": 350
+  },
+  {
+    "id": 35,
+    "name": "Conjunto de Xícaras",
+    "description": "Para cafés da manhã especiais e conversas longas! ☕",
+    "image": "https://images.tcdn.com.br/img/img_prod/740120/conjunto_6_xicaras_porcelana_branca_com_pires_dourado_7654_1_c3d4e5f6a7b8c9d0e1f2a3b4c5d6e7f8.jpg",
+    "link": "https://www.americanas.com.br/conjunto-xicaras",
+    "price": 220
+  },
+  {
+    "id": 36,
+    "name": "Pillow Top King Size",
+    "description": "Para transformar a cama de vocês numa nuvem de conforto! ☁️",
+    "image": "https://images.tcdn.com.br/img/img_prod/740120/pillow_top_king_size_viscoelastico_branco_premium_6543_1_d4e5f6a7b8c9d0e1f2a3b4c5d6e7f8a9.jpg",
+    "link": "https://www.casasbahia.com.br/pillow-top",
+    "price": 680
+  },
+  {
+    "id": 37,
+    "name": "TV 70 Polegadas",
+    "description": "Para maratonas de séries e jogos em tela gigante! 📺",
+    "image": "https://images.tcdn.com.br/img/img_prod/740120/smart_tv_70_4k_uhd_samsung_crystal_un70cu7700_5432_1_e5f6a7b8c9d0e1f2a3b4c5d6e7f8a9b0.jpg",
+    "link": "https://www.magazineluiza.com.br/tv-70-polegadas",
+    "price": 4200
+  },
+  {
+    "id": 38,
+    "name": "Velas Aromáticas",
+    "description": "Para criar o clima perfeito em qualquer ocasião! 🕯️",
+    "image": "https://images.tcdn.com.br/img/img_prod/740120/kit_3_velas_aromaticas_lavanda_vanilla_citrus_premium_4321_1_f6a7b8c9d0e1f2a3b4c5d6e7f8a9b0c1.jpg",
+    "link": "https://www.americanas.com.br/velas-aromaticas",
+    "price": 150
+  },
+  {
+    "id": 39,
+    "name": "Day Spa de Casal",
+    "description": "Para relaxarem juntos e renovarem as energias! 💆‍♀️💆‍♂️",
+    "image": "https://images.tcdn.com.br/img/img_prod/740120/voucher_day_spa_casal_massagem_relaxante_completa_3210_1_a7b8c9d0e1f2a3b4c5d6e7f8a9b0c1d2.jpg",
+    "link": "https://www.groupon.com.br/day-spa-casal",
+    "price": 850
+  },
+  {
+    "id": 40,
+    "name": "Viagem Romântica para a Praia",
+    "description": "Para curtirem o sol, mar e muito romance! 🏖️",
+    "image": "https://images.tcdn.com.br/img/img_prod/740120/pacote_viagem_praia_hotel_pousada_romantica_litoral_2109_1_b8c9d0e1f2a3b4c5d6e7f8a9b0c1d2e3.jpg",
+    "link": "https://www.decolar.com/viagem-praia",
+    "price": 2800
+  },
+  {
+    "id": 41,
+    "name": "Viagem Romântica para a Serra",
+    "description": "Para se conectarem com a natureza e um com o outro! 🏔️",
+    "image": "https://images.tcdn.com.br/img/img_prod/740120/pacote_viagem_serra_chalé_romantico_montanha_1098_1_c9d0e1f2a3b4c5d6e7f8a9b0c1d2e3f4.jpg",
+    "link": "https://www.decolar.com/viagem-serra",
+    "price": 2500
+  },
+  {
+    "id": 42,
+    "name": "Toalha de Mesa",
+    "description": "Para jantares especiais e comemorações em casa! 🍽️",
+    "image": "https://images.tcdn.com.br/img/img_prod/740120/toalha_mesa_linho_bege_bordada_flores_retangular_0987_1_d0e1f2a3b4c5d6e7f8a9b0c1d2e3f4a5.jpg",
+    "link": "https://www.tokstok.com.br/toalha-mesa",
+    "price": 280
+  },
+  {
+    "id": 43,
+    "name": "Kit Bartender 12 Peças Profissional",
+    "description": "Para prepararem drinks incríveis e impressionarem os amigos! 🍹",
+    "image": "https://images.tcdn.com.br/img/img_prod/740120/kit_bartender_profissional_12_pecas_shaker_coqueteleira_inox_8765_1_e1f2a3b4c5d6e7f8a9b0c1d2e3f4a5b6.jpg",
+    "link": "https://www.americanas.com.br/kit-bartender",
+    "price": 380
+  },
+  {
+    "id": 44,
+    "name": "Day Use em Resort",
+    "description": "Para um dia de piscina, spa e muito relaxamento! 🏊‍♀️🏊‍♂️",
+    "image": "https://images.tcdn.com.br/img/img_prod/740120/voucher_day_use_resort_piscina_spa_almoco_incluso_7654_1_f2a3b4c5d6e7f8a9b0c1d2e3f4a5b6c7.jpg",
+    "link": "https://www.groupon.com.br/day-use-resort",
+    "price": 450
   }
 ]
