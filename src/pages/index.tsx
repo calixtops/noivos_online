@@ -1,11 +1,10 @@
 import Head from 'next/head';
 import Header from '../components/Header';
 import Footer from '../components/Footer';
-import { FaHeart, FaCalendarAlt, FaMusic, FaVolumeMute } from 'react-icons/fa';
-import { useAudio } from '../contexts/AudioContext';
+import Countdown from '../components/Countdown';
+import { FaHeart, FaCalendarAlt } from 'react-icons/fa';
 
 const Home = () => {
-  const { isPlaying, togglePlay, isHydrated } = useAudio();
   return (
     <div className="min-h-screen flex flex-col bg-gradient-to-br from-cream-50 via-cream-100 to-olive-50">
       <Head>
@@ -17,22 +16,6 @@ const Home = () => {
       <Header />
 
       <main className="flex-grow">
-        {/* Botão de Música - Posição Fixa no Canto Inferior Direito */}
-        {isHydrated && (
-          <button
-            onClick={togglePlay}
-            className="fixed bottom-4 right-4 sm:bottom-6 sm:right-6 bg-olive-600 hover:bg-olive-700 text-white rounded-full p-3 sm:p-4 shadow-xl hover:shadow-2xl transition-all duration-300 z-40 border-2 border-white"
-            aria-label={isPlaying ? 'Pausar música' : 'Tocar música'}
-          >
-            {isPlaying ? (
-              <FaMusic className="w-5 h-5 sm:w-6 sm:h-6" />
-            ) : (
-              <FaVolumeMute className="w-5 h-5 sm:w-6 sm:h-6" />
-            )}
-          </button>
-        )}
-
-        {/* Hero Section - Com Arte Integrada Simples */}
         <section className="relative py-16 sm:py-24 bg-gradient-to-br from-cream-50 via-sage-50 to-olive-50 min-h-[80vh] flex items-center">
           {/* Arte de fundo sutil */}
           <div 
@@ -90,11 +73,19 @@ const Home = () => {
                 </p>
 
                 {/* Data */}
-                <div className="inline-block bg-olive-100 border-2 border-olive-300 rounded-xl px-6 py-4 sm:px-10 sm:py-5 shadow-lg">
+                <div className="inline-block bg-olive-100 border-2 border-olive-300 rounded-xl px-6 py-4 sm:px-10 sm:py-5 shadow-lg mb-8">
                   <div className="flex items-center gap-3 sm:gap-4 text-olive-800">
                     <FaCalendarAlt className="text-olive-600 text-lg sm:text-xl" />
                     <span className="font-serif text-xl sm:text-2xl font-semibold">06 de Junho de 2026</span>
                   </div>
+                </div>
+
+                {/* Contagem Regressiva */}
+                <div className="mt-8">
+                  <h3 className="font-serif text-lg sm:text-xl text-olive-700 mb-4">
+                    Faltam apenas:
+                  </h3>
+                  <Countdown targetDate="2026-06-06T16:00:00" />
                 </div>
               </div>
             </div>

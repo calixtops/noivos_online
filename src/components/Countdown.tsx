@@ -36,7 +36,7 @@ const Countdown: React.FC<CountdownProps> = ({ targetDate }) => {
   }, [targetDate]);
 
   return (
-    <div className="grid grid-cols-4 gap-4 max-w-md mx-auto">
+    <div className="grid grid-cols-4 gap-2 sm:gap-4 max-w-md mx-auto">
       {[
         { label: 'Dias', value: timeLeft.days },
         { label: 'Horas', value: timeLeft.hours },
@@ -45,10 +45,10 @@ const Countdown: React.FC<CountdownProps> = ({ targetDate }) => {
       ].map((item, index) => (
         <div
           key={item.label}
-          className="text-center bg-white/80 backdrop-blur-sm rounded-lg p-4 shadow-lg border border-olive-200"
+          className="text-center bg-white/80 backdrop-blur-sm rounded-lg p-2 sm:p-4 shadow-lg border border-olive-200"
         >
-          <div className="text-2xl font-bold text-olive-800">{item.value.toString().padStart(2, '0')}</div>
-          <div className="text-sm text-olive-600 font-medium">{item.label}</div>
+          <div className="text-lg sm:text-2xl font-bold text-olive-800">{item.value.toString().padStart(2, '0')}</div>
+          <div className="text-xs sm:text-sm text-olive-600 font-medium">{item.label}</div>
         </div>
       ))}
     </div>
