@@ -459,10 +459,10 @@ const Pousadas = () => {
         </section>
 
         {/* Call to Action */}
-        <section className="py-16 sm:py-20 px-4 sm:px-6 lg:px-8 bg-olive-700">
+        <section className="py-16 sm:py-20 px-4 sm:px-6 lg:px-8 bg-olive-700 text-cream-50">
           <div className="max-w-4xl mx-auto text-center">
             <motion.h2 
-              className="text-3xl sm:text-4xl lg:text-5xl font-serif font-bold text-cream mb-6"
+              className="text-3xl sm:text-4xl lg:text-5xl font-serif font-bold mb-6"
               initial={{ opacity: 0, y: 20 }}
               whileInView={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.8 }}
@@ -472,7 +472,7 @@ const Pousadas = () => {
             </motion.h2>
             
             <motion.p 
-              className="text-xl text-cream/90 mb-8 leading-relaxed"
+              className="text-xl text-cream-200 mb-8 leading-relaxed"
               initial={{ opacity: 0, y: 20 }}
               whileInView={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.8, delay: 0.2 }}
@@ -490,7 +490,7 @@ const Pousadas = () => {
             >
               <motion.a
                 href="/contato"
-                className="bg-cream text-olive-700 px-8 py-4 rounded-full font-semibold text-lg hover:bg-cream/90 transition-all duration-300 shadow-lg"
+                className="bg-cream-100 text-olive-800 px-8 py-3 rounded-lg font-medium hover:bg-cream-200 transition-colors duration-300"
                 whileHover={{ scale: 1.05, y: -2 }}
                 whileTap={{ scale: 0.95 }}
               >
@@ -498,7 +498,7 @@ const Pousadas = () => {
               </motion.a>
               <motion.a
                 href="/programacao"
-                className="border-2 border-cream text-cream px-8 py-4 rounded-full font-semibold text-lg hover:bg-cream hover:text-olive-700 transition-all duration-300"
+                className="border border-cream-200 text-cream-100 px-8 py-3 rounded-lg font-medium hover:bg-cream-100 hover:text-olive-800 transition-all duration-300"
                 whileHover={{ scale: 1.05, y: -2 }}
                 whileTap={{ scale: 0.95 }}
               >
