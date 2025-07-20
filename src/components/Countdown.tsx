@@ -11,8 +11,15 @@ const Countdown: React.FC<CountdownProps> = ({ targetDate }) => {
     minutes: 0,
     seconds: 0
   });
+  const [isMounted, setIsMounted] = useState(false);
 
   useEffect(() => {
+    setIsMounted(true);
+  }, []);
+
+  useEffect(() => {
+    if (!isMounted) return;
+
     const target = new Date(targetDate).getTime();
 
     const updateCountdown = () => {
@@ -33,7 +40,29 @@ const Countdown: React.FC<CountdownProps> = ({ targetDate }) => {
     const interval = setInterval(updateCountdown, 1000);
 
     return () => clearInterval(interval);
-  }, [targetDate]);
+  }, [targetDate, isMounted]);
+
+  if (!isMounted) {
+    // Renderiza valores estáticos durante a hidratação
+    return (
+      <div className="grid grid-cols-4 gap-2 sm:gap-4 max-w-md mx-auto">
+        {[
+          { label: 'Dias', value: '--' },
+          { label: 'Horas', value: '--' },
+          { label: 'Minutos', value: '--' },
+          { label: 'Segundos', value: '--' }
+        ].map((item, index) => (
+          <div
+            key={item.label}
+            className="text-center bg-white/80 backdrop-blur-sm rounded-lg p-2 sm:p-4 shadow-lg border border-olive-200"
+          >
+            <div className="text-lg sm:text-2xl font-bold text-olive-800">{item.value}</div>
+            <div className="text-xs sm:text-sm text-olive-600">{item.label}</div>
+          </div>
+        ))}
+      </div>
+    );
+  }
 
   return (
     <div className="grid grid-cols-4 gap-2 sm:gap-4 max-w-md mx-auto">

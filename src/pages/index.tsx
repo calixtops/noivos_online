@@ -126,7 +126,7 @@ const Home = () => {
                   <FaHeart className="text-olive-600 text-lg" />
                 </div>
                 <h3 className="font-serif text-xl text-olive-800 mb-3">Recepção</h3>
-                <p className="text-stone-600 mb-2">17:30h</p>
+                <p className="text-stone-600 mb-2">18:00h</p>
                 <p className="text-stone-600 text-sm">Mesmo local</p>
                 <p className="text-stone-600 text-sm">Jantar & Festa</p>
               </div>

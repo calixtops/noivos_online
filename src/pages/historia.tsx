@@ -5,7 +5,6 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { useState, useEffect, useRef } from 'react';
 import Image from 'next/image';
 import { FaHeart, FaChevronLeft, FaChevronRight, FaExpand, FaTimes, FaPlay, FaPause } from 'react-icons/fa';
-import { loadExistingPhotos, checkImageExists } from '../utils/photoUtils';
 
 // Interface para as fotos
 interface Photo {

@@ -23,6 +23,7 @@ const Contato: React.FC = () => {
   });
   const [submitted, setSubmitted] = useState(false);
   const [isError, setIsError] = useState(false);
+  const [errorMessage, setErrorMessage] = useState('');
   const [isLoading, setIsLoading] = useState(false);
   const [isVisible, setIsVisible] = useState(false);
   const sectionRef = useRef<HTMLDivElement>(null);
@@ -59,25 +60,35 @@ const Contato: React.FC = () => {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setIsError(false);
+    setErrorMessage('');
     setIsLoading(true);
 
     try {
+      console.log('Enviando dados:', formData);
+      
       const res = await fetch('/api/contact', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(formData),
       });
 
-      if (!res.ok) throw new Error('Erro no envio');
+      const data = await res.json();
+      console.log('Resposta da API:', data);
+
+      if (!res.ok) {
+        throw new Error(data.error || `Erro ${res.status}: ${res.statusText}`);
+      }
 
       setSubmitted(true);
       setTimeout(() => {
         setFormData({ name: '', email: '', message: '', attending: 'yes', guests: 1 });
         setSubmitted(false);
       }, 5000);
+      
     } catch (error) {
-      console.error(error);
+      console.error('Erro no envio:', error);
       setIsError(true);
+      setErrorMessage(error instanceof Error ? error.message : 'Erro desconhecido');
     } finally {
       setIsLoading(false);
     }
@@ -205,7 +216,15 @@ const Contato: React.FC = () => {
                           <FaExclamationTriangle className="text-red-500 text-xl" />
                           <div>
                             <h3 className="text-red-700 font-semibold">Erro no envio</h3>
-                            <p className="text-red-600">Tente novamente ou entre em contato conosco.</p>
+                            <p className="text-red-600">
+                              {errorMessage || 'Tente novamente ou entre em contato conosco.'}
+                            </p>
+                            <details className="mt-2">
+                              <summary className="text-sm text-red-500 cursor-pointer">Ver detalhes técnicos</summary>
+                              <pre className="text-xs text-red-400 mt-1 bg-red-100 p-2 rounded">
+                                {JSON.stringify(formData, null, 2)}
+                              </pre>
+                            </details>
                           </div>
                         </div>
                       </motion.div>

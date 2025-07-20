@@ -6,19 +6,16 @@ const nextConfig = {
   experimental: {
     forceSwcTransforms: true,
   },
-  
-  // Webpack otimizado para desenvolvimento estável
+
+  // Configuração simples para desenvolvimento
   webpack: (config, { dev, isServer }) => {
     if (dev && !isServer) {
-      // Configurações mais conservadoras para HMR
+      // Configurações conservadoras
       config.watchOptions = {
-        poll: 2000,
-        aggregateTimeout: 600,
+        poll: false, // Desabilitar polling
+        aggregateTimeout: 300,
         ignored: ['**/node_modules/**', '**/.git/**', '**/.next/**']
       }
-      
-      // Desabilita cache problemático em desenvolvimento
-      config.cache = false;
     }
     
     return config
