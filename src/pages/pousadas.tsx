@@ -428,6 +428,11 @@ const Pousadas = () => {
                   description: "Informe que você estará no casamento para possível flexibilidade nos horários de check-in e check-out.",
                   color: "from-olive-600 to-stone-600"
                 },
+                {
+                  title: "⚠️ Feriado Prolongado",
+                  description: "A data do casamento coincide com um feriado prolongado! Reserve com ainda mais antecedência, pois a procura será maior e os preços podem aumentar.",
+                  color: "from-red-500 to-orange-600"
+                },
               ].map((tip, index) => (
                 <motion.div
                   key={tip.title}

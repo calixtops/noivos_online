@@ -133,7 +133,7 @@ const Programacao = () => {
                           <FaMapMarkerAlt className="text-olive-600 text-lg mt-1 flex-shrink-0" />
                           <div>
                             <p className="font-medium text-olive-800">Horário</p>
-                            <p className="text-stone-600">Das 15:30 às 02:00</p>
+                            <p className="text-stone-600">Das 16:00 às 22:00</p>
                           </div>
                         </div>
 
