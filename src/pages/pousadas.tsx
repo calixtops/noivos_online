@@ -420,7 +420,7 @@ const Pousadas = () => {
                 },
                 {
                   title: "Transporte",
-                  description: "A maioria das pousadas fica a 5-15 minutos do local da festa. Algumas oferecem transfer ou você pode usar taxi/uber.",
+                  description: "A maioria das pousadas fica a 5-15 minutos do local da festa.",
                   color: "from-sage-500 to-olive-600"
                 },
                 {
@@ -428,11 +428,6 @@ const Pousadas = () => {
                   description: "Informe que você estará no casamento para possível flexibilidade nos horários de check-in e check-out.",
                   color: "from-olive-600 to-stone-600"
                 },
-                {
-                  title: "Desconto para Grupos",
-                  description: "Algumas pousadas oferecem desconto para grupos. Mencione que é convidado do casamento de Pedro e Geórgia.",
-                  color: "from-sage-600 to-olive-700"
-                }
               ].map((tip, index) => (
                 <motion.div
                   key={tip.title}

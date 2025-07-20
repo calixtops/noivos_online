@@ -407,35 +407,35 @@ const Contato: React.FC = () => {
                 <div className="bg-gradient-to-br from-olive-600 to-sage-700 rounded-2xl p-6 sm:p-8 text-cream">
                   <h3 className="text-2xl font-serif font-bold mb-6">Fale Conosco</h3>
                   <div className="space-y-4">
-                    <div className="flex items-center gap-4">
-                      <div className="w-12 h-12 bg-cream/20 rounded-full flex items-center justify-center">
+                    <a 
+                      href="https://wa.me/qr/7VZA5YSZPPZ2A1"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="flex items-center gap-4 hover:bg-cream/10 rounded-lg p-2 transition-colors group"
+                    >
+                      <div className="w-12 h-12 bg-cream/20 rounded-full flex items-center justify-center group-hover:bg-cream/30 transition-colors">
                         <FaWhatsapp className="text-xl" />
                       </div>
                       <div>
                         <p className="font-semibold">WhatsApp</p>
                         <p className="text-cream/90">Entre em contato direto</p>
                       </div>
-                    </div>
+                    </a>
                     
-                    <div className="flex items-center gap-4">
-                      <div className="w-12 h-12 bg-cream/20 rounded-full flex items-center justify-center">
+                    <a 
+                      href="https://www.instagram.com/calixtops_/"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="flex items-center gap-4 hover:bg-cream/10 rounded-lg p-2 transition-colors group"
+                    >
+                      <div className="w-12 h-12 bg-cream/20 rounded-full flex items-center justify-center group-hover:bg-cream/30 transition-colors">
                         <FaInstagram className="text-xl" />
                       </div>
                       <div>
                         <p className="font-semibold">Instagram</p>
-                        <p className="text-cream/90">@georgia_pedro_casamento</p>
+                        <p className="text-cream/90">@calixtops_</p>
                       </div>
-                    </div>
-                    
-                    <div className="flex items-center gap-4">
-                      <div className="w-12 h-12 bg-cream/20 rounded-full flex items-center justify-center">
-                        <FaEnvelope className="text-xl" />
-                      </div>
-                      <div>
-                        <p className="font-semibold">Email</p>
-                        <p className="text-cream/90">nosso.casamento@email.com</p>
-                      </div>
-                    </div>
+                    </a>
                   </div>
                 </div>
 

@@ -350,5 +350,53 @@
     "image": "/images/presentes/day-use-resort.jpeg",
     "link": "https://www.groupon.com.br/day-use-resort",
     "price": 450
+  },
+  {
+    "id": 45,
+    "name": "Torre Arranhador Ferpa Design",
+    "description": "Para os 4 gatinhos brincarem, subirem e descansarem juntos! 🐱🐱🐱🐱",
+    "image": "/images/presentes/torre-gatos-ferpa.jpg",
+    "link": "https://www.ferpadesign.com.br/torre-arranhador",
+    "price": 380
+  },
+  {
+    "id": 46,
+    "name": "Echo Show Amazon",
+    "description": "Para videochamadas com a família e assistir receitas enquanto cozinham juntos! 📺🎵",
+    "image": "/images/presentes/echo-show.jpg",
+    "link": "https://www.amazon.com.br/echo-show",
+    "price": 650
+  },
+  {
+    "id": 47,
+    "name": "Amazon Fire TV Stick",
+    "description": "Para transformar a TV em smart e assistir filmes e séries juntos! 📺🍿",
+    "image": "/images/presentes/firestick.jpg",
+    "link": "https://www.amazon.com.br/fire-tv-stick",
+    "price": 350
+  },
+  {
+    "id": 48,
+    "name": "Kit Casa Conectada Positivo",
+    "description": "Para automatizar a casa e controlar tudo pelo celular! 🏠📱",
+    "image": "/images/presentes/kit-casa-conectada.jpg",
+    "link": "https://www.positivo.com.br/casa-conectada",
+    "price": 850
+  },
+  {
+    "id": 49,
+    "name": "Echo Show 5 Smart Display",
+    "description": "Display inteligente compacto para cozinha e quarto! 📱🎵",
+    "image": "/images/presentes/echo-show-5.jpg",
+    "link": "https://www.amazon.com.br/echo-show-5",
+    "price": 450
+  },
+  {
+    "id": 50,
+    "name": "Panela de Pressão Tramontina 6L",
+    "description": "Para cozinhar mais rápido e ter mais tempo para ficarem juntinhos! 🍲⏰",
+    "image": "/images/presentes/panela-pressao-tramontina.jpg",
+    "link": "https://www.tramontina.com.br/panela-pressao-6l",
+    "price": 180
   }
 ]

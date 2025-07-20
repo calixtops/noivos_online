@@ -87,26 +87,27 @@ const Footer = () => {
           >
             <h4 className="text-lg font-semibold text-gray-800 mb-4">Fale Conosco</h4>
             <div className="space-y-3">
-              <div className="flex items-center justify-center md:justify-end text-gray-600">
-                <FaMapMarkerAlt className="mr-2 text-rose-500" />
-                <span className="text-sm">Local em breve</span>
-              </div>
-              
               {/* Redes Sociais */}
-              <div className="flex justify-center md:justify-end gap-4 mt-4">
+              <div className="flex justify-center md:justify-end gap-4">
                 <motion.a
-                  href="#"
+                  href="https://www.instagram.com/calixtops_/"
+                  target="_blank"
+                  rel="noopener noreferrer"
                   className="w-10 h-10 bg-gradient-to-br from-rose-500 to-rose-600 rounded-full flex items-center justify-center text-white hover:from-rose-600 hover:to-rose-700 transition-all duration-300 shadow-lg"
                   whileHover={{ scale: 1.1, y: -2 }}
                   whileTap={{ scale: 0.95 }}
+                  title="Siga no Instagram"
                 >
                   <FaInstagram className="text-sm" />
                 </motion.a>
                 <motion.a
-                  href="#"
+                  href="https://wa.me/qr/7VZA5YSZPPZ2A1"
+                  target="_blank"
+                  rel="noopener noreferrer"
                   className="w-10 h-10 bg-gradient-to-br from-green-500 to-green-600 rounded-full flex items-center justify-center text-white hover:from-green-600 hover:to-green-700 transition-all duration-300 shadow-lg"
                   whileHover={{ scale: 1.1, y: -2 }}
                   whileTap={{ scale: 0.95 }}
+                  title="Fale no WhatsApp"
                 >
                   <FaWhatsapp className="text-sm" />
                 </motion.a>
