@@ -457,7 +457,7 @@ const Contato: React.FC = () => {
                       <div>
                         <p className="font-semibold text-stone-800">Data e Horário</p>
                         <p className="text-stone-600">06 de Junho de 2026</p>
-                        <p className="text-stone-600">A partir das 15:30h</p>
+                        <p className="text-stone-600">A partir das 16h</p>
                       </div>
                     </div>
                   </div>
@@ -486,7 +486,17 @@ const Contato: React.FC = () => {
                     </li>
                     <li className="flex items-start gap-3">
                       <div className="w-2 h-2 bg-olive-500 rounded-full mt-2 flex-shrink-0"></div>
-                      <span>Veja opções de hospedagem na aba Pousadas</span>
+                      <span>
+                        Veja opções de hospedagem na{' '}
+                        <motion.a
+                          href="/pousadas"
+                          className="text-olive-600 font-semibold hover:text-olive-700 underline decoration-olive-300 hover:decoration-olive-500 transition-all duration-300"
+                          whileHover={{ scale: 1.05 }}
+                          whileTap={{ scale: 0.95 }}
+                        >
+                          aba Pousadas
+                        </motion.a>
+                      </span>
                     </li>
                   </ul>
                 </div>

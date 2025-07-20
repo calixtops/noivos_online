@@ -459,7 +459,7 @@ const Pousadas = () => {
         </section>
 
         {/* Call to Action */}
-        <section className="py-16 sm:py-20 px-4 sm:px-6 lg:px-8 bg-gradient-to-r from-olive-600 to-sage-700">
+        <section className="py-16 sm:py-20 px-4 sm:px-6 lg:px-8 bg-olive-700">
           <div className="max-w-4xl mx-auto text-center">
             <motion.h2 
               className="text-3xl sm:text-4xl lg:text-5xl font-serif font-bold text-cream mb-6"
@@ -490,7 +490,7 @@ const Pousadas = () => {
             >
               <motion.a
                 href="/contato"
-                className="bg-cream text-olive-700 px-8 py-4 rounded-full font-semibold text-lg hover:bg-cream-50 transition-all duration-300 shadow-lg"
+                className="bg-cream text-olive-700 px-8 py-4 rounded-full font-semibold text-lg hover:bg-cream/90 transition-all duration-300 shadow-lg"
                 whileHover={{ scale: 1.05, y: -2 }}
                 whileTap={{ scale: 0.95 }}
               >
