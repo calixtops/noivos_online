@@ -32,11 +32,13 @@ const Home = () => {
                   src="/images/auxiliares/rama.png" 
                   alt="Ramo decorativo"
                   className="absolute top-2 left-2 sm:top-4 sm:left-4 w-12 sm:w-16 lg:w-20 h-auto opacity-50"
+                  loading="lazy"
                 />
                 <img 
                   src="/images/auxiliares/rama.png" 
                   alt="Ramo decorativo"
                   className="absolute top-2 right-2 sm:top-4 sm:right-4 w-12 sm:w-16 lg:w-20 h-auto opacity-50 scale-x-[-1]"
+                  loading="lazy"
                 />
                 
                 {/* Nomes principais - Responsivo */}

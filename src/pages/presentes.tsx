@@ -16,6 +16,8 @@ const Presentes = () => {
   const [searchTerm, setSearchTerm] = useState('');
   const [priceFilter, setPriceFilter] = useState('all');
   const [sortBy, setSortBy] = useState('name');
+  const [currentPage, setCurrentPage] = useState(1);
+  const itemsPerPage = 12; // Mostrar 12 itens por página para melhor performance
 
   // Filtros e busca
   const filteredAndSortedGifts = useMemo(() => {
@@ -47,6 +49,18 @@ const Presentes = () => {
     });
 
     return filtered;
+  }, [searchTerm, priceFilter, sortBy]);
+
+  // Paginação
+  const totalPages = Math.ceil(filteredAndSortedGifts.length / itemsPerPage);
+  const paginatedGifts = useMemo(() => {
+    const startIndex = (currentPage - 1) * itemsPerPage;
+    return filteredAndSortedGifts.slice(startIndex, startIndex + itemsPerPage);
+  }, [filteredAndSortedGifts, currentPage, itemsPerPage]);
+
+  // Reset página quando filtros mudam
+  React.useEffect(() => {
+    setCurrentPage(1);
   }, [searchTerm, priceFilter, sortBy]);
 
   const handlePresentClick = (gift) => {
@@ -142,7 +156,7 @@ const Presentes = () => {
 
         {/* Grid de produtos */}
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 sm:gap-6">
-          {filteredAndSortedGifts.map((gift, index) => (
+          {paginatedGifts.map((gift, index) => (
             <motion.div 
               key={gift.id}
               className="bg-cream rounded-xl shadow-lg hover:shadow-xl transition-all duration-200 overflow-hidden flex flex-col group border border-olive-200"
@@ -165,12 +179,17 @@ const Presentes = () => {
                 </div>
               )}
 
-              <div className="relative h-40 sm:h-48 lg:h-56 overflow-hidden flex items-center justify-center bg-gradient-to-br from-sage-50 to-cream group-hover:from-olive-50 group-hover:to-cream transition-all">
+              <div className="relative h-48 sm:h-52 lg:h-56 overflow-hidden flex items-center justify-center bg-gradient-to-br from-sage-50 to-cream group-hover:from-olive-50 group-hover:to-cream transition-all">
                 <OptimizedImage
                   src={gift.image} 
                   alt={gift.name}
-                  className="w-full h-full object-contain group-hover:scale-105 transition-transform duration-200"
-                  priority={index < 4} // Prioridade para os primeiros 4 itens
+                  className="w-full h-full object-cover sm:object-contain group-hover:scale-105 transition-transform duration-200"
+                  priority={index < 6} // Prioridade para os primeiros 6 itens
+                  loading={index >= 6 ? "lazy" : "eager"} // Lazy loading após os primeiros 6
+                  quality={70} // Qualidade otimizada para grid
+                  sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+                  placeholder="blur"
+                  blurDataURL="data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/2wBDAAYEBQYFBAYGBQYHBwYIChAKCgkJChQODwwQFxQYGBcUFhYaHSUfGhsjHBYWICwgIyYnKSopGR8tMC0oMCUoKSj/2wBDAQcHBwoIChMKChMoGhYaKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCj/wAARCAABAAEDASIAAhEBAxEB/8QAFQABAQAAAAAAAAAAAAAAAAAAAAv/xAAUEAEAAAAAAAAAAAAAAAAAAAAA/8QAFQEBAQAAAAAAAAAAAAAAAAAAAAX/xAAUEQEAAAAAAAAAAAAAAAAAAAAA/9oADAMBAAIRAxEAPwCdABmX/9k="
                 />
               </div>
 
@@ -207,6 +226,43 @@ const Presentes = () => {
             </motion.div>
           ))}
         </div>
+
+        {/* Paginação */}
+        {filteredAndSortedGifts.length > itemsPerPage && (
+          <div className="flex justify-center items-center mt-8 gap-2">
+            <button
+              onClick={() => setCurrentPage(prev => Math.max(prev - 1, 1))}
+              disabled={currentPage === 1}
+              className="px-4 py-2 rounded-lg bg-stone-200 hover:bg-stone-300 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
+            >
+              Anterior
+            </button>
+            
+            <div className="flex gap-1">
+              {Array.from({ length: totalPages }, (_, i) => i + 1).map(page => (
+                <button
+                  key={page}
+                  onClick={() => setCurrentPage(page)}
+                  className={`px-3 py-2 rounded-lg transition-colors ${
+                    currentPage === page
+                      ? 'bg-olive-500 text-white'
+                      : 'bg-stone-200 hover:bg-stone-300'
+                  }`}
+                >
+                  {page}
+                </button>
+              ))}
+            </div>
+            
+            <button
+              onClick={() => setCurrentPage(prev => Math.min(prev + 1, totalPages))}
+              disabled={currentPage === totalPages}
+              className="px-4 py-2 rounded-lg bg-stone-200 hover:bg-stone-300 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
+            >
+              Próxima
+            </button>
+          </div>
+        )}
 
         {/* Mensagem quando não há resultados */}
         {filteredAndSortedGifts.length === 0 && (
@@ -263,10 +319,11 @@ const Presentes = () => {
                   <OptimizedImage
                     src={selectedGift.image} 
                     alt={selectedGift.name}
-                    className="w-12 sm:w-16 h-12 sm:h-16 object-contain rounded-lg"
+                    className="w-16 sm:w-20 h-16 sm:h-20 object-cover sm:object-contain rounded-lg flex-shrink-0"
                     priority={true}
+                    quality={85}
                   />
-                  <div className="text-left flex-1">
+                  <div className="text-left flex-1 min-w-0">
                     <h3 className="font-bold text-stone-900 text-sm sm:text-base line-clamp-2">{selectedGift.name}</h3>
                     <p className="text-lg sm:text-2xl font-bold text-olive-700">R$ {selectedGift.price}</p>
                   </div>

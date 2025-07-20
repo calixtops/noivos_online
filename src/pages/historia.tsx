@@ -4,10 +4,10 @@ import Footer from '../components/Footer';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useState, useEffect, useRef } from 'react';
 import Image from 'next/image';
-import { FaHeart, FaChevronLeft, FaChevronRight } from 'react-icons/fa';
+import { FaHeart, FaChevronLeft, FaChevronRight, FaExpand, FaTimes, FaPlay, FaPause } from 'react-icons/fa';
 
 // Dados das fotos com mais contexto
-const galleryPhotos = Array.from({ length: 7 }, (_, i) => ({
+const galleryPhotos = Array.from({ length: 70 }, (_, i) => ({
   id: i + 1,
   src: `/images/historia/${i + 1}.jpg`,
   alt: `Momento especial ${i + 1}`,
@@ -60,23 +60,57 @@ const Historia = () => {
   const [current, setCurrent] = useState(0);
   const [isVisible, setIsVisible] = useState(false);
   const [isHydrated, setIsHydrated] = useState(false);
+  const [isFullscreen, setIsFullscreen] = useState(false);
+  const [isAutoplay, setIsAutoplay] = useState(false); // Iniciar parado para evitar hidratação
+  const [visibleThumbnails, setVisibleThumbnails] = useState({ start: 0, end: 10 });
   const sectionRef = useRef<HTMLDivElement>(null);
+  const thumbnailsPerPage = 10;
 
   const prevPhoto = () => setCurrent((current - 1 + galleryPhotos.length) % galleryPhotos.length);
   const nextPhoto = () => setCurrent((current + 1) % galleryPhotos.length);
+  
+  const toggleFullscreen = () => setIsFullscreen(!isFullscreen);
+  const toggleAutoplay = () => setIsAutoplay(!isAutoplay);
+
+  // Função para navegar pelos thumbnails
+  const goToThumbnailPage = (direction: 'prev' | 'next') => {
+    if (direction === 'next' && visibleThumbnails.end < galleryPhotos.length) {
+      setVisibleThumbnails({
+        start: visibleThumbnails.start + thumbnailsPerPage,
+        end: Math.min(visibleThumbnails.end + thumbnailsPerPage, galleryPhotos.length)
+      });
+    } else if (direction === 'prev' && visibleThumbnails.start > 0) {
+      setVisibleThumbnails({
+        start: Math.max(visibleThumbnails.start - thumbnailsPerPage, 0),
+        end: visibleThumbnails.start
+      });
+    }
+  };
+
+  // Atualizar thumbnails visíveis baseado na foto atual
+  useEffect(() => {
+    if (current < visibleThumbnails.start || current >= visibleThumbnails.end) {
+      const newStart = Math.floor(current / thumbnailsPerPage) * thumbnailsPerPage;
+      setVisibleThumbnails({
+        start: newStart,
+        end: Math.min(newStart + thumbnailsPerPage, galleryPhotos.length)
+      });
+    }
+  }, [current]);
 
   useEffect(() => {
     setIsHydrated(true);
+    setIsAutoplay(true); // Ativar autoplay apenas após hidratação
   }, []);
 
   useEffect(() => {
-    if (!isHydrated) return;
+    if (!isHydrated || !isAutoplay) return;
     
     const interval = setInterval(() => {
       setCurrent((prev) => (prev + 1) % galleryPhotos.length);
-    }, 4000);
+    }, 6000); // Mudado de 4000ms para 6000ms (6 segundos)
     return () => clearInterval(interval);
-  }, [isHydrated]);
+  }, [isHydrated, isAutoplay]);
 
   useEffect(() => {
     const observer = new IntersectionObserver(
@@ -112,18 +146,16 @@ const Historia = () => {
         <section className="relative py-16 sm:py-20 lg:py-24 overflow-hidden">
           <div className="absolute inset-0 bg-gradient-to-r from-cream-100/50 to-olive-100/50"></div>
           <div className="relative container mx-auto px-4 sm:px-6 lg:px-8 text-center">
-            {isHydrated ? (
-              <>
-                <motion.h1 
-                  className="text-4xl sm:text-5xl lg:text-6xl font-serif font-bold text-stone-800 mb-6"
-                  initial={{ opacity: 0, y: -30 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  transition={{ duration: 0.8 }}
-                >
-                  Nossa História de Amor
-                </motion.h1>
-                
-                <motion.div 
+            <motion.h1 
+              className="text-4xl sm:text-5xl lg:text-6xl font-serif font-bold text-stone-800 mb-6"
+              initial={{ opacity: 0, y: -30 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.8 }}
+            >
+              Nossa História de Amor
+            </motion.h1>
+            
+            <motion.div 
                   className="flex items-center justify-center gap-4 mb-8"
                   initial={{ scale: 0 }}
                   animate={{ scale: 1 }}
@@ -154,24 +186,6 @@ const Historia = () => {
                 >
                   Uma jornada de amor, cumplicidade e sonhos compartilhados que nos trouxe até aqui
                 </motion.p>
-              </>
-            ) : (
-              <>
-                <h1 className="text-4xl sm:text-5xl lg:text-6xl font-serif font-bold text-stone-800 mb-6">
-                  Nossa História de Amor
-                </h1>
-                
-                <div className="flex items-center justify-center gap-4 mb-8">
-                  <div className="h-px bg-gradient-to-r from-transparent via-olive-400 to-transparent flex-1 max-w-32"></div>
-                  <FaHeart className="text-olive-500 text-3xl" />
-                  <div className="h-px bg-gradient-to-r from-transparent via-olive-400 to-transparent flex-1 max-w-32"></div>
-                </div>
-
-                <p className="text-xl sm:text-2xl text-stone-600 max-w-3xl mx-auto leading-relaxed">
-                  Uma jornada de amor, cumplicidade e sonhos compartilhados que nos trouxe até aqui
-                </p>
-              </>
-            )}
           </div>
         </section>
 
@@ -358,7 +372,7 @@ const Historia = () => {
           </div>
         </section>
 
-        {/* Galeria de Fotos Melhorada */}
+        {/* Galeria de Fotos Otimizada */}
         <section className="py-16 sm:py-20 px-4 sm:px-6 lg:px-8">
           <div className="max-w-6xl mx-auto">
             {isHydrated ? (
@@ -394,15 +408,44 @@ const Historia = () => {
                       initial={{ opacity: 0, x: 300 }}
                       animate={{ opacity: 1, x: 0 }}
                       exit={{ opacity: 0, x: -300 }}
-                      transition={{ duration: 0.5 }}
+                      transition={{ duration: 0.8 }} // Mudado de 0.5s para 0.8s para transição mais suave
                     >
                       <Image
                         src={galleryPhotos[current].src}
                         alt={galleryPhotos[current].alt}
                         fill
                         className="object-cover"
-                        priority
+                        priority={current < 3}
+                        quality={85}
+                        sizes="(max-width: 768px) 100vw, (max-width: 1200px) 80vw, 70vw"
+                        placeholder="blur"
+                        blurDataURL="data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/2wBDAAYEBQYFBAYGBQYHBwYIChAKCgkJChQODwwQFxQYGBcUFhYaHSUfGhsjHBYWICwgIyYnKSopGR8tMC0oMCUoKSj/2wBDAQcHBwoIChMKChMoGhYaKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCj/wAARCAAIAAoDASIAAhEBAxEB/8QAFQABAQAAAAAAAAAAAAAAAAAAAAv/xAAhEAACAQMDBQAAAAAAAAAAAAABAgMABAUGIWGRkbHBE//EABUBAQEAAAAAAAAAAAAAAAAAAAMF/8QAGhEAAgIDAAAAAAAAAAAAAAAAAAECEgMRkf/aAAwDAQACEQMRAD8AltJagyeH0AthI5xdrLcNM91BF5pX2HaH9bcfaSXWGaRmknyJckliyjqTzSlT54b6bk+h0R//2Q=="
                       />
+                      
+                      {/* Overlay com controles */}
+                      <div className="absolute inset-0 bg-gradient-to-t from-stone-900/20 via-transparent to-stone-900/20 opacity-0 hover:opacity-100 transition-opacity duration-300">
+                        <div className="absolute top-4 right-4 flex gap-2">
+                          <button
+                            onClick={toggleAutoplay}
+                            className="w-10 h-10 bg-stone-900/60 hover:bg-stone-900/80 text-white rounded-full flex items-center justify-center transition-colors"
+                            aria-label={isAutoplay ? 'Pausar slideshow' : 'Iniciar slideshow'}
+                          >
+                            {isAutoplay ? <FaPause className="text-sm" /> : <FaPlay className="text-sm" />}
+                          </button>
+                          <button
+                            onClick={toggleFullscreen}
+                            className="w-10 h-10 bg-stone-900/60 hover:bg-stone-900/80 text-white rounded-full flex items-center justify-center transition-colors"
+                            aria-label="Tela cheia"
+                          >
+                            <FaExpand className="text-sm" />
+                          </button>
+                        </div>
+                        
+                        {/* Contador de fotos */}
+                        <div className="absolute bottom-4 left-4 bg-stone-900/60 text-white px-3 py-1 rounded-full text-sm">
+                          {current + 1} / {galleryPhotos.length}
+                        </div>
+                      </div>
                     </motion.div>
                   </AnimatePresence>
 
@@ -435,7 +478,11 @@ const Historia = () => {
                       alt={galleryPhotos[current].alt}
                       fill
                       className="object-cover"
-                      priority
+                      priority={current < 3}
+                      quality={85}
+                      sizes="(max-width: 768px) 100vw, (max-width: 1200px) 80vw, 70vw"
+                      placeholder="blur"
+                      blurDataURL="data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/2wBDAAYEBQYFBAYGBQYHBwYIChAKCgkJChQODwwQFxQYGBcUFhYaHSUfGhsjHBYWICwgIyYnKSopGR8tMC0oMCUoKSj/2wBDAQcHBwoIChMKChMoGhYaKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCj/wAARCAAIAAoDASIAAhEBAxEB/8QAFQABAQAAAAAAAAAAAAAAAAAAAAv/xAAhEAACAQMDBQAAAAAAAAAAAAABAgMABAUGIWGRkbHBE//EABUBAQEAAAAAAAAAAAAAAAAAAAMF/8QAGhEAAgIDAAAAAAAAAAAAAAAAAAECEgMRkf/aAAwDAQACEQMRAD8AltJagyeH0AthI5xdrLcNM91BF5pX2HaH9bcfaSXWGaRmknyJckliyjqTzSlT54b6bk+h0R//2Q=="
                     />
                   </div>
 
@@ -458,103 +505,294 @@ const Historia = () => {
                 </div>
               )}
 
-              {/* Thumbnails */}
+              {/* Thumbnails Paginados */}
               {isHydrated ? (
                 <motion.div 
-                  className="flex flex-wrap justify-center gap-2 sm:gap-3 max-w-4xl"
+                  className="w-full max-w-4xl"
                   initial={{ opacity: 0, y: 20 }}
                   whileInView={{ opacity: 1, y: 0 }}
                   transition={{ duration: 0.8, delay: 0.2 }}
                   viewport={{ once: true }}
                 >
-                  {galleryPhotos.map((photo, idx) => (
-                    <motion.button
-                      key={photo.id}
-                      onClick={() => setCurrent(idx)}
-                      className={`relative w-16 h-16 sm:w-20 sm:h-20 rounded-lg overflow-hidden border-2 transition-all duration-300 ${
-                        current === idx 
-                          ? 'border-olive-500 scale-110 shadow-lg' 
-                          : 'border-stone-200 hover:border-olive-300 hover:scale-105'
+                  <div className="flex items-center justify-center mb-4">
+                    <button
+                      onClick={() => goToThumbnailPage('prev')}
+                      disabled={visibleThumbnails.start === 0}
+                      className={`p-3 rounded-lg transition-colors ${
+                        visibleThumbnails.start === 0 
+                          ? 'text-stone-300 cursor-not-allowed' 
+                          : 'text-stone-600 hover:text-olive-600 hover:bg-olive-50'
                       }`}
-                      whileHover={{ y: -2 }}
-                      whileTap={{ scale: 0.95 }}
+                      aria-label="Página anterior de thumbnails"
                     >
-                      <Image
-                        src={photo.src}
-                        alt={photo.alt}
-                        fill
-                        className="object-cover"
-                      />
-                      {current === idx && (
-                        <div className="absolute inset-0 bg-olive-500/20" />
-                      )}
-                    </motion.button>
-                  ))}
+                      <FaChevronLeft />
+                    </button>
+                    
+                    <div className="mx-6 flex space-x-2">
+                      {Array.from({ length: Math.ceil(galleryPhotos.length / thumbnailsPerPage) }, (_, i) => {
+                        const isActive = i === Math.floor(visibleThumbnails.start / thumbnailsPerPage);
+                        return (
+                          <button
+                            key={i}
+                            onClick={() => {
+                              const newStart = i * thumbnailsPerPage;
+                              setVisibleThumbnails({
+                                start: newStart,
+                                end: Math.min(newStart + thumbnailsPerPage, galleryPhotos.length)
+                              });
+                            }}
+                            className={`w-3 h-3 rounded-full transition-all duration-300 ${
+                              isActive ? 'bg-olive-600 scale-125' : 'bg-stone-300 hover:bg-olive-300'
+                            }`}
+                            aria-label={`Página ${i + 1} de thumbnails`}
+                          />
+                        );
+                      })}
+                    </div>
+                    
+                    <button
+                      onClick={() => goToThumbnailPage('next')}
+                      disabled={visibleThumbnails.end >= galleryPhotos.length}
+                      className={`p-3 rounded-lg transition-colors ${
+                        visibleThumbnails.end >= galleryPhotos.length 
+                          ? 'text-stone-300 cursor-not-allowed' 
+                          : 'text-stone-600 hover:text-olive-600 hover:bg-olive-50'
+                      }`}
+                      aria-label="Próxima página de thumbnails"
+                    >
+                      <FaChevronRight />
+                    </button>
+                  </div>
+                  
+                  <div className="flex justify-center gap-2 sm:gap-3 flex-wrap">
+                    {galleryPhotos.slice(visibleThumbnails.start, visibleThumbnails.end).map((photo, idx) => {
+                      const actualIdx = visibleThumbnails.start + idx;
+                      return (
+                        <motion.button
+                          key={photo.id}
+                          onClick={() => setCurrent(actualIdx)}
+                          className={`relative w-16 h-16 sm:w-20 sm:h-20 rounded-lg overflow-hidden border-2 transition-all duration-300 ${
+                            current === actualIdx 
+                              ? 'border-olive-500 scale-110 shadow-lg' 
+                              : 'border-stone-200 hover:border-olive-300 hover:scale-105'
+                          }`}
+                          whileHover={{ y: -2 }}
+                          whileTap={{ scale: 0.95 }}
+                          aria-label={`Ir para foto ${actualIdx + 1}`}
+                        >
+                          <Image
+                            src={photo.src}
+                            alt={photo.alt}
+                            fill
+                            className="object-cover"
+                            sizes="80px"
+                            quality={75}
+                            loading="lazy"
+                            placeholder="blur"
+                            blurDataURL="data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/2wBDAAYEBQYFBAYGBQYHBwYIChAKCgkJChQODwwQFxQYGBcUFhYaHSUfGhsjHBYWICwgIyYnKSopGR8tMC0oMCUoKSj/2wBDAQcHBwoIChMKChMoGhYaKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCj/wAARCAABAAEDASIAAhEBAxEB/8QAFQABAQAAAAAAAAAAAAAAAAAAAAv/xAAUEAEAAAAAAAAAAAAAAAAAAAAA/8QAFQEBAQAAAAAAAAAAAAAAAAAAAAX/xAAUEQEAAAAAAAAAAAAAAAAAAAAA/9oADAMBAAIRAxEAPwCdABmX/9k="
+                          />
+                          {current === actualIdx && (
+                            <div className="absolute inset-0 bg-olive-500/20" />
+                          )}
+                          <div className="absolute bottom-0 left-0 right-0 bg-stone-900/60 text-white text-xs text-center py-1">
+                            {actualIdx + 1}
+                          </div>
+                        </motion.button>
+                      );
+                    })}
+                  </div>
                 </motion.div>
               ) : (
-                <div className="flex flex-wrap justify-center gap-2 sm:gap-3 max-w-4xl">
-                  {galleryPhotos.map((photo, idx) => (
+                <div className="w-full max-w-4xl">
+                  <div className="flex items-center justify-center mb-4">
                     <button
-                      key={photo.id}
-                      onClick={() => setCurrent(idx)}
-                      className={`relative w-16 h-16 sm:w-20 sm:h-20 rounded-lg overflow-hidden border-2 transition-all duration-300 ${
-                        current === idx 
-                          ? 'border-olive-500 scale-110 shadow-lg' 
-                          : 'border-stone-200 hover:border-olive-300 hover:scale-105'
+                      onClick={() => goToThumbnailPage('prev')}
+                      disabled={visibleThumbnails.start === 0}
+                      className={`p-3 rounded-lg transition-colors ${
+                        visibleThumbnails.start === 0 
+                          ? 'text-stone-300 cursor-not-allowed' 
+                          : 'text-stone-600 hover:text-olive-600 hover:bg-olive-50'
                       }`}
+                      aria-label="Página anterior de thumbnails"
                     >
-                      <Image
-                        src={photo.src}
-                        alt={photo.alt}
-                        fill
-                        className="object-cover"
-                      />
-                      {current === idx && (
-                        <div className="absolute inset-0 bg-olive-500/20" />
-                      )}
+                      <FaChevronLeft />
                     </button>
-                  ))}
+                    
+                    <div className="mx-6 flex space-x-2">
+                      {Array.from({ length: Math.ceil(galleryPhotos.length / thumbnailsPerPage) }, (_, i) => {
+                        const isActive = i === Math.floor(visibleThumbnails.start / thumbnailsPerPage);
+                        return (
+                          <button
+                            key={i}
+                            onClick={() => {
+                              const newStart = i * thumbnailsPerPage;
+                              setVisibleThumbnails({
+                                start: newStart,
+                                end: Math.min(newStart + thumbnailsPerPage, galleryPhotos.length)
+                              });
+                            }}
+                            className={`w-3 h-3 rounded-full transition-all duration-300 ${
+                              isActive ? 'bg-olive-600 scale-125' : 'bg-stone-300 hover:bg-olive-300'
+                            }`}
+                            aria-label={`Página ${i + 1} de thumbnails`}
+                          />
+                        );
+                      })}
+                    </div>
+                    
+                    <button
+                      onClick={() => goToThumbnailPage('next')}
+                      disabled={visibleThumbnails.end >= galleryPhotos.length}
+                      className={`p-3 rounded-lg transition-colors ${
+                        visibleThumbnails.end >= galleryPhotos.length 
+                          ? 'text-stone-300 cursor-not-allowed' 
+                          : 'text-stone-600 hover:text-olive-600 hover:bg-olive-50'
+                      }`}
+                      aria-label="Próxima página de thumbnails"
+                    >
+                      <FaChevronRight />
+                    </button>
+                  </div>
+                  
+                  <div className="flex justify-center gap-2 sm:gap-3 flex-wrap">
+                    {galleryPhotos.slice(visibleThumbnails.start, visibleThumbnails.end).map((photo, idx) => {
+                      const actualIdx = visibleThumbnails.start + idx;
+                      return (
+                        <button
+                          key={photo.id}
+                          onClick={() => setCurrent(actualIdx)}
+                          className={`relative w-16 h-16 sm:w-20 sm:h-20 rounded-lg overflow-hidden border-2 transition-all duration-300 ${
+                            current === actualIdx 
+                              ? 'border-olive-500 scale-110 shadow-lg' 
+                              : 'border-stone-200 hover:border-olive-300 hover:scale-105'
+                          }`}
+                          aria-label={`Ir para foto ${actualIdx + 1}`}
+                        >
+                          <Image
+                            src={photo.src}
+                            alt={photo.alt}
+                            fill
+                            className="object-cover"
+                            sizes="80px"
+                            quality={75}
+                            loading="lazy"
+                            placeholder="blur"
+                            blurDataURL="data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/2wBDAAYEBQYFBAYGBQYHBwYIChAKCgkJChQODwwQFxQYGBcUFhYaHSUfGhsjHBYWICwgIyYnKSopGR8tMC0oMCUoKSj/2wBDAQcHBwoIChMKChMoGhYaKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCj/wAARCAABAAEDASIAAhEBAxEB/8QAFQABAQAAAAAAAAAAAAAAAAAAAAv/xAAUEAEAAAAAAAAAAAAAAAAAAAAA/8QAFQEBAQAAAAAAAAAAAAAAAAAAAAX/xAAUEQEAAAAAAAAAAAAAAAAAAAAA/9oADAMBAAIRAxEAPwCdABmX/9k="
+                          />
+                          {current === actualIdx && (
+                            <div className="absolute inset-0 bg-olive-500/20" />
+                          )}
+                          <div className="absolute bottom-0 left-0 right-0 bg-stone-900/60 text-white text-xs text-center py-1">
+                            {actualIdx + 1}
+                          </div>
+                        </button>
+                      );
+                    })}
+                  </div>
                 </div>
               )}
 
-              {/* Indicadores */}
+              {/* Barra de Progresso */}
               {isHydrated ? (
                 <motion.div 
-                  className="flex justify-center gap-2 mt-6"
+                  className="w-full max-w-2xl mt-6"
                   initial={{ opacity: 0 }}
                   whileInView={{ opacity: 1 }}
                   transition={{ duration: 0.8, delay: 0.4 }}
                   viewport={{ once: true }}
                 >
-                  {galleryPhotos.map((_, idx) => (
-                    <motion.button
-                      key={idx}
-                      onClick={() => setCurrent(idx)}
-                      className={`w-3 h-3 rounded-full transition-all duration-300 ${
-                        current === idx ? 'bg-olive-600 scale-125' : 'bg-stone-300 hover:bg-olive-300'
-                      }`}
-                      whileHover={{ scale: 1.2 }}
-                      aria-label={`Ir para foto ${idx + 1}`}
+                  <div className="relative h-2 bg-stone-200 rounded-full overflow-hidden">
+                    <motion.div 
+                      className="absolute left-0 top-0 h-full bg-gradient-to-r from-olive-500 to-sage-600 rounded-full"
+                      initial={{ width: 0 }}
+                      animate={{ width: `${((current + 1) / galleryPhotos.length) * 100}%` }}
+                      transition={{ duration: 0.6 }} // Mudado de 0.3s para 0.6s para acompanhar o ritmo
                     />
-                  ))}
+                  </div>
+                  <div className="flex justify-between mt-2 text-xs text-stone-500">
+                    <span>Início</span>
+                    <span className="font-medium text-olive-600">{current + 1} de {galleryPhotos.length}</span>
+                    <span>Fim</span>
+                  </div>
                 </motion.div>
               ) : (
-                <div className="flex justify-center gap-2 mt-6">
-                  {galleryPhotos.map((_, idx) => (
-                    <button
-                      key={idx}
-                      onClick={() => setCurrent(idx)}
-                      className={`w-3 h-3 rounded-full transition-all duration-300 ${
-                        current === idx ? 'bg-olive-600 scale-125' : 'bg-stone-300 hover:bg-olive-300'
-                      }`}
-                      aria-label={`Ir para foto ${idx + 1}`}
+                <div className="w-full max-w-2xl mt-6">
+                  <div className="relative h-2 bg-stone-200 rounded-full overflow-hidden">
+                    <div 
+                      className="absolute left-0 top-0 h-full bg-gradient-to-r from-olive-500 to-sage-600 rounded-full transition-all duration-300"
+                      style={{ width: `${((current + 1) / galleryPhotos.length) * 100}%` }}
                     />
-                  ))}
+                  </div>
+                  <div className="flex justify-between mt-2 text-xs text-stone-500">
+                    <span>Início</span>
+                    <span className="font-medium text-olive-600">{current + 1} de {galleryPhotos.length}</span>
+                    <span>Fim</span>
+                  </div>
                 </div>
               )}
             </div>
           </div>
         </section>
+
+        {/* Modal Fullscreen */}
+        {isFullscreen && (
+          <div className="fixed inset-0 z-50 bg-black/95 flex items-center justify-center">
+            <div className="relative w-full h-full flex items-center justify-center p-4">
+              <AnimatePresence mode="wait">
+                <motion.div
+                  key={current}
+                  className="relative max-w-7xl max-h-full"
+                  initial={{ opacity: 0, scale: 0.8 }}
+                  animate={{ opacity: 1, scale: 1 }}
+                  exit={{ opacity: 0, scale: 0.8 }}
+                  transition={{ duration: 0.5 }} // Mudado de 0.3s para 0.5s para transição mais suave
+                >
+                  <Image
+                    src={galleryPhotos[current].src}
+                    alt={galleryPhotos[current].alt}
+                    width={1200}
+                    height={800}
+                    className="object-contain max-w-full max-h-full rounded-lg"
+                    priority
+                    quality={90}
+                    placeholder="blur"
+                    blurDataURL="data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/2wBDAAYEBQYFBAYGBQYHBwYIChAKCgkJChQODwwQFxQYGBcUFhYaHSUfGhsjHBYWICwgIyYnKSopGR8tMC0oMCUoKSj/2wBDAQcHBwoIChMKChMoGhYaKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCj/wAARCAABAAEDASIAAhEBAxEB/8QAFQABAQAAAAAAAAAAAAAAAAAAAAv/xAAUEAEAAAAAAAAAAAAAAAAAAAAA/8QAFQEBAQAAAAAAAAAAAAAAAAAAAAX/xAAUEQEAAAAAAAAAAAAAAAAAAAAA/9oADAMBAAIRAxEAPwCdABmX/9k="
+                  />
+                </motion.div>
+              </AnimatePresence>
+
+              {/* Controles Fullscreen */}
+              <button
+                onClick={toggleFullscreen}
+                className="absolute top-4 right-4 w-12 h-12 bg-stone-900/60 hover:bg-stone-900/80 text-white rounded-full flex items-center justify-center transition-colors z-10"
+                aria-label="Fechar tela cheia"
+              >
+                <FaTimes className="text-lg" />
+              </button>
+
+              <button
+                onClick={prevPhoto}
+                className="absolute left-4 top-1/2 -translate-y-1/2 w-14 h-14 bg-stone-900/60 hover:bg-stone-900/80 text-white rounded-full flex items-center justify-center transition-colors z-10"
+                aria-label="Foto anterior"
+              >
+                <FaChevronLeft className="text-xl" />
+              </button>
+
+              <button
+                onClick={nextPhoto}
+                className="absolute right-4 top-1/2 -translate-y-1/2 w-14 h-14 bg-stone-900/60 hover:bg-stone-900/80 text-white rounded-full flex items-center justify-center transition-colors z-10"
+                aria-label="Próxima foto"
+              >
+                <FaChevronRight className="text-xl" />
+              </button>
+
+              {/* Info da foto */}
+              <div className="absolute bottom-4 left-1/2 -translate-x-1/2 bg-stone-900/60 text-white px-4 py-2 rounded-full text-sm">
+                {current + 1} de {galleryPhotos.length}
+              </div>
+            </div>
+          </div>
+        )}
 
         {/* Seção Final - Call to Action */}
         <section className="py-16 sm:py-20 px-4 sm:px-6 lg:px-8 bg-gradient-to-br from-olive-600 to-sage-700">
