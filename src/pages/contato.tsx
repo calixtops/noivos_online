@@ -95,7 +95,7 @@ const Contato: React.FC = () => {
   };
 
   const attendingOptions = [
-    { value: 'yes', label: 'Sim, com certeza! �', color: 'from-olive-500 to-sage-600' },
+    { value: 'yes', label: 'Sim, com certeza! 🤗', color: 'from-olive-500 to-sage-600' },
     { value: 'maybe', label: 'Ainda não tenho certeza 🤔', color: 'from-stone-400 to-stone-500' },
     { value: 'no', label: 'Infelizmente não poderei 😔', color: 'from-stone-300 to-stone-400' }
   ];
