@@ -5,22 +5,15 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { useState, useEffect, useRef } from 'react';
 import Image from 'next/image';
 import { FaHeart, FaChevronLeft, FaChevronRight, FaExpand, FaTimes, FaPlay, FaPause } from 'react-icons/fa';
+import { loadExistingPhotos, checkImageExists } from '../utils/photoUtils';
 
-// Dados das fotos com mais contexto
-const galleryPhotos = Array.from({ length: 70 }, (_, i) => ({
-  id: i + 1,
-  src: `/images/historia/${i + 1}.jpg`,
-  alt: `Momento especial ${i + 1}`,
-  caption: [
-    "10 de junho de 2017 - Nosso primeiro encontro",
-    "Primeira temporada - Momentos de alegria",
-    "Praias e viagens da primeira temporada",
-    "Reencontro - Segunda temporada começa",
-    "Reunindo famílias e amigos",
-    "O pedido sob a lua cheia - Praia do Poço da Draga",
-    "Noivos - Rumo à terceira temporada"
-  ][i] || `Foto ${i + 1}`
-}));
+// Interface para as fotos
+interface Photo {
+  id: number;
+  src: string;
+  alt: string;
+  caption: string;
+}
 
 // Timeline dos momentos
 const timeline = [
@@ -63,8 +56,98 @@ const Historia = () => {
   const [isFullscreen, setIsFullscreen] = useState(false);
   const [isAutoplay, setIsAutoplay] = useState(false); // Iniciar parado para evitar hidratação
   const [visibleThumbnails, setVisibleThumbnails] = useState({ start: 0, end: 10 });
+  const [galleryPhotos, setGalleryPhotos] = useState<Photo[]>([]);
+  const [isLoadingPhotos, setIsLoadingPhotos] = useState(true);
   const sectionRef = useRef<HTMLDivElement>(null);
   const thumbnailsPerPage = 10;
+
+  // Função para carregar fotos dinamicamente
+  const loadPhotos = async () => {
+    setIsLoadingPhotos(true);
+    try {
+      const fallbackPhotos: Photo[] = [];
+      
+      // Tenta carregar até 100 fotos (pode ajustar este número)
+      for (let i = 1; i <= 100; i++) {
+        const extensions = ['jpg', 'jpeg', 'png', 'webp'];
+        let photoFound = false;
+        
+        for (const ext of extensions) {
+          const photoPath = `/images/historia/${i}.${ext}`;
+          
+          // Verifica se a imagem existe usando fetch
+          try {
+            const response = await fetch(photoPath, { method: 'HEAD' });
+            if (response.ok) {
+              fallbackPhotos.push({
+                id: i,
+                src: photoPath,
+                alt: `Momento especial ${i}`,
+                caption: getPhotoCaption(i)
+              });
+              photoFound = true;
+              break; // Se encontrou, para de testar extensões
+            }
+          } catch {
+            continue; // Tenta próxima extensão
+          }
+        }
+        
+        // Se não encontrou foto por 5 números consecutivos, para a busca
+        if (!photoFound) {
+          let consecutiveNotFound = 0;
+          for (let j = i; j < i + 5; j++) {
+            let foundInRange = false;
+            for (const ext of extensions) {
+              try {
+                const response = await fetch(`/images/historia/${j}.${ext}`, { method: 'HEAD' });
+                if (response.ok) {
+                  foundInRange = true;
+                  break;
+                }
+              } catch {
+                continue;
+              }
+            }
+            if (!foundInRange) consecutiveNotFound++;
+          }
+          if (consecutiveNotFound >= 5) break; // Para se não encontrar 5 seguidas
+        }
+      }
+      
+      setGalleryPhotos(fallbackPhotos);
+    } catch (error) {
+      console.log('Erro ao carregar fotos, usando fallback básico');
+      // Fallback para um número fixo se der erro
+      const basicPhotos: Photo[] = Array.from({ length: 70 }, (_, i) => ({
+        id: i + 1,
+        src: `/images/historia/${i + 1}.jpg`,
+        alt: `Momento especial ${i + 1}`,
+        caption: getPhotoCaption(i + 1)
+      }));
+      setGalleryPhotos(basicPhotos);
+    } finally {
+      setIsLoadingPhotos(false);
+    }
+  };
+
+  // Função para gerar legendas baseadas no número da foto
+  const getPhotoCaption = (photoNumber: number): string => {
+    const captions = [
+      "10 de junho de 2017 - Nosso primeiro encontro",
+      "Primeira temporada - Momentos de alegria", 
+      "Praias e viagens da primeira temporada",
+      "Reencontro - Segunda temporada começa",
+      "Reunindo famílias e amigos",
+      "O pedido sob a lua cheia - Praia do Poço da Draga",
+      "Noivos - Rumo à terceira temporada",
+      "Momentos especiais juntos",
+      "Aventuras e descobertas",
+      "Construindo nossa história"
+    ];
+    
+    return captions[photoNumber - 1] || `Nosso momento especial ${photoNumber}`;
+  };
 
   const prevPhoto = () => setCurrent((current - 1 + galleryPhotos.length) % galleryPhotos.length);
   const nextPhoto = () => setCurrent((current + 1) % galleryPhotos.length);
@@ -89,28 +172,29 @@ const Historia = () => {
 
   // Atualizar thumbnails visíveis baseado na foto atual
   useEffect(() => {
-    if (current < visibleThumbnails.start || current >= visibleThumbnails.end) {
+    if (galleryPhotos.length > 0 && (current < visibleThumbnails.start || current >= visibleThumbnails.end)) {
       const newStart = Math.floor(current / thumbnailsPerPage) * thumbnailsPerPage;
       setVisibleThumbnails({
         start: newStart,
         end: Math.min(newStart + thumbnailsPerPage, galleryPhotos.length)
       });
     }
-  }, [current]);
+  }, [current, galleryPhotos.length]);
 
   useEffect(() => {
     setIsHydrated(true);
     setIsAutoplay(true); // Ativar autoplay apenas após hidratação
+    loadPhotos(); // Carregar fotos dinamicamente
   }, []);
 
   useEffect(() => {
-    if (!isHydrated || !isAutoplay) return;
+    if (!isHydrated || !isAutoplay || galleryPhotos.length === 0) return;
     
     const interval = setInterval(() => {
       setCurrent((prev) => (prev + 1) % galleryPhotos.length);
     }, 6000); // Mudado de 4000ms para 6000ms (6 segundos)
     return () => clearInterval(interval);
-  }, [isHydrated, isAutoplay]);
+  }, [isHydrated, isAutoplay, galleryPhotos.length]);
 
   useEffect(() => {
     const observer = new IntersectionObserver(
@@ -392,8 +476,30 @@ const Historia = () => {
             )}
 
             <div className="flex flex-col items-center">
-              {/* Carrossel Principal */}
-              {isHydrated ? (
+              {/* Loading state */}
+              {isLoadingPhotos ? (
+                <div className="relative w-full max-w-4xl h-[400px] sm:h-[500px] lg:h-[600px] mb-8 flex items-center justify-center">
+                  <div className="bg-cream rounded-2xl border border-olive-200 w-full h-full flex items-center justify-center">
+                    <div className="text-center">
+                      <motion.div
+                        className="w-16 h-16 border-4 border-olive-500 border-t-transparent rounded-full mx-auto mb-4"
+                        animate={{ rotate: 360 }}
+                        transition={{ duration: 1, repeat: Infinity, ease: "linear" }}
+                      />
+                      <p className="text-olive-700 font-medium">Carregando nossas fotos...</p>
+                    </div>
+                  </div>
+                </div>
+              ) : galleryPhotos.length === 0 ? (
+                <div className="relative w-full max-w-4xl h-[400px] sm:h-[500px] lg:h-[600px] mb-8 flex items-center justify-center">
+                  <div className="bg-cream rounded-2xl border border-olive-200 w-full h-full flex items-center justify-center">
+                    <p className="text-olive-700 font-medium">Nenhuma foto encontrada</p>
+                  </div>
+                </div>
+              ) : (
+                <>
+                {/* Carrossel Principal */}
+                {isHydrated ? (
                 <motion.div 
                   className="relative w-full max-w-4xl h-[400px] sm:h-[500px] lg:h-[600px] mb-8"
                   initial={{ opacity: 0, scale: 0.9 }}
@@ -594,9 +700,6 @@ const Historia = () => {
                           {current === actualIdx && (
                             <div className="absolute inset-0 bg-olive-500/20" />
                           )}
-                          <div className="absolute bottom-0 left-0 right-0 bg-stone-900/60 text-white text-xs text-center py-1">
-                            {actualIdx + 1}
-                          </div>
                         </motion.button>
                       );
                     })}
@@ -682,9 +785,6 @@ const Historia = () => {
                           {current === actualIdx && (
                             <div className="absolute inset-0 bg-olive-500/20" />
                           )}
-                          <div className="absolute bottom-0 left-0 right-0 bg-stone-900/60 text-white text-xs text-center py-1">
-                            {actualIdx + 1}
-                          </div>
                         </button>
                       );
                     })}
@@ -729,6 +829,8 @@ const Historia = () => {
                     <span>Fim</span>
                   </div>
                 </div>
+              )}
+              </>
               )}
             </div>
           </div>

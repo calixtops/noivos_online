@@ -1,4 +1,4 @@
-import React, { useState, useMemo } from 'react';
+import React, { useState, useMemo, useEffect } from 'react';
 import Head from 'next/head';
 import Header from '../components/Header';
 import Footer from '../components/Footer';
@@ -62,6 +62,13 @@ const Presentes = () => {
   React.useEffect(() => {
     setCurrentPage(1);
   }, [searchTerm, priceFilter, sortBy]);
+
+  // Função simples para mudar página
+  const handlePageChange = (newPage: number) => {
+    setCurrentPage(newPage);
+    // Scroll simples para o topo
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  };
 
   const handlePresentClick = (gift) => {
     setSelectedGift(gift);
@@ -155,7 +162,9 @@ const Presentes = () => {
         </motion.div>
 
         {/* Grid de produtos */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 sm:gap-6">
+        <div 
+          className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 sm:gap-6"
+        >
           {paginatedGifts.map((gift, index) => (
             <motion.div 
               key={gift.id}
@@ -231,7 +240,10 @@ const Presentes = () => {
         {filteredAndSortedGifts.length > itemsPerPage && (
           <div className="flex justify-center items-center mt-8 gap-2">
             <button
-              onClick={() => setCurrentPage(prev => Math.max(prev - 1, 1))}
+              onClick={() => {
+                const newPage = Math.max(currentPage - 1, 1);
+                if (newPage !== currentPage) handlePageChange(newPage);
+              }}
               disabled={currentPage === 1}
               className="px-4 py-2 rounded-lg bg-stone-200 hover:bg-stone-300 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
             >
@@ -242,7 +254,7 @@ const Presentes = () => {
               {Array.from({ length: totalPages }, (_, i) => i + 1).map(page => (
                 <button
                   key={page}
-                  onClick={() => setCurrentPage(page)}
+                  onClick={() => handlePageChange(page)}
                   className={`px-3 py-2 rounded-lg transition-colors ${
                     currentPage === page
                       ? 'bg-olive-500 text-white'
@@ -255,7 +267,10 @@ const Presentes = () => {
             </div>
             
             <button
-              onClick={() => setCurrentPage(prev => Math.min(prev + 1, totalPages))}
+              onClick={() => {
+                const newPage = Math.min(currentPage + 1, totalPages);
+                if (newPage !== currentPage) handlePageChange(newPage);
+              }}
               disabled={currentPage === totalPages}
               className="px-4 py-2 rounded-lg bg-stone-200 hover:bg-stone-300 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
             >
