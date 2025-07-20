@@ -487,14 +487,14 @@ const Contato: React.FC = () => {
                     <li className="flex items-start gap-3">
                       <div className="w-2 h-2 bg-olive-500 rounded-full mt-2 flex-shrink-0"></div>
                       <span>
-                        Veja opções de hospedagem na{' '}
+                        Veja opções de hospedagem na aba{' '}
                         <motion.a
                           href="/pousadas"
                           className="text-olive-600 font-semibold hover:text-olive-700 underline decoration-olive-300 hover:decoration-olive-500 transition-all duration-300"
                           whileHover={{ scale: 1.05 }}
                           whileTap={{ scale: 0.95 }}
                         >
-                          aba Pousadas
+                          Pousadas
                         </motion.a>
                       </span>
                     </li>
