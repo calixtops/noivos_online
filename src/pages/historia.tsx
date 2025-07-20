@@ -38,7 +38,7 @@ const timeline = [
     year: "2025",
     title: "O Pedido Especial",
     description: "No nosso simbólico junho, noivamos sob a luz da lua cheia ao som de reggae, indo de bicicleta à praia do poço da draga.",
-    emoji: "�‍♀️"
+    emoji: "💍"
   },
   {
     year: "2026",
