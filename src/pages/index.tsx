@@ -51,7 +51,7 @@ const Home = () => {
                     <h1 className="font-script text-4xl text-olive-800 leading-tight">
                       Geórgia
                     </h1>
-                    <div className="text-3xl text-olive-600 my-2">
+                    <div className="font-script text-3xl text-olive-600 my-2">
                       &
                     </div>
                     <h1 className="font-script text-4xl text-olive-800 leading-tight">

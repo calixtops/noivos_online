@@ -10,8 +10,14 @@ const MusicButton: React.FC = () => {
   return (
     <button
       onClick={togglePlay}
-      className="fixed bottom-4 right-4 sm:bottom-6 sm:right-6 bg-olive-600 hover:bg-olive-700 text-white rounded-full p-3 sm:p-4 shadow-xl hover:shadow-2xl transition-all duration-300 z-40 border-2 border-white"
+      className="fixed bottom-4 right-4 sm:bottom-6 sm:right-6 bg-olive-600 hover:bg-olive-700 text-white rounded-full p-3 sm:p-4 shadow-xl hover:shadow-2xl transition-all duration-300 z-50 border-2 border-white"
       aria-label={isPlaying ? 'Pausar música' : 'Tocar música'}
+      style={{ 
+        zIndex: 9999,
+        position: 'fixed',
+        bottom: '1rem',
+        right: '1rem'
+      }}
     >
       {isPlaying ? (
         <FaMusic className="w-5 h-5 sm:w-6 sm:h-6" />

@@ -403,19 +403,6 @@ const Historia = () => {
                         className="object-cover"
                         priority
                       />
-                      <div className="absolute inset-0 bg-gradient-to-t from-stone-900/40 via-transparent to-transparent" />
-                      
-                      {/* Caption */}
-                      <motion.div 
-                        className="absolute bottom-6 left-6 right-6 text-center"
-                        initial={{ opacity: 0, y: 20 }}
-                        animate={{ opacity: 1, y: 0 }}
-                        transition={{ delay: 0.3 }}
-                      >
-                        <p className="text-cream text-lg sm:text-xl font-medium bg-stone-900/40 backdrop-blur-sm rounded-lg px-4 py-2">
-                          {galleryPhotos[current].caption}
-                        </p>
-                      </motion.div>
                     </motion.div>
                   </AnimatePresence>
 
@@ -450,14 +437,6 @@ const Historia = () => {
                       className="object-cover"
                       priority
                     />
-                    <div className="absolute inset-0 bg-gradient-to-t from-stone-900/40 via-transparent to-transparent" />
-                    
-                    {/* Caption */}
-                    <div className="absolute bottom-6 left-6 right-6 text-center">
-                      <p className="text-cream text-lg sm:text-xl font-medium bg-stone-900/40 backdrop-blur-sm rounded-lg px-4 py-2">
-                        {galleryPhotos[current].caption}
-                      </p>
-                    </div>
                   </div>
 
                   {/* Controles de Navegação */}
