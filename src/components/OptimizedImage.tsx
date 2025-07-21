@@ -54,17 +54,18 @@ const OptimizedImage = ({
   // Se for uma URL externa, usa img normal por performance
   if (src.startsWith('http')) {
     return (
-      <div className="relative">
+      <div className="relative w-full h-full">
         {isLoading && (
-          <div className={`absolute inset-0 bg-gray-200 animate-pulse ${className}`} />
+          <div className={`absolute inset-0 bg-gradient-to-br from-gray-100 to-gray-200 animate-pulse ${className}`} />
         )}
         <img
           src={src}
           alt={alt}
-          className={`${className} ${isLoading ? 'opacity-0' : 'opacity-100'} transition-opacity duration-200`}
+          className={`absolute inset-0 w-full h-full ${className} ${isLoading ? 'opacity-0' : 'opacity-100'} transition-opacity duration-300`}
           onLoad={handleLoad}
           onError={handleError}
           loading={priority ? 'eager' : loading}
+          style={{ objectFit: 'cover' }}
         />
       </div>
     );
@@ -72,15 +73,13 @@ const OptimizedImage = ({
 
   // Para imagens locais, usa Next.js Image otimizado
   return (
-    <div className="relative">
+    <div className="relative w-full h-full">
       {isLoading && (
         <div className={`absolute inset-0 bg-gradient-to-br from-gray-100 to-gray-200 animate-pulse ${className}`} />
       )}
       <Image
         src={src}
         alt={alt}
-        width={width}
-        height={height}
         className={`${className} ${isLoading ? 'opacity-0' : 'opacity-100'} transition-opacity duration-300`}
         onLoad={handleLoad}
         onError={handleError}
@@ -90,6 +89,7 @@ const OptimizedImage = ({
         sizes={sizes || `(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw`}
         placeholder={placeholder}
         blurDataURL={blurDataURL || "data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/2wBDAAYEBQYFBAYGBQYHBwYIChAKCgkJChQODwwQFxQYGBcUFhYaHSUfGhsjHBYWICwgIyYnKSopGR8tMC0oMCUoKSj/2wBDAQcHBwoIChMKChMoGhYaKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCj/wAARCAABAAEDASIAAhEBAxEB/8QAFQABAQAAAAAAAAAAAAAAAAAAAAv/xAAUEAEAAAAAAAAAAAAAAAAAAAAA/8QAFQEBAQAAAAAAAAAAAAAAAAAAAAX/xAAUEQEAAAAAAAAAAAAAAAAAAAAA/9oADAMBAAIRAxEAPwCdABmX/9k="}
+        fill
         style={{ objectFit: 'cover' }}
       />
     </div>
