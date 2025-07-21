@@ -188,18 +188,21 @@ const Presentes = () => {
                 </div>
               )}
 
-              <div className="relative h-48 sm:h-52 lg:h-56 overflow-hidden flex items-center justify-center bg-gradient-to-br from-sage-50 to-cream group-hover:from-olive-50 group-hover:to-cream transition-all">
-                <OptimizedImage
-                  src={gift.image} 
-                  alt={gift.name}
-                  className="w-full h-full object-cover sm:object-contain group-hover:scale-105 transition-transform duration-200"
-                  priority={index < 6} // Prioridade para os primeiros 6 itens
-                  loading={index >= 6 ? "lazy" : "eager"} // Lazy loading após os primeiros 6
-                  quality={70} // Qualidade otimizada para grid
-                  sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
-                  placeholder="blur"
-                  blurDataURL="data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/2wBDAAYEBQYFBAYGBQYHBwYIChAKCgkJChQODwwQFxQYGBcUFhYaHSUfGhsjHBYWICwgIyYnKSopGR8tMC0oMCUoKSj/2wBDAQcHBwoIChMKChMoGhYaKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCj/wAARCAABAAEDASIAAhEBAxEB/8QAFQABAQAAAAAAAAAAAAAAAAAAAAv/xAAUEAEAAAAAAAAAAAAAAAAAAAAA/8QAFQEBAQAAAAAAAAAAAAAAAAAAAAX/xAAUEQEAAAAAAAAAAAAAAAAAAAAA/9oADAMBAAIRAxEAPwCdABmX/9k="
-                />
+              {/* Container da imagem com altura fixa e centralização */}
+              <div className="relative h-48 sm:h-52 lg:h-56 overflow-hidden bg-gradient-to-br from-sage-50 to-cream group-hover:from-olive-50 group-hover:to-cream transition-all">
+                <div className="absolute inset-0 flex items-center justify-center p-2">
+                  <OptimizedImage
+                    src={gift.image} 
+                    alt={gift.name}
+                    className="w-full h-full object-cover rounded-lg group-hover:scale-105 transition-transform duration-200 shadow-sm"
+                    priority={index < 6} // Prioridade para os primeiros 6 itens
+                    loading={index >= 6 ? "lazy" : "eager"} // Lazy loading após os primeiros 6
+                    quality={80} // Qualidade um pouco melhor para imagens
+                    sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 25vw"
+                    placeholder="blur"
+                    blurDataURL="data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/2wBDAAYEBQYFBAYGBQYHBwYIChAKCgkJChQODwwQFxQYGBcUFhYaHSUfGhsjHBYWICwgIyYnKSopGR8tMC0oMCUoKSj/2wBDAQcHBwoIChMKChMoGhYaKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCj/wAARCAABAAEDASIAAhEBAxEB/8QAFQABAQAAAAAAAAAAAAAAAAAAAAv/xAAUEAEAAAAAAAAAAAAAAAAAAAAA/8QAFQEBAQAAAAAAAAAAAAAAAAAAAAX/xAAUEQEAAAAAAAAAAAAAAAAAAAAA/9oADAMBAAIRAxEAPwCdABmX/9k="
+                  />
+                </div>
               </div>
 
               <div className="p-4 sm:p-6 flex flex-col flex-grow">
@@ -334,7 +337,7 @@ const Presentes = () => {
                   <OptimizedImage
                     src={selectedGift.image} 
                     alt={selectedGift.name}
-                    className="w-16 sm:w-20 h-16 sm:h-20 object-cover sm:object-contain rounded-lg flex-shrink-0"
+                    className="w-16 sm:w-20 h-16 sm:h-20 object-cover rounded-lg flex-shrink-0"
                     priority={true}
                     quality={85}
                   />

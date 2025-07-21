@@ -18,8 +18,8 @@ interface OptimizedImageProps {
 const OptimizedImage = ({ 
   src, 
   alt, 
-  width = 300, 
-  height = 300, 
+  width = 400, 
+  height = 400, 
   className = "", 
   priority = false,
   quality = 85,
@@ -43,7 +43,10 @@ const OptimizedImage = ({
   if (hasError) {
     return (
       <div className={`bg-gray-200 flex items-center justify-center ${className}`}>
-        <span className="text-gray-500 text-sm">Imagem não encontrada</span>
+        <div className="text-center p-4">
+          <div className="text-4xl mb-2">📷</div>
+          <span className="text-gray-500 text-sm">Imagem não disponível</span>
+        </div>
       </div>
     );
   }
@@ -71,22 +74,23 @@ const OptimizedImage = ({
   return (
     <div className="relative">
       {isLoading && (
-        <div className={`absolute inset-0 bg-gray-200 animate-pulse ${className}`} />
+        <div className={`absolute inset-0 bg-gradient-to-br from-gray-100 to-gray-200 animate-pulse ${className}`} />
       )}
       <Image
         src={src}
         alt={alt}
         width={width}
         height={height}
-        className={`${className} ${isLoading ? 'opacity-0' : 'opacity-100'} transition-opacity duration-200`}
+        className={`${className} ${isLoading ? 'opacity-0' : 'opacity-100'} transition-opacity duration-300`}
         onLoad={handleLoad}
         onError={handleError}
         priority={priority}
         quality={quality}
         loading={priority ? undefined : loading}
-        sizes={sizes}
-        placeholder={placeholder || "blur"}
+        sizes={sizes || `(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw`}
+        placeholder={placeholder}
         blurDataURL={blurDataURL || "data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/2wBDAAYEBQYFBAYGBQYHBwYIChAKCgkJChQODwwQFxQYGBcUFhYaHSUfGhsjHBYWICwgIyYnKSopGR8tMC0oMCUoKSj/2wBDAQcHBwoIChMKChMoGhYaKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCj/wAARCAABAAEDASIAAhEBAxEB/8QAFQABAQAAAAAAAAAAAAAAAAAAAAv/xAAUEAEAAAAAAAAAAAAAAAAAAAAA/8QAFQEBAQAAAAAAAAAAAAAAAAAAAAX/xAAUEQEAAAAAAAAAAAAAAAAAAAAA/9oADAMBAAIRAxEAPwCdABmX/9k="}
+        style={{ objectFit: 'cover' }}
       />
     </div>
   );
