@@ -27,20 +27,6 @@ const Home = () => {
             <div className="relative max-w-4xl mx-auto">
               {/* Container com decorações */}
               <div className="relative bg-white/60 backdrop-blur-sm rounded-3xl p-6 sm:p-8 shadow-lg border border-white/30">
-                {/* Ramos decorativos - Simplificados */}
-                <img 
-                  src="/images/auxiliares/rama.png" 
-                  alt="Ramo decorativo"
-                  className="absolute top-2 left-2 sm:top-4 sm:left-4 w-12 sm:w-16 lg:w-20 h-auto opacity-50"
-                  loading="lazy"
-                />
-                <img 
-                  src="/images/auxiliares/rama.png" 
-                  alt="Ramo decorativo"
-                  className="absolute top-2 right-2 sm:top-4 sm:right-4 w-12 sm:w-16 lg:w-20 h-auto opacity-50 scale-x-[-1]"
-                  loading="lazy"
-                />
-                
                 {/* Nomes principais - Responsivo */}
                 <div className="mb-8">
                   {/* Versão Desktop */}
