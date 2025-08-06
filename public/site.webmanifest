@@ -1,0 +1,27 @@
+{
+  "name": "Geórgia & Pedro - Casamento",
+  "short_name": "P&G Casamento",
+  "description": "Site oficial do casamento de Geórgia & Pedro - 06 de Junho de 2026",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#F8F9FA",
+  "theme_color": "#8FBC8F",
+  "orientation": "portrait",
+  "icons": [
+    {
+      "src": "/images/auxiliares/favicon.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "/images/auxiliares/favicon.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any maskable"
+    }
+  ],
+  "categories": ["lifestyle", "events"],
+  "lang": "pt-BR",
+  "dir": "ltr"
+} 

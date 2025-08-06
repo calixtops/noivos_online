@@ -8,6 +8,15 @@ export default function Document() {
         {/* Favicon PNG simples */}
         <link rel="icon" href="/images/auxiliares/favicon.png" type="image/png" />
         
+        {/* PWA Manifest */}
+        <link rel="manifest" href="/site.webmanifest" />
+        
+        {/* Meta tags para PWA */}
+        <meta name="theme-color" content="#8FBC8F" />
+        <meta name="apple-mobile-web-app-capable" content="yes" />
+        <meta name="apple-mobile-web-app-status-bar-style" content="default" />
+        <meta name="apple-mobile-web-app-title" content="G&P Casamento" />
+        
         {/* Preconnect para performance */}
         <link rel="preconnect" href="https://fonts.googleapis.com" />
         <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
