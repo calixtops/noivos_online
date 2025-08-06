@@ -3,7 +3,7 @@ import { FaMusic, FaVolumeMute, FaStepBackward, FaStepForward, FaInfoCircle, FaT
 import { useAudio } from '../contexts/AudioContext';
 
 // Variável para controlar se o player deve ser renderizado
-const ENABLE_MUSIC_PLAYER = true;
+const ENABLE_MUSIC_PLAYER = false; // Desabilitado - usando HeaderMusicPlayer
 
 const MusicPlayer: React.FC = () => {
   const { isPlaying, togglePlay, isHydrated, nextTrack, previousTrack, currentTrackName, isLoading, musicCount, currentTrackIndex } = useAudio();

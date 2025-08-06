@@ -3,6 +3,7 @@ import { useRouter } from 'next/router';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useState, useEffect } from 'react';
 import { FaBars, FaTimes, FaHeart } from 'react-icons/fa';
+import HeaderMusicPlayer from './HeaderMusicPlayer';
 
 const Header = () => {
   const router = useRouter();
@@ -60,6 +61,7 @@ const Header = () => {
           <motion.div
             whileHover={{ scale: 1.02 }}
             whileTap={{ scale: 0.98 }}
+            className="flex-shrink-0"
           >
             <Link href="/" className="group">
               <div className="flex items-center space-x-2">
@@ -82,8 +84,8 @@ const Header = () => {
           </motion.div>
 
           {/* Desktop Navigation */}
-          <nav className="hidden lg:block">
-            <ul className="flex items-center space-x-8">
+          <nav className="hidden lg:block flex-1">
+            <ul className="flex items-center justify-center space-x-8">
               {navItems.map((item, index) => (
                 <motion.li 
                   key={item.path}
@@ -117,36 +119,47 @@ const Header = () => {
             </ul>
           </nav>
 
-          {/* Mobile Menu Button */}
-          <motion.button
-            className="lg:hidden relative z-50 p-2 rounded-lg bg-olive-50 text-olive-600 hover:bg-olive-100 transition-colors"
-            onClick={toggleMenu}
-            whileTap={{ scale: 0.95 }}
-          >
-            <AnimatePresence mode="wait">
-              {isMenuOpen ? (
-                <motion.div
-                  key="close"
-                  initial={{ rotate: -90, opacity: 0 }}
-                  animate={{ rotate: 0, opacity: 1 }}
-                  exit={{ rotate: 90, opacity: 0 }}
-                  transition={{ duration: 0.2 }}
-                >
-                  <FaTimes className="w-5 h-5" />
-                </motion.div>
-              ) : (
-                <motion.div
-                  key="open"
-                  initial={{ rotate: 90, opacity: 0 }}
-                  animate={{ rotate: 0, opacity: 1 }}
-                  exit={{ rotate: -90, opacity: 0 }}
-                  transition={{ duration: 0.2 }}
-                >
-                  <FaBars className="w-5 h-5" />
-                </motion.div>
-              )}
-            </AnimatePresence>
-          </motion.button>
+          {/* Desktop Music Player */}
+          <div className="hidden lg:block flex-shrink-0">
+            <HeaderMusicPlayer />
+          </div>
+
+          {/* Mobile Controls */}
+          <div className="lg:hidden flex items-center gap-2">
+            {/* Mobile Music Player */}
+            <HeaderMusicPlayer />
+            
+            {/* Mobile Menu Button */}
+            <motion.button
+              className="relative z-50 p-2 rounded-lg bg-olive-50 text-olive-600 hover:bg-olive-100 transition-colors"
+              onClick={toggleMenu}
+              whileTap={{ scale: 0.95 }}
+            >
+              <AnimatePresence mode="wait">
+                {isMenuOpen ? (
+                  <motion.div
+                    key="close"
+                    initial={{ rotate: -90, opacity: 0 }}
+                    animate={{ rotate: 0, opacity: 1 }}
+                    exit={{ rotate: 90, opacity: 0 }}
+                    transition={{ duration: 0.2 }}
+                  >
+                    <FaTimes className="w-5 h-5" />
+                  </motion.div>
+                ) : (
+                  <motion.div
+                    key="open"
+                    initial={{ rotate: 90, opacity: 0 }}
+                    animate={{ rotate: 0, opacity: 1 }}
+                    exit={{ rotate: -90, opacity: 0 }}
+                    transition={{ duration: 0.2 }}
+                  >
+                    <FaBars className="w-5 h-5" />
+                  </motion.div>
+                )}
+              </AnimatePresence>
+            </motion.button>
+          </div>
         </div>
 
         {/* Mobile Navigation */}
