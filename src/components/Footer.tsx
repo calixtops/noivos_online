@@ -1,8 +1,69 @@
 import { motion } from 'framer-motion';
-import { FaHeart, FaInstagram, FaWhatsapp, FaMapMarkerAlt } from 'react-icons/fa';
+import { FaHeart, FaInstagram, FaWhatsapp, FaMapMarkerAlt, FaDownload, FaMobile, FaDesktop } from 'react-icons/fa';
+import { useState, useEffect } from 'react';
 
 const Footer = () => {
   const currentYear = new Date().getFullYear();
+  const [platform, setPlatform] = useState<'mobile' | 'desktop' | null>(null);
+  const [deferredPrompt, setDeferredPrompt] = useState<any>(null);
+  const [canInstall, setCanInstall] = useState(false);
+
+  // Detectar plataforma e capacidade de instalação
+  useEffect(() => {
+    const userAgent = navigator.userAgent.toLowerCase();
+    if (/android|iphone|ipad|ipod|blackberry|windows phone/.test(userAgent)) {
+      setPlatform('mobile');
+    } else {
+      setPlatform('desktop');
+    }
+
+    // Listener para capturar o evento de instalação do PWA
+    const handleBeforeInstallPrompt = (e: any) => {
+      e.preventDefault();
+      setDeferredPrompt(e);
+      setCanInstall(true);
+    };
+
+    // Listener para quando o app já foi instalado
+    const handleAppInstalled = () => {
+      setCanInstall(false);
+      setDeferredPrompt(null);
+    };
+
+    window.addEventListener('beforeinstallprompt', handleBeforeInstallPrompt);
+    window.addEventListener('appinstalled', handleAppInstalled);
+
+    return () => {
+      window.removeEventListener('beforeinstallprompt', handleBeforeInstallPrompt);
+      window.removeEventListener('appinstalled', handleAppInstalled);
+    };
+  }, []);
+
+  const handleInstallApp = async () => {
+    if (deferredPrompt && canInstall) {
+      // Mostrar o prompt de instalação
+      deferredPrompt.prompt();
+      
+      // Aguardar a resposta do usuário
+      const { outcome } = await deferredPrompt.userChoice;
+      
+      if (outcome === 'accepted') {
+        console.log('Usuário aceitou a instalação');
+      } else {
+        console.log('Usuário recusou a instalação');
+      }
+      
+      setDeferredPrompt(null);
+      setCanInstall(false);
+    } else {
+      // Fallback: instruções para instalação manual
+      if (platform === 'mobile') {
+        alert('Para adicionar à tela inicial:\n\nChrome: Menu → Adicionar à tela inicial\nSafari: Compartilhar → Adicionar à tela inicial');
+      } else {
+        alert('Para instalar o app:\n\nChrome: Clique no ícone de instalação na barra de endereços\nEdge: Menu → Aplicativos → Instalar este site');
+      }
+    }
+  };
 
   return (
     <footer className="bg-gradient-to-br from-rose-50 via-gray-50 to-rose-50 border-t border-rose-100">
@@ -160,6 +221,45 @@ const Footer = () => {
               para nosso amor
             </motion.p>
           </div>
+
+          {/* Botão discreto para baixar o app */}
+          {platform && (
+            <motion.div 
+              className="flex justify-center mt-4 sm:mt-2"
+              initial={{ opacity: 0, y: 10 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              transition={{ delay: 1.2, duration: 0.6 }}
+              viewport={{ once: true }}
+            >
+              <motion.button
+                onClick={handleInstallApp}
+                className={`flex items-center gap-2 px-4 py-2 text-sm rounded-full shadow-lg hover:shadow-xl transition-all duration-300 ${
+                  canInstall 
+                    ? 'bg-gradient-to-r from-rose-500 to-rose-600 hover:from-rose-600 hover:to-rose-700 text-white' 
+                    : 'bg-gray-200 hover:bg-gray-300 text-gray-600'
+                }`}
+                whileHover={{ scale: 1.05, y: -2 }}
+                whileTap={{ scale: 0.95 }}
+                title={canInstall 
+                  ? (platform === 'mobile' ? 'Adicionar à tela inicial' : 'Instalar aplicativo')
+                  : 'Instruções de instalação'
+                }
+              >
+                {platform === 'mobile' ? (
+                  <FaMobile className="text-xs" />
+                ) : (
+                  <FaDesktop className="text-xs" />
+                )}
+                <FaDownload className="text-xs" />
+                <span className="text-xs font-medium">
+                  {canInstall 
+                    ? (platform === 'mobile' ? 'Adicionar App' : 'Instalar App')
+                    : 'Como Instalar'
+                  }
+                </span>
+              </motion.button>
+            </motion.div>
+          )}
         </motion.div>
       </div>
     </footer>

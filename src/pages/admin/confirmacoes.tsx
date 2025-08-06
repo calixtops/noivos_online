@@ -308,19 +308,19 @@ const AdminConfirmacoes = () => {
 
         {/* Lista de Confirmações */}
         <div className="bg-white rounded-2xl shadow-lg overflow-hidden border border-gray-100">
-          <div className="p-6 bg-olive-500 text-white">
-            <h2 className="text-2xl font-semibold flex items-center gap-2">
+          <div className="p-4 sm:p-6 bg-olive-500 text-white">
+            <h2 className="text-xl sm:text-2xl font-semibold flex items-center gap-2">
               <FaHeart className="text-olive-200" />
               Confirmações Recebidas ({confirmacoes.length})
             </h2>
           </div>
           
           {confirmacoes.length === 0 ? (
-            <div className="p-12 text-center text-stone-500">
-              <div className="w-16 h-16 bg-gray-100 rounded-full flex items-center justify-center mx-auto mb-4">
-                <FaHeart className="text-gray-400 text-2xl" />
+            <div className="p-8 sm:p-12 text-center text-stone-500">
+              <div className="w-12 h-12 sm:w-16 sm:h-16 bg-gray-100 rounded-full flex items-center justify-center mx-auto mb-4">
+                <FaHeart className="text-gray-400 text-xl sm:text-2xl" />
               </div>
-              <p className="text-lg">Nenhuma confirmação recebida ainda.</p>
+              <p className="text-base sm:text-lg">Nenhuma confirmação recebida ainda.</p>
               <p className="text-sm mt-2">As confirmações aparecerão aqui quando os convidados responderem.</p>
             </div>
           ) : (
@@ -328,47 +328,47 @@ const AdminConfirmacoes = () => {
               <table className="w-full">
                 <thead className="bg-gray-50">
                   <tr>
-                    <th className="px-6 py-4 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Status</th>
-                    <th className="px-6 py-4 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Nome</th>
-                    <th className="px-6 py-4 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Email</th>
-                    <th className="px-6 py-4 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Convidados</th>
-                    <th className="px-6 py-4 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Data</th>
-                    <th className="px-6 py-4 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Mensagem</th>
-                    <th className="px-6 py-4 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Ações</th>
+                    <th className="px-3 sm:px-6 py-3 sm:py-4 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Status</th>
+                    <th className="px-3 sm:px-6 py-3 sm:py-4 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Nome</th>
+                    <th className="hidden sm:table-cell px-3 sm:px-6 py-3 sm:py-4 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Email</th>
+                    <th className="px-3 sm:px-6 py-3 sm:py-4 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Convidados</th>
+                    <th className="hidden md:table-cell px-3 sm:px-6 py-3 sm:py-4 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Data</th>
+                    <th className="hidden lg:table-cell px-3 sm:px-6 py-3 sm:py-4 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Mensagem</th>
+                    <th className="px-3 sm:px-6 py-3 sm:py-4 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Ações</th>
                   </tr>
                 </thead>
                 <tbody className="divide-y divide-gray-200">
                   {confirmacoes.map((confirmacao) => (
                     <tr key={confirmacao._id} className="hover:bg-gray-50 transition-colors">
-                      <td className="px-6 py-4">
-                        <div className="flex items-center gap-2">
+                      <td className="px-3 sm:px-6 py-3 sm:py-4">
+                        <div className="flex items-center gap-1 sm:gap-2">
                           {getStatusIcon(confirmacao.attending)}
-                          <span className={`px-2 py-1 rounded-full text-xs font-medium border ${getStatusColor(confirmacao.attending)}`}>
+                          <span className={`px-1.5 sm:px-2 py-0.5 sm:py-1 rounded-full text-xs font-medium border ${getStatusColor(confirmacao.attending)}`}>
                             {getStatusText(confirmacao.attending)}
                           </span>
                         </div>
                       </td>
-                      <td className="px-6 py-4">
-                        <div className="flex items-center gap-2">
-                          <FaUser className="text-gray-400 text-sm" />
-                          <span className="font-medium text-gray-900">{confirmacao.name}</span>
+                      <td className="px-3 sm:px-6 py-3 sm:py-4">
+                        <div className="flex items-center gap-1 sm:gap-2">
+                          <FaUser className="text-gray-400 text-xs sm:text-sm" />
+                          <span className="font-medium text-gray-900 text-sm sm:text-base">{confirmacao.name}</span>
                         </div>
                       </td>
-                      <td className="px-6 py-4">
-                        <div className="flex items-center gap-2">
-                          <FaEnvelope className="text-gray-400 text-sm" />
-                          <span className="text-sm text-gray-600">{confirmacao.email}</span>
+                      <td className="hidden sm:table-cell px-3 sm:px-6 py-3 sm:py-4">
+                        <div className="flex items-center gap-1 sm:gap-2">
+                          <FaEnvelope className="text-gray-400 text-xs sm:text-sm" />
+                          <span className="text-xs sm:text-sm text-gray-600 truncate max-w-[150px]">{confirmacao.email}</span>
                         </div>
                       </td>
-                      <td className="px-6 py-4 text-center">
-                        <span className="bg-olive-100 text-olive-800 px-3 py-1 rounded-full text-sm font-medium">
+                      <td className="px-3 sm:px-6 py-3 sm:py-4 text-center">
+                        <span className="bg-olive-100 text-olive-800 px-2 sm:px-3 py-0.5 sm:py-1 rounded-full text-xs sm:text-sm font-medium">
                           {confirmacao.guests || 0}
                         </span>
                       </td>
-                      <td className="px-6 py-4">
-                        <div className="flex items-center gap-2">
-                          <FaCalendar className="text-gray-400 text-sm" />
-                          <span className="text-sm text-gray-600">
+                      <td className="hidden md:table-cell px-3 sm:px-6 py-3 sm:py-4">
+                        <div className="flex items-center gap-1 sm:gap-2">
+                          <FaCalendar className="text-gray-400 text-xs sm:text-sm" />
+                          <span className="text-xs sm:text-sm text-gray-600">
                             {new Date(confirmacao.createdAt).toLocaleDateString('pt-BR', {
                               day: '2-digit',
                               month: '2-digit',
@@ -379,10 +379,10 @@ const AdminConfirmacoes = () => {
                           </span>
                         </div>
                       </td>
-                      <td className="px-6 py-4 max-w-xs">
+                      <td className="hidden lg:table-cell px-3 sm:px-6 py-3 sm:py-4 max-w-xs">
                         {confirmacao.message ? (
-                          <div className="flex items-center gap-2">
-                            <div className="text-sm text-gray-600 truncate flex-1" title={confirmacao.message}>
+                          <div className="flex items-center gap-1 sm:gap-2">
+                            <div className="text-xs sm:text-sm text-gray-600 truncate flex-1" title={confirmacao.message}>
                               {confirmacao.message}
                             </div>
                             <button
@@ -397,25 +397,25 @@ const AdminConfirmacoes = () => {
                                   minute: '2-digit'
                                 })
                               )}
-                              className="text-olive-500 hover:text-olive-700 transition-colors p-1"
+                              className="text-olive-500 hover:text-olive-700 transition-colors p-0.5 sm:p-1"
                               title="Ver mensagem completa"
                             >
-                              <FaEye className="text-sm" />
+                              <FaEye className="text-xs sm:text-sm" />
                             </button>
                           </div>
                         ) : (
-                          <span className="text-gray-400 text-sm italic">Sem mensagem</span>
+                          <span className="text-gray-400 text-xs sm:text-sm italic">Sem mensagem</span>
                         )}
                       </td>
-                      <td className="px-6 py-4">
-                        <div className="flex items-center gap-2">
+                      <td className="px-3 sm:px-6 py-3 sm:py-4">
+                        <div className="flex items-center gap-1 sm:gap-2">
                           <button
                             onClick={() => openDeleteModal(confirmacao._id, confirmacao.name)}
                             disabled={deletingId === confirmacao._id}
-                            className="text-red-500 hover:text-red-700 transition-colors p-1 disabled:opacity-50"
+                            className="text-red-500 hover:text-red-700 transition-colors p-0.5 sm:p-1 disabled:opacity-50"
                             title="Deletar confirmação"
                           >
-                            <FaTrash className="text-sm" />
+                            <FaTrash className="text-xs sm:text-sm" />
                           </button>
                         </div>
                       </td>
@@ -431,40 +431,40 @@ const AdminConfirmacoes = () => {
         {selectedMessage && (
           <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black bg-opacity-50" onClick={closeMessageModal}>
             <div 
-              className="bg-white rounded-2xl shadow-xl max-w-2xl w-full max-h-[80vh] overflow-hidden"
+              className="bg-white rounded-2xl shadow-xl max-w-lg w-full max-h-[80vh] overflow-hidden"
               onClick={(e) => e.stopPropagation()}
             >
-              <div className="flex items-center justify-between p-6 bg-olive-500 text-white">
+              <div className="flex items-center justify-between p-4 sm:p-6 bg-olive-500 text-white">
                 <div>
-                  <h3 className="text-xl font-semibold flex items-center gap-2">
+                  <h3 className="text-lg sm:text-xl font-semibold flex items-center gap-2">
                     <FaExpandArrowsAlt />
                     Mensagem de {selectedMessage.name}
                   </h3>
-                  <p className="text-olive-100 text-sm mt-1">
+                  <p className="text-olive-100 text-xs sm:text-sm mt-1">
                     Enviada em {selectedMessage.date}
                   </p>
                 </div>
                 <button
                   onClick={closeMessageModal}
-                  className="text-white hover:text-olive-200 transition-colors p-2"
+                  className="text-white hover:text-olive-200 transition-colors p-1 sm:p-2"
                   title="Fechar"
                 >
-                  <FaTimes className="text-xl" />
+                  <FaTimes className="text-lg sm:text-xl" />
                 </button>
               </div>
               
-              <div className="p-6 max-h-96 overflow-y-auto">
-                <div className="bg-gray-50 p-4 rounded-lg border border-gray-200">
-                  <p className="text-gray-800 leading-relaxed whitespace-pre-wrap">
+              <div className="p-4 sm:p-6 max-h-96 overflow-y-auto">
+                <div className="bg-gray-50 p-3 sm:p-4 rounded-lg border border-gray-200">
+                  <p className="text-gray-800 leading-relaxed whitespace-pre-wrap text-sm sm:text-base">
                     {selectedMessage.message}
                   </p>
                 </div>
               </div>
               
-              <div className="px-6 py-4 bg-gray-50 border-t border-gray-200">
+              <div className="px-4 sm:px-6 py-3 sm:py-4 bg-gray-50 border-t border-gray-200">
                 <button
                   onClick={closeMessageModal}
-                  className="w-full bg-olive-500 hover:bg-olive-600 text-white py-2 px-4 rounded-lg transition-colors"
+                  className="w-full bg-olive-500 hover:bg-olive-600 text-white py-2 px-4 rounded-lg transition-colors text-sm sm:text-base"
                 >
                   Fechar
                 </button>
@@ -480,42 +480,42 @@ const AdminConfirmacoes = () => {
               className="bg-white rounded-2xl shadow-xl max-w-md w-full"
               onClick={(e) => e.stopPropagation()}
             >
-              <div className="flex items-center justify-between p-6 bg-red-500 text-white">
+              <div className="flex items-center justify-between p-4 sm:p-6 bg-red-500 text-white">
                 <div>
-                  <h3 className="text-xl font-semibold flex items-center gap-2">
+                  <h3 className="text-lg sm:text-xl font-semibold flex items-center gap-2">
                     <FaTrash />
                     Confirmar Exclusão
                   </h3>
                 </div>
                 <button
                   onClick={closeDeleteModal}
-                  className="text-white hover:text-red-200 transition-colors p-2"
+                  className="text-white hover:text-red-200 transition-colors p-1 sm:p-2"
                   title="Cancelar"
                 >
-                  <FaTimes className="text-xl" />
+                  <FaTimes className="text-lg sm:text-xl" />
                 </button>
               </div>
               
-              <div className="p-6">
-                <p className="text-gray-700 mb-4">
+              <div className="p-4 sm:p-6">
+                <p className="text-gray-700 mb-3 sm:mb-4 text-sm sm:text-base">
                   Tem certeza que deseja deletar a confirmação de <strong>{showDeleteModal.name}</strong>?
                 </p>
-                <p className="text-sm text-gray-500 mb-6">
+                <p className="text-xs sm:text-sm text-gray-500 mb-4 sm:mb-6">
                   Esta ação não pode ser desfeita.
                 </p>
               </div>
               
-              <div className="px-6 py-4 bg-gray-50 border-t border-gray-200 flex gap-3">
+              <div className="px-4 sm:px-6 py-3 sm:py-4 bg-gray-50 border-t border-gray-200 flex gap-2 sm:gap-3">
                 <button
                   onClick={closeDeleteModal}
-                  className="flex-1 bg-gray-300 hover:bg-gray-400 text-gray-700 py-2 px-4 rounded-lg transition-colors"
+                  className="flex-1 bg-gray-300 hover:bg-gray-400 text-gray-700 py-2 px-3 sm:px-4 rounded-lg transition-colors text-sm sm:text-base"
                 >
                   Cancelar
                 </button>
                 <button
                   onClick={() => deleteConfirmacao(showDeleteModal.id)}
                   disabled={deletingId === showDeleteModal.id}
-                  className="flex-1 bg-red-500 hover:bg-red-600 disabled:bg-red-300 text-white py-2 px-4 rounded-lg transition-colors"
+                  className="flex-1 bg-red-500 hover:bg-red-600 disabled:bg-red-300 text-white py-2 px-3 sm:px-4 rounded-lg transition-colors text-sm sm:text-base"
                 >
                   {deletingId === showDeleteModal.id ? 'Deletando...' : 'Deletar'}
                 </button>

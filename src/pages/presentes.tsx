@@ -3,8 +3,7 @@ import Head from 'next/head';
 import Header from '../components/Header';
 import Footer from '../components/Footer';
 import OptimizedImage from '../components/OptimizedImage';
-import { motion } from 'framer-motion';
-import { FaSearch, FaFilter, FaHeart, FaShoppingCart } from 'react-icons/fa';
+import { FaSearch, FaFilter, FaHeart, FaShoppingCart, FaTimes } from 'react-icons/fa';
 import gifts from '../../data/gifts.json';
 
 const pixCode = '62118595387';
@@ -138,11 +137,7 @@ const Presentes = () => {
       <Header />
 
       <main className="container mx-auto px-4 py-8 flex-grow">
-        <motion.div 
-          className="text-center mb-12 sm:mb-16"
-          initial={{ opacity: 0, y: -20 }}
-          animate={{ opacity: 1, y: 0 }}
-        >
+        <div className="text-center mb-12 sm:mb-16">
           <div className="mb-6">
             <div className="w-16 sm:w-20 h-16 sm:h-20 bg-gradient-to-r from-olive-500 to-sage-600 rounded-full flex items-center justify-center mx-auto mb-4">
               <FaHeart className="text-white text-2xl sm:text-3xl animate-pulse" />
@@ -155,15 +150,10 @@ const Presentes = () => {
           <p className="text-gray-600 max-w-3xl mx-auto text-lg sm:text-xl leading-relaxed">
             Escolha um presente especial para nosso novo lar! Cada item foi pensado com carinho para nossa jornada juntos.
           </p>
-        </motion.div>
+        </div>
 
         {/* Seção de filtros e busca */}
-        <motion.div 
-          className="bg-white rounded-2xl shadow-xl p-6 sm:p-8 mb-8 sm:mb-12 border border-gray-100"
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.2 }}
-        >
+        <div className="bg-white rounded-2xl shadow-xl p-6 sm:p-8 mb-8 sm:mb-12 border border-gray-100">
           <div className="grid grid-cols-1 md:grid-cols-3 gap-4 sm:gap-6">
             {/* Barra de busca */}
             <div className="relative group">
@@ -223,18 +213,14 @@ const Presentes = () => {
               </span>
             </div>
           </div>
-        </motion.div>
+        </div>
 
         {/* Grid de produtos */}
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 sm:gap-8">
           {paginatedItems.map((gift, index) => (
-            <motion.div 
+            <div 
               key={gift.id}
               className="bg-white rounded-2xl shadow-lg hover:shadow-2xl transition-all duration-300 overflow-hidden flex flex-col group border border-gray-100 relative"
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: Math.min(index * 0.05, 0.3) }}
-              whileHover={{ y: -4, scale: 1.02 }}
             >
               {/* Badge de destaque para itens caros */}
               {gift.price > 400 && (
@@ -297,7 +283,7 @@ const Presentes = () => {
                   </button>
                 </div>
               </div>
-            </motion.div>
+            </div>
           ))}
         </div>
 
@@ -346,10 +332,8 @@ const Presentes = () => {
 
         {/* Mensagem quando não há resultados */}
         {filteredAndSortedGifts.length === 0 && (
-          <motion.div 
+          <div 
             className="text-center py-20"
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
           >
             <div className="w-24 h-24 bg-gray-100 rounded-full flex items-center justify-center mx-auto mb-6">
               <div className="text-4xl">🔍</div>
@@ -370,76 +354,69 @@ const Presentes = () => {
                 Ver todos
               </button>
             </div>
-          </motion.div>
+          </div>
         )}
 
-        {/* Modal de agradecimento melhorado */}
+        {/* Modal de Presente */}
         {showModal && selectedGift && (
-          <motion.div 
-            className="fixed inset-0 bg-black bg-opacity-60 backdrop-blur-sm flex items-center justify-center z-50 px-4"
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
+          <div 
+            className="fixed inset-0 z-50 flex items-center justify-center p-2 sm:p-4 bg-black bg-opacity-50"
             onClick={closeModal}
           >
-            <motion.div 
-              className="bg-white rounded-3xl p-8 sm:p-10 max-w-lg w-full text-center relative shadow-2xl max-h-[90vh] overflow-y-auto border border-gray-100"
-              initial={{ scale: 0.9, opacity: 0 }}
-              animate={{ scale: 1, opacity: 1 }}
-              exit={{ scale: 0.9, opacity: 0 }}
+            <div 
+              className="bg-white rounded-2xl sm:rounded-3xl p-4 sm:p-6 lg:p-8 max-w-sm sm:max-w-lg w-full text-center relative shadow-2xl max-h-[95vh] sm:max-h-[90vh] overflow-y-auto border border-gray-100"
               onClick={(e) => e.stopPropagation()}
             >
+              {/* Botão fechar */}
               <button
-                className="absolute top-6 right-6 w-12 h-12 bg-gray-100 hover:bg-gray-200 rounded-full flex items-center justify-center text-gray-600 hover:text-gray-800 transition-all duration-200 shadow-lg hover:shadow-xl z-10"
                 onClick={closeModal}
+                className="absolute top-2 right-2 sm:top-4 sm:right-4 text-gray-400 hover:text-gray-600 transition-colors p-1 sm:p-2 rounded-full hover:bg-gray-100"
                 title="Fechar"
               >
-                <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
-                </svg>
+                <FaTimes className="text-lg sm:text-xl" />
               </button>
               
-              <div className="mb-8">
-                <div className="w-20 h-20 bg-gradient-to-r from-olive-500 to-sage-600 rounded-full flex items-center justify-center mx-auto mb-6">
-                  <FaHeart className="text-white text-3xl animate-pulse" />
+              <div className="mb-4 sm:mb-6 lg:mb-8">
+                <div className="w-12 h-12 sm:w-16 sm:h-16 lg:w-20 lg:h-20 bg-gradient-to-r from-olive-500 to-sage-600 rounded-full flex items-center justify-center mx-auto mb-3 sm:mb-4 lg:mb-6">
+                  <FaHeart className="text-white text-xl sm:text-2xl lg:text-3xl animate-pulse" />
                 </div>
-                <h2 className="text-3xl font-serif text-olive-700 mb-4 font-bold">Obrigado por presentear!</h2>
-                <div className="w-32 h-1 bg-gradient-to-r from-olive-400 to-sage-600 rounded mx-auto"></div>
+                <h2 className="text-xl sm:text-2xl lg:text-3xl font-serif text-olive-700 mb-2 sm:mb-3 lg:mb-4 font-bold">Obrigado por presentear!</h2>
+                <div className="w-20 sm:w-24 lg:w-32 h-1 bg-gradient-to-r from-olive-400 to-sage-600 rounded mx-auto"></div>
               </div>
 
-              <div className="bg-gray-50 rounded-2xl p-6 mb-8 border border-gray-200">
-                <p className="text-gray-700 mb-4 text-lg font-medium">
+              <div className="bg-gray-50 rounded-xl sm:rounded-2xl p-3 sm:p-4 lg:p-6 mb-4 sm:mb-6 lg:mb-8 border border-gray-200">
+                <p className="text-gray-700 mb-2 sm:mb-3 lg:mb-4 text-sm sm:text-base lg:text-lg font-medium">
                   Você escolheu:
                 </p>
-                <div className="flex items-center gap-4 bg-white rounded-xl p-4 border border-gray-200 shadow-sm">
+                <div className="flex flex-col sm:flex-row items-center gap-2 sm:gap-3 lg:gap-4 bg-white rounded-lg sm:rounded-xl p-2 sm:p-3 lg:p-4 border border-gray-200 shadow-sm">
                   <img
                     src={selectedGift.image} 
                     alt={selectedGift.name}
-                    className="w-20 h-20 object-cover rounded-xl flex-shrink-0"
+                    className="w-12 h-12 sm:w-16 sm:h-16 lg:w-20 lg:h-20 object-cover rounded-lg sm:rounded-xl flex-shrink-0"
                   />
-                  <div className="text-left flex-1 min-w-0">
-                    <h3 className="font-bold text-gray-900 text-lg line-clamp-2 mb-2">{selectedGift.name}</h3>
-                    <p className="text-3xl font-bold text-olive-700">R$ {selectedGift.price}</p>
+                  <div className="text-center sm:text-left flex-1 min-w-0">
+                    <h3 className="font-bold text-gray-900 text-sm sm:text-base lg:text-lg line-clamp-2 mb-1 sm:mb-2">{selectedGift.name}</h3>
+                    <p className="text-xl sm:text-2xl lg:text-3xl font-bold text-olive-700">R$ {selectedGift.price}</p>
                   </div>
                 </div>
               </div>
 
-              <div className="mb-4 sm:mb-6">
-                <p className="text-stone-700 mb-3 sm:mb-4 text-sm sm:text-base">
+              <div className="mb-3 sm:mb-4 lg:mb-6">
+                <p className="text-stone-700 mb-2 sm:mb-3 lg:mb-4 text-xs sm:text-sm lg:text-base">
                   Para concluir, envie o valor via PIX usando o QR Code ou chave abaixo:
                 </p>
-                <div className="bg-white border-2 border-olive-200 rounded-xl p-3 sm:p-4 inline-block mb-3 sm:mb-4 shadow-sm">
+                <div className="bg-white border-2 border-olive-200 rounded-lg sm:rounded-xl p-2 sm:p-3 lg:p-4 inline-block mb-2 sm:mb-3 lg:mb-4 shadow-sm">
                   <img
                     src="/images/auxiliares/qr_code_casamento.jpg"
                     alt="QR Code PIX"
-                    className="w-[120px] h-[120px] object-contain"
+                    className="w-[80px] h-[80px] sm:w-[100px] sm:h-[100px] lg:w-[120px] lg:h-[120px] object-contain"
                   />
                 </div>
-                <div className="bg-cream-50 p-3 sm:p-4 rounded-xl border-2 border-dashed border-olive-300">
-                  <div className="flex flex-col sm:flex-row items-center justify-between gap-2 sm:gap-3">
+                <div className="bg-cream-50 p-2 sm:p-3 lg:p-4 rounded-lg sm:rounded-xl border-2 border-dashed border-olive-300">
+                  <div className="flex flex-col sm:flex-row items-center justify-between gap-1 sm:gap-2 lg:gap-3">
                     <span className="font-mono text-olive-700 font-bold flex-1 text-xs sm:text-sm break-all">{pixCode}</span>
                     <button
-                      className="bg-olive-600 hover:bg-olive-700 text-cream px-3 sm:px-4 py-2 rounded-lg font-semibold transition-all shadow-lg hover:shadow-xl flex items-center gap-2 text-sm w-full sm:w-auto whitespace-nowrap"
+                      className="bg-olive-600 hover:bg-olive-700 text-cream px-2 sm:px-3 lg:px-4 py-1.5 sm:py-2 rounded-lg font-semibold transition-all shadow-lg hover:shadow-xl flex items-center gap-1 sm:gap-2 text-xs sm:text-sm w-full sm:w-auto whitespace-nowrap"
                       onClick={() => navigator.clipboard.writeText(pixCode)}
                     >
                       📋 Copiar
@@ -448,21 +425,18 @@ const Presentes = () => {
                 </div>
               </div>
               
-              <div className="bg-olive-50 border border-olive-200 rounded-xl p-3 sm:p-4">
+              <div className="bg-olive-50 border border-olive-200 rounded-lg sm:rounded-xl p-2 sm:p-3 lg:p-4">
                 <p className="text-olive-800 text-xs sm:text-sm leading-relaxed">
                   🌿 Após o envio, sinta-se à vontade para nos avisar! Muito obrigado pelo carinho e por fazer parte do nosso sonho.
                 </p>
               </div>
-            </motion.div>
-          </motion.div>
+            </div>
+          </div>
         )}
 
         {/* Seção PIX geral reformulada */}
-        <motion.div 
+        <div 
           className="mt-16 sm:mt-20 bg-white rounded-3xl shadow-2xl p-8 sm:p-12 max-w-5xl mx-auto border border-gray-100"
-          initial={{ opacity: 0, y: 30 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.5 }}
         >
           <div className="text-center mb-10">
             <div className="w-24 h-24 bg-gradient-to-r from-olive-500 to-sage-600 rounded-full flex items-center justify-center mx-auto mb-6">
@@ -524,7 +498,7 @@ const Presentes = () => {
               </div>
             </div>
           </div>
-        </motion.div>
+        </div>
       </main>
 
       <Footer />

@@ -1,4 +1,4 @@
-import React, { createContext, useContext, useState, useRef, useEffect } from 'react';
+import React, { createContext, useContext, useState, useRef, useEffect, useCallback, useMemo } from 'react';
 
 interface AudioContextType {
   isPlaying: boolean;
@@ -22,6 +22,9 @@ export function AudioProvider({ children }: { children: React.ReactNode }) {
   const [isLoading, setIsLoading] = useState(true);
   const audioRef = useRef<HTMLAudioElement | null>(null);
 
+  // Memoizar a lista de músicas para evitar re-renderizações
+  const memoizedMusicList = useMemo(() => musicList, [musicList]);
+
   // Carrega a lista de músicas da API
   useEffect(() => {
     const loadMusicList = async () => {
@@ -31,7 +34,6 @@ export function AudioProvider({ children }: { children: React.ReactNode }) {
         
         if (data.length > 0) {
           setMusicList(data);
-          // Seleciona uma música aleatória para começar
           setCurrentTrackIndex(Math.floor(Math.random() * data.length));
         } else {
           // Fallback para lista hardcoded se não encontrar arquivos
@@ -62,15 +64,15 @@ export function AudioProvider({ children }: { children: React.ReactNode }) {
     loadMusicList();
   }, []);
 
-  const loadTrack = (index: number) => {
-    if (musicList.length === 0) return;
+  const loadTrack = useCallback((index: number) => {
+    if (memoizedMusicList.length === 0) return;
     
     if (audioRef.current) {
       audioRef.current.pause();
       audioRef.current = null;
     }
     
-    audioRef.current = new Audio(musicList[index].file);
+    audioRef.current = new Audio(memoizedMusicList[index].file);
     audioRef.current.volume = 0.7;
     audioRef.current.loop = true;
     
@@ -80,10 +82,10 @@ export function AudioProvider({ children }: { children: React.ReactNode }) {
         console.log('Autoplay blocked:', error);
       });
     }
-  };
+  }, [memoizedMusicList, isPlaying]);
 
-  const togglePlay = () => {
-    if (musicList.length === 0 || isLoading) return;
+  const togglePlay = useCallback(() => {
+    if (memoizedMusicList.length === 0 || isLoading) return;
     
     if (!audioRef.current) {
       loadTrack(currentTrackIndex);
@@ -98,34 +100,46 @@ export function AudioProvider({ children }: { children: React.ReactNode }) {
       audioRef.current!.pause();
       setIsPlaying(false);
     }
-  };
+  }, [memoizedMusicList, isLoading, currentTrackIndex, loadTrack]);
 
-  const nextTrack = () => {
-    if (musicList.length === 0) return;
-    const nextIndex = (currentTrackIndex + 1) % musicList.length;
+  const nextTrack = useCallback(() => {
+    if (memoizedMusicList.length === 0) return;
+    const nextIndex = (currentTrackIndex + 1) % memoizedMusicList.length;
     setCurrentTrackIndex(nextIndex);
     loadTrack(nextIndex);
-  };
+  }, [memoizedMusicList, currentTrackIndex, loadTrack]);
 
-  const previousTrack = () => {
-    if (musicList.length === 0) return;
-    const prevIndex = currentTrackIndex === 0 ? musicList.length - 1 : currentTrackIndex - 1;
+  const previousTrack = useCallback(() => {
+    if (memoizedMusicList.length === 0) return;
+    const prevIndex = currentTrackIndex === 0 ? memoizedMusicList.length - 1 : currentTrackIndex - 1;
     setCurrentTrackIndex(prevIndex);
     loadTrack(prevIndex);
-  };
+  }, [memoizedMusicList, currentTrackIndex, loadTrack]);
+
+  // Memoizar valores do contexto para evitar re-renderizações
+  const contextValue = useMemo(() => ({
+    isPlaying,
+    togglePlay,
+    isHydrated,
+    nextTrack,
+    previousTrack,
+    currentTrackIndex,
+    currentTrackName: memoizedMusicList[currentTrackIndex]?.name || '',
+    isLoading,
+    musicCount: memoizedMusicList.length
+  }), [
+    isPlaying,
+    togglePlay,
+    isHydrated,
+    nextTrack,
+    previousTrack,
+    currentTrackIndex,
+    memoizedMusicList,
+    isLoading
+  ]);
 
   return (
-    <AudioContext.Provider value={{ 
-      isPlaying, 
-      togglePlay, 
-      isHydrated, 
-      nextTrack, 
-      previousTrack, 
-      currentTrackIndex, 
-      currentTrackName: musicList[currentTrackIndex]?.name || '',
-      isLoading,
-      musicCount: musicList.length
-    }}>
+    <AudioContext.Provider value={contextValue}>
       {children}
     </AudioContext.Provider>
   );
