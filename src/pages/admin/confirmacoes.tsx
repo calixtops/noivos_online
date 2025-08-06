@@ -1,6 +1,10 @@
 import { useState, useEffect } from 'react';
 import Head from 'next/head';
-import { FaHeart, FaUser, FaEnvelope, FaCalendar, FaCheck, FaTimes, FaQuestion, FaEye, FaExpandArrowsAlt } from 'react-icons/fa';
+import { 
+  FaHeart, FaUser, FaEnvelope, FaCalendar, FaCheck, FaTimes, FaQuestion, 
+  FaEye, FaExpandArrowsAlt, FaTrash, FaUsers, FaPercentage, FaComments,
+  FaChartBar, FaSync, FaExclamationTriangle, FaCheckCircle
+} from 'react-icons/fa';
 
 interface Confirmacao {
   _id: string;
@@ -18,6 +22,10 @@ interface Stats {
   recusados: number;
   talvez: number;
   totalConvidados: number;
+  comMensagem: number;
+  semMensagem: number;
+  taxaConfirmacao: number;
+  mediaConvidados: number;
 }
 
 const AdminConfirmacoes = () => {
@@ -26,6 +34,9 @@ const AdminConfirmacoes = () => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
   const [selectedMessage, setSelectedMessage] = useState<{ name: string; message: string; date: string } | null>(null);
+  const [deletingId, setDeletingId] = useState<string | null>(null);
+  const [showDeleteModal, setShowDeleteModal] = useState<{ id: string; name: string } | null>(null);
+  const [refreshing, setRefreshing] = useState(false);
 
   useEffect(() => {
     fetchConfirmacoes();
@@ -33,6 +44,7 @@ const AdminConfirmacoes = () => {
 
   const fetchConfirmacoes = async () => {
     try {
+      setRefreshing(true);
       const res = await fetch('/api/confirmacoes');
       const data = await res.json();
       
@@ -47,6 +59,33 @@ const AdminConfirmacoes = () => {
       console.error(err);
     } finally {
       setLoading(false);
+      setRefreshing(false);
+    }
+  };
+
+  const deleteConfirmacao = async (id: string) => {
+    try {
+      setDeletingId(id);
+      const res = await fetch(`/api/confirmacoes?id=${id}`, {
+        method: 'DELETE'
+      });
+      
+      const data = await res.json();
+      
+      if (data.success) {
+        // Remover da lista local
+        setConfirmacoes(prev => prev.filter(c => c._id !== id));
+        // Recarregar estatísticas
+        await fetchConfirmacoes();
+        setShowDeleteModal(null);
+      } else {
+        alert('Erro ao deletar confirmação: ' + data.error);
+      }
+    } catch (err) {
+      alert('Erro ao deletar confirmação');
+      console.error(err);
+    } finally {
+      setDeletingId(null);
     }
   };
 
@@ -68,6 +107,15 @@ const AdminConfirmacoes = () => {
     }
   };
 
+  const getStatusColor = (attending: string) => {
+    switch (attending) {
+      case 'yes': return 'bg-green-100 text-green-800 border-green-200';
+      case 'no': return 'bg-red-100 text-red-800 border-red-200';
+      case 'maybe': return 'bg-yellow-100 text-yellow-800 border-yellow-200';
+      default: return 'bg-gray-100 text-gray-800 border-gray-200';
+    }
+  };
+
   const openMessageModal = (name: string, message: string, date: string) => {
     setSelectedMessage({ name, message, date });
   };
@@ -76,12 +124,20 @@ const AdminConfirmacoes = () => {
     setSelectedMessage(null);
   };
 
+  const openDeleteModal = (id: string, name: string) => {
+    setShowDeleteModal({ id, name });
+  };
+
+  const closeDeleteModal = () => {
+    setShowDeleteModal(null);
+  };
+
   if (loading) {
     return (
-      <div className="min-h-screen flex items-center justify-center">
+      <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-cream-50 to-olive-50">
         <div className="text-center">
           <div className="w-16 h-16 border-4 border-olive-500 border-t-transparent rounded-full animate-spin mx-auto mb-4"></div>
-          <p className="text-olive-700">Carregando confirmações...</p>
+          <p className="text-olive-700 text-lg">Carregando confirmações...</p>
         </div>
       </div>
     );
@@ -89,12 +145,15 @@ const AdminConfirmacoes = () => {
 
   if (error) {
     return (
-      <div className="min-h-screen flex items-center justify-center">
-        <div className="text-center text-red-600">
-          <p className="text-xl mb-4">❌ {error}</p>
+      <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-cream-50 to-olive-50">
+        <div className="text-center">
+          <div className="w-16 h-16 bg-red-100 rounded-full flex items-center justify-center mx-auto mb-4">
+            <FaExclamationTriangle className="text-red-500 text-2xl" />
+          </div>
+          <p className="text-red-600 text-lg mb-4">❌ {error}</p>
           <button 
             onClick={fetchConfirmacoes}
-            className="bg-olive-500 text-white px-4 py-2 rounded hover:bg-olive-600"
+            className="bg-olive-500 text-white px-6 py-3 rounded-lg hover:bg-olive-600 transition-colors"
           >
             Tentar novamente
           </button>
@@ -109,94 +168,207 @@ const AdminConfirmacoes = () => {
         <title>Confirmações - Admin | Pedro & Geórgia</title>
       </Head>
 
-      <div className="max-w-6xl mx-auto">
+      <div className="max-w-7xl mx-auto">
         <header className="text-center mb-8">
-          <h1 className="text-3xl font-serif font-bold text-olive-800 mb-2">
-            <FaHeart className="inline mr-2 text-olive-500" />
-            Confirmações do Casamento
+          <h1 className="text-4xl font-serif font-bold text-olive-800 mb-2">
+            <FaHeart className="inline mr-3 text-olive-500" />
+            Dashboard de Confirmações
           </h1>
-          <p className="text-stone-600">Geórgia & Pedro - 06 de Junho de 2026</p>
+          <p className="text-stone-600 text-lg">Geórgia & Pedro - 06 de Junho de 2026</p>
         </header>
 
-        {/* Estatísticas */}
+        {/* Dashboard Principal */}
         {stats && (
-          <div className="grid grid-cols-2 md:grid-cols-5 gap-4 mb-8">
-            <div className="bg-white p-4 rounded-lg shadow text-center">
-              <div className="text-2xl font-bold text-olive-600">{stats.total}</div>
-              <div className="text-sm text-stone-600">Total</div>
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
+            {/* Total de Respostas */}
+            <div className="bg-white p-6 rounded-2xl shadow-lg border border-gray-100">
+              <div className="flex items-center justify-between">
+                <div>
+                  <p className="text-sm font-medium text-gray-600">Total de Respostas</p>
+                  <p className="text-3xl font-bold text-olive-600">{stats.total}</p>
+                </div>
+                <div className="w-12 h-12 bg-olive-100 rounded-full flex items-center justify-center">
+                  <FaUsers className="text-olive-600 text-xl" />
+                </div>
+              </div>
             </div>
-            <div className="bg-green-50 p-4 rounded-lg shadow text-center">
-              <div className="text-2xl font-bold text-green-600">{stats.confirmados}</div>
-              <div className="text-sm text-stone-600">Confirmados</div>
+
+            {/* Taxa de Confirmação */}
+            <div className="bg-white p-6 rounded-2xl shadow-lg border border-gray-100">
+              <div className="flex items-center justify-between">
+                <div>
+                  <p className="text-sm font-medium text-gray-600">Taxa de Confirmação</p>
+                  <p className="text-3xl font-bold text-green-600">{stats.taxaConfirmacao}%</p>
+                </div>
+                <div className="w-12 h-12 bg-green-100 rounded-full flex items-center justify-center">
+                  <FaPercentage className="text-green-600 text-xl" />
+                </div>
+              </div>
             </div>
-            <div className="bg-red-50 p-4 rounded-lg shadow text-center">
-              <div className="text-2xl font-bold text-red-600">{stats.recusados}</div>
-              <div className="text-sm text-stone-600">Não vão</div>
+
+            {/* Total de Convidados */}
+            <div className="bg-white p-6 rounded-2xl shadow-lg border border-gray-100">
+              <div className="flex items-center justify-between">
+                <div>
+                  <p className="text-sm font-medium text-gray-600">Convidados Confirmados</p>
+                  <p className="text-3xl font-bold text-blue-600">{stats.totalConvidados}</p>
+                </div>
+                <div className="w-12 h-12 bg-blue-100 rounded-full flex items-center justify-center">
+                  <FaCheckCircle className="text-blue-600 text-xl" />
+                </div>
+              </div>
             </div>
-            <div className="bg-yellow-50 p-4 rounded-lg shadow text-center">
-              <div className="text-2xl font-bold text-yellow-600">{stats.talvez}</div>
-              <div className="text-sm text-stone-600">Talvez</div>
-            </div>
-            <div className="bg-olive-50 p-4 rounded-lg shadow text-center">
-              <div className="text-2xl font-bold text-olive-600">{stats.totalConvidados}</div>
-              <div className="text-sm text-stone-600">Convidados</div>
+
+            {/* Média de Convidados */}
+            <div className="bg-white p-6 rounded-2xl shadow-lg border border-gray-100">
+              <div className="flex items-center justify-between">
+                <div>
+                  <p className="text-sm font-medium text-gray-600">Média por Família</p>
+                  <p className="text-3xl font-bold text-purple-600">{stats.mediaConvidados}</p>
+                </div>
+                <div className="w-12 h-12 bg-purple-100 rounded-full flex items-center justify-center">
+                  <FaChartBar className="text-purple-600 text-xl" />
+                </div>
+              </div>
             </div>
           </div>
         )}
 
+        {/* Estatísticas Detalhadas */}
+        {stats && (
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
+            <div className="bg-white p-6 rounded-2xl shadow-lg border border-gray-100">
+              <h3 className="text-lg font-semibold text-gray-800 mb-4 flex items-center gap-2">
+                <FaCheck className="text-green-500" />
+                Status das Respostas
+              </h3>
+              <div className="space-y-3">
+                <div className="flex justify-between items-center">
+                  <span className="text-sm text-gray-600">Confirmados</span>
+                  <span className="font-bold text-green-600">{stats.confirmados}</span>
+                </div>
+                <div className="flex justify-between items-center">
+                  <span className="text-sm text-gray-600">Não vão</span>
+                  <span className="font-bold text-red-600">{stats.recusados}</span>
+                </div>
+                <div className="flex justify-between items-center">
+                  <span className="text-sm text-gray-600">Talvez</span>
+                  <span className="font-bold text-yellow-600">{stats.talvez}</span>
+                </div>
+              </div>
+            </div>
+
+            <div className="bg-white p-6 rounded-2xl shadow-lg border border-gray-100">
+              <h3 className="text-lg font-semibold text-gray-800 mb-4 flex items-center gap-2">
+                <FaComments className="text-blue-500" />
+                Mensagens
+              </h3>
+              <div className="space-y-3">
+                <div className="flex justify-between items-center">
+                  <span className="text-sm text-gray-600">Com mensagem</span>
+                  <span className="font-bold text-blue-600">{stats.comMensagem}</span>
+                </div>
+                <div className="flex justify-between items-center">
+                  <span className="text-sm text-gray-600">Sem mensagem</span>
+                  <span className="font-bold text-gray-600">{stats.semMensagem}</span>
+                </div>
+              </div>
+            </div>
+
+            <div className="bg-white p-6 rounded-2xl shadow-lg border border-gray-100">
+              <h3 className="text-lg font-semibold text-gray-800 mb-4 flex items-center gap-2">
+                <FaUsers className="text-purple-500" />
+                Convidados
+              </h3>
+              <div className="space-y-3">
+                <div className="flex justify-between items-center">
+                  <span className="text-sm text-gray-600">Total confirmados</span>
+                  <span className="font-bold text-purple-600">{stats.totalConvidados}</span>
+                </div>
+                <div className="flex justify-between items-center">
+                  <span className="text-sm text-gray-600">Média por família</span>
+                  <span className="font-bold text-purple-600">{stats.mediaConvidados}</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        )}
+
+        {/* Botão de Atualizar */}
+        <div className="flex justify-center mb-6">
+          <button
+            onClick={fetchConfirmacoes}
+            disabled={refreshing}
+            className="bg-olive-500 hover:bg-olive-600 disabled:bg-olive-300 text-white px-8 py-3 rounded-xl transition-colors flex items-center gap-2 font-medium"
+          >
+            <FaSync className={`text-sm ${refreshing ? 'animate-spin' : ''}`} />
+            {refreshing ? 'Atualizando...' : 'Atualizar Lista'}
+          </button>
+        </div>
+
         {/* Lista de Confirmações */}
-        <div className="bg-white rounded-lg shadow overflow-hidden">
-          <div className="p-4 bg-olive-500 text-white">
-            <h2 className="text-xl font-semibold">Confirmações Recebidas</h2>
+        <div className="bg-white rounded-2xl shadow-lg overflow-hidden border border-gray-100">
+          <div className="p-6 bg-olive-500 text-white">
+            <h2 className="text-2xl font-semibold flex items-center gap-2">
+              <FaHeart className="text-olive-200" />
+              Confirmações Recebidas ({confirmacoes.length})
+            </h2>
           </div>
           
           {confirmacoes.length === 0 ? (
-            <div className="p-8 text-center text-stone-500">
-              Nenhuma confirmação recebida ainda.
+            <div className="p-12 text-center text-stone-500">
+              <div className="w-16 h-16 bg-gray-100 rounded-full flex items-center justify-center mx-auto mb-4">
+                <FaHeart className="text-gray-400 text-2xl" />
+              </div>
+              <p className="text-lg">Nenhuma confirmação recebida ainda.</p>
+              <p className="text-sm mt-2">As confirmações aparecerão aqui quando os convidados responderem.</p>
             </div>
           ) : (
             <div className="overflow-x-auto">
               <table className="w-full">
-                <thead className="bg-stone-50">
+                <thead className="bg-gray-50">
                   <tr>
-                    <th className="px-4 py-3 text-left text-xs font-medium text-stone-500 uppercase">Status</th>
-                    <th className="px-4 py-3 text-left text-xs font-medium text-stone-500 uppercase">Nome</th>
-                    <th className="px-4 py-3 text-left text-xs font-medium text-stone-500 uppercase">Email</th>
-                    <th className="px-4 py-3 text-left text-xs font-medium text-stone-500 uppercase">Convidados</th>
-                    <th className="px-4 py-3 text-left text-xs font-medium text-stone-500 uppercase">Data</th>
-                    <th className="px-4 py-3 text-left text-xs font-medium text-stone-500 uppercase">Mensagem</th>
+                    <th className="px-6 py-4 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Status</th>
+                    <th className="px-6 py-4 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Nome</th>
+                    <th className="px-6 py-4 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Email</th>
+                    <th className="px-6 py-4 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Convidados</th>
+                    <th className="px-6 py-4 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Data</th>
+                    <th className="px-6 py-4 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Mensagem</th>
+                    <th className="px-6 py-4 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Ações</th>
                   </tr>
                 </thead>
-                <tbody className="divide-y divide-stone-200">
+                <tbody className="divide-y divide-gray-200">
                   {confirmacoes.map((confirmacao) => (
-                    <tr key={confirmacao._id} className="hover:bg-stone-50">
-                      <td className="px-4 py-4">
+                    <tr key={confirmacao._id} className="hover:bg-gray-50 transition-colors">
+                      <td className="px-6 py-4">
                         <div className="flex items-center gap-2">
                           {getStatusIcon(confirmacao.attending)}
-                          <span className="text-sm">{getStatusText(confirmacao.attending)}</span>
+                          <span className={`px-2 py-1 rounded-full text-xs font-medium border ${getStatusColor(confirmacao.attending)}`}>
+                            {getStatusText(confirmacao.attending)}
+                          </span>
                         </div>
                       </td>
-                      <td className="px-4 py-4">
+                      <td className="px-6 py-4">
                         <div className="flex items-center gap-2">
-                          <FaUser className="text-stone-400 text-sm" />
-                          <span className="font-medium">{confirmacao.name}</span>
+                          <FaUser className="text-gray-400 text-sm" />
+                          <span className="font-medium text-gray-900">{confirmacao.name}</span>
                         </div>
                       </td>
-                      <td className="px-4 py-4">
+                      <td className="px-6 py-4">
                         <div className="flex items-center gap-2">
-                          <FaEnvelope className="text-stone-400 text-sm" />
-                          <span className="text-sm">{confirmacao.email}</span>
+                          <FaEnvelope className="text-gray-400 text-sm" />
+                          <span className="text-sm text-gray-600">{confirmacao.email}</span>
                         </div>
                       </td>
-                      <td className="px-4 py-4 text-center">
-                        <span className="bg-olive-100 text-olive-800 px-2 py-1 rounded-full text-sm">
+                      <td className="px-6 py-4 text-center">
+                        <span className="bg-olive-100 text-olive-800 px-3 py-1 rounded-full text-sm font-medium">
                           {confirmacao.guests || 0}
                         </span>
                       </td>
-                      <td className="px-4 py-4">
+                      <td className="px-6 py-4">
                         <div className="flex items-center gap-2">
-                          <FaCalendar className="text-stone-400 text-sm" />
-                          <span className="text-sm">
+                          <FaCalendar className="text-gray-400 text-sm" />
+                          <span className="text-sm text-gray-600">
                             {new Date(confirmacao.createdAt).toLocaleDateString('pt-BR', {
                               day: '2-digit',
                               month: '2-digit',
@@ -207,10 +379,10 @@ const AdminConfirmacoes = () => {
                           </span>
                         </div>
                       </td>
-                      <td className="px-4 py-4 max-w-xs">
+                      <td className="px-6 py-4 max-w-xs">
                         {confirmacao.message ? (
                           <div className="flex items-center gap-2">
-                            <div className="text-sm text-stone-600 truncate flex-1" title={confirmacao.message}>
+                            <div className="text-sm text-gray-600 truncate flex-1" title={confirmacao.message}>
                               {confirmacao.message}
                             </div>
                             <button
@@ -232,8 +404,20 @@ const AdminConfirmacoes = () => {
                             </button>
                           </div>
                         ) : (
-                          <span className="text-stone-400 text-sm italic">Sem mensagem</span>
+                          <span className="text-gray-400 text-sm italic">Sem mensagem</span>
                         )}
+                      </td>
+                      <td className="px-6 py-4">
+                        <div className="flex items-center gap-2">
+                          <button
+                            onClick={() => openDeleteModal(confirmacao._id, confirmacao.name)}
+                            disabled={deletingId === confirmacao._id}
+                            className="text-red-500 hover:text-red-700 transition-colors p-1 disabled:opacity-50"
+                            title="Deletar confirmação"
+                          >
+                            <FaTrash className="text-sm" />
+                          </button>
+                        </div>
                       </td>
                     </tr>
                   ))}
@@ -243,20 +427,11 @@ const AdminConfirmacoes = () => {
           )}
         </div>
 
-        <div className="mt-8 text-center">
-          <button
-            onClick={fetchConfirmacoes}
-            className="bg-olive-500 hover:bg-olive-600 text-white px-6 py-2 rounded-lg transition-colors"
-          >
-            Atualizar Lista
-          </button>
-        </div>
-
         {/* Modal para mensagem completa */}
         {selectedMessage && (
           <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black bg-opacity-50" onClick={closeMessageModal}>
             <div 
-              className="bg-white rounded-lg shadow-xl max-w-2xl w-full max-h-[80vh] overflow-hidden"
+              className="bg-white rounded-2xl shadow-xl max-w-2xl w-full max-h-[80vh] overflow-hidden"
               onClick={(e) => e.stopPropagation()}
             >
               <div className="flex items-center justify-between p-6 bg-olive-500 text-white">
@@ -279,19 +454,70 @@ const AdminConfirmacoes = () => {
               </div>
               
               <div className="p-6 max-h-96 overflow-y-auto">
-                <div className="bg-stone-50 p-4 rounded-lg border border-stone-200">
-                  <p className="text-stone-800 leading-relaxed whitespace-pre-wrap">
+                <div className="bg-gray-50 p-4 rounded-lg border border-gray-200">
+                  <p className="text-gray-800 leading-relaxed whitespace-pre-wrap">
                     {selectedMessage.message}
                   </p>
                 </div>
               </div>
               
-              <div className="px-6 py-4 bg-stone-50 border-t border-stone-200">
+              <div className="px-6 py-4 bg-gray-50 border-t border-gray-200">
                 <button
                   onClick={closeMessageModal}
                   className="w-full bg-olive-500 hover:bg-olive-600 text-white py-2 px-4 rounded-lg transition-colors"
                 >
                   Fechar
+                </button>
+              </div>
+            </div>
+          </div>
+        )}
+
+        {/* Modal de confirmação de exclusão */}
+        {showDeleteModal && (
+          <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black bg-opacity-50" onClick={closeDeleteModal}>
+            <div 
+              className="bg-white rounded-2xl shadow-xl max-w-md w-full"
+              onClick={(e) => e.stopPropagation()}
+            >
+              <div className="flex items-center justify-between p-6 bg-red-500 text-white">
+                <div>
+                  <h3 className="text-xl font-semibold flex items-center gap-2">
+                    <FaTrash />
+                    Confirmar Exclusão
+                  </h3>
+                </div>
+                <button
+                  onClick={closeDeleteModal}
+                  className="text-white hover:text-red-200 transition-colors p-2"
+                  title="Cancelar"
+                >
+                  <FaTimes className="text-xl" />
+                </button>
+              </div>
+              
+              <div className="p-6">
+                <p className="text-gray-700 mb-4">
+                  Tem certeza que deseja deletar a confirmação de <strong>{showDeleteModal.name}</strong>?
+                </p>
+                <p className="text-sm text-gray-500 mb-6">
+                  Esta ação não pode ser desfeita.
+                </p>
+              </div>
+              
+              <div className="px-6 py-4 bg-gray-50 border-t border-gray-200 flex gap-3">
+                <button
+                  onClick={closeDeleteModal}
+                  className="flex-1 bg-gray-300 hover:bg-gray-400 text-gray-700 py-2 px-4 rounded-lg transition-colors"
+                >
+                  Cancelar
+                </button>
+                <button
+                  onClick={() => deleteConfirmacao(showDeleteModal.id)}
+                  disabled={deletingId === showDeleteModal.id}
+                  className="flex-1 bg-red-500 hover:bg-red-600 disabled:bg-red-300 text-white py-2 px-4 rounded-lg transition-colors"
+                >
+                  {deletingId === showDeleteModal.id ? 'Deletando...' : 'Deletar'}
                 </button>
               </div>
             </div>
