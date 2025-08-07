@@ -3,8 +3,15 @@ import { NextApiRequest, NextApiResponse } from 'next';
 const SPOTIFY_CLIENT_ID = process.env.SPOTIFY_CLIENT_ID || '2bb471bbbeee452a8700265cf181ba7d';
 const SPOTIFY_CLIENT_SECRET = process.env.SPOTIFY_CLIENT_SECRET || '860c75d6f6584ea7871274b2e8ade0e0';
 
-// TEMPORÁRIO: Forçar URI local para teste
-const REDIRECT_URI = 'http://127.0.0.1:3000/playlist';
+// Determinar a URI de redirecionamento baseada no ambiente
+const getRedirectUri = () => {
+  if (process.env.NODE_ENV === 'production' || process.env.VERCEL_ENV === 'production') {
+    return 'https://georgia-pedro.vercel.app/playlist';
+  }
+  return 'http://127.0.0.1:3000/playlist';
+};
+
+const REDIRECT_URI = getRedirectUri();
 
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
   if (req.method !== 'GET' && req.method !== 'POST') {
