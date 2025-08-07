@@ -5,9 +5,9 @@ const SPOTIFY_CLIENT_ID = process.env.SPOTIFY_CLIENT_ID || '2bb471bbbeee452a8700
 // Determinar a URI de redirecionamento baseada no ambiente
 const getRedirectUri = () => {
   if (process.env.NODE_ENV === 'production' || process.env.VERCEL_ENV === 'production') {
-    return 'https://georgia-pedro.vercel.app/playlist';
+    return 'https://georgia-pedro.vercel.app/api/spotify/callback';
   }
-  return 'http://127.0.0.1:3000/playlist';
+  return 'http://127.0.0.1:3000/api/spotify/callback';
 };
 
 const REDIRECT_URI = getRedirectUri();
