@@ -80,6 +80,12 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
 
     const tokenData = await tokenResponse.json();
     
+    console.log('🎯 Token recebido:', { 
+      hasAccessToken: !!tokenData.access_token, 
+      hasRefreshToken: !!tokenData.refresh_token,
+      expiresIn: tokenData.expires_in 
+    });
+    
     // Armazenar tokens em cookies seguros
     res.setHeader('Set-Cookie', [
       `spotify_access_token=${tokenData.access_token}; Path=/; HttpOnly; SameSite=Lax; Max-Age=${tokenData.expires_in}`,
@@ -87,6 +93,8 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
       'spotify_state=; Path=/; HttpOnly; SameSite=Lax; Max-Age=0', // Limpar state
       'spotify_state_debug=; Path=/; SameSite=Lax; Max-Age=0' // Limpar state debug
     ]);
+
+    console.log('🍪 Cookies definidos, redirecionando para /playlist?success=authenticated');
 
     // Retornar sucesso
     if (req.method === 'GET') {
