@@ -83,8 +83,30 @@ const SpotifyPlaylist = () => {
 
   // Adicionar música à playlist
   const addToPlaylist = async (track: Track) => {
-    if (!isAuthenticated || !isClient) {
-      setErrorMessage('Faça login com o Spotify para adicionar músicas');
+    if (!isClient) {
+      setErrorMessage('Erro de inicialização');
+      setShowError(true);
+      setTimeout(() => setShowError(false), 3000);
+      return;
+    }
+
+    // Verificar autenticação em tempo real antes de adicionar
+    try {
+      const authCheck = await fetch('/api/spotify/check-auth');
+      const authData = await authCheck.json();
+      
+      if (!authData.authenticated) {
+        setIsAuthenticated(false);
+        setErrorMessage('Sessão expirada. Faça login novamente com o Spotify');
+        setShowError(true);
+        setTimeout(() => setShowError(false), 3000);
+        return;
+      }
+      
+      // Atualizar estado de autenticação
+      setIsAuthenticated(true);
+    } catch (error) {
+      setErrorMessage('Erro ao verificar autenticação');
       setShowError(true);
       setTimeout(() => setShowError(false), 3000);
       return;
@@ -112,7 +134,13 @@ const SpotifyPlaylist = () => {
         setShowSuccess(true);
         setTimeout(() => setShowSuccess(false), 3000);
       } else {
-        setErrorMessage(data.error || 'Erro ao adicionar música');
+        // Se o erro for 401 (não autorizado), atualizar estado de autenticação
+        if (response.status === 401) {
+          setIsAuthenticated(false);
+          setErrorMessage('Sessão expirada. Faça login novamente com o Spotify');
+        } else {
+          setErrorMessage(data.error || 'Erro ao adicionar música');
+        }
         setShowError(true);
         setTimeout(() => setShowError(false), 3000);
       }
