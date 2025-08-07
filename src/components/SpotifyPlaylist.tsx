@@ -196,8 +196,10 @@ const SpotifyPlaylist = () => {
     if (!isClient) return;
     
     try {
+      console.log('🔍 Verificando autenticação...');
       const response = await fetch('/api/spotify/check-auth');
       const data = await response.json();
+      console.log('🎯 Resultado da autenticação:', data);
       setIsAuthenticated(data.authenticated);
     } catch (error) {
       console.error('Erro ao verificar autenticação:', error);
@@ -226,6 +228,8 @@ const SpotifyPlaylist = () => {
           setShowSuccess(true);
           setTimeout(() => setShowSuccess(false), 3000);
           window.history.replaceState({}, '', '/playlist');
+          // Re-verificar autenticação após login bem-sucedido
+          checkAuth();
         }
         
         if (error) {
