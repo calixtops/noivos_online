@@ -88,9 +88,23 @@ const Header = () => {
                   <h1 className="text-xl lg:text-2xl font-bold bg-gradient-to-r from-olive-600 to-olive-800 bg-clip-text text-transparent">
                     Pedro & Georgia
                   </h1>
-                  <p className="text-sm text-olive-600/80 font-medium">
-                    28 de Setembro, 2024
-                  </p>
+                  <div className="flex items-center gap-2">
+                    <motion.div 
+                      className="h-px bg-gradient-to-r from-olive-400 to-olive-600 flex-1"
+                      initial={{ scaleX: 0 }}
+                      animate={{ scaleX: 1 }}
+                      transition={{ duration: 0.8, delay: 0.3 }}
+                    />
+                    <p className="text-sm text-olive-600/80 font-medium px-2">
+                      6 de junho, 2026
+                    </p>
+                    <motion.div 
+                      className="h-px bg-gradient-to-r from-olive-600 to-olive-400 flex-1"
+                      initial={{ scaleX: 0 }}
+                      animate={{ scaleX: 1 }}
+                      transition={{ duration: 0.8, delay: 0.3 }}
+                    />
+                  </div>
                 </div>
               </div>
             </Link>

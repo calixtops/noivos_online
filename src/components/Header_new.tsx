@@ -89,7 +89,7 @@ const Header = () => {
                     Pedro & Georgia
                   </h1>
                   <p className="text-sm text-olive-600/80 font-medium">
-                    28 de Setembro, 2024
+                    06 de Junho de 2026
                   </p>
                 </div>
               </div>

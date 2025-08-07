@@ -31,28 +31,45 @@ const SpotifyPlaylist = () => {
   const PLAYLIST_ID = '4Oj7QSgRJ1IbwlNblrhcFu';
   const PLAYLIST_NAME = 'Geórgia & Pedro - Nosso Casamento';
 
-  // Buscar músicas no Spotify
+  // Hook para busca dinâmica com debounce
+  useEffect(() => {
+    if (!searchQuery.trim()) {
+      setSearchResults([]);
+      return;
+    }
+
+    // Debounce - aguarda 500ms após parar de digitar
+    const timeoutId = setTimeout(() => {
+      searchSpotify(searchQuery);
+    }, 500);
+
+    return () => clearTimeout(timeoutId);
+  }, [searchQuery, isClient]);
+
+  // Buscar músicas no Spotify (versão otimizada para busca dinâmica)
   const searchSpotify = async (query: string) => {
-    if (!query.trim() || !isClient) return;
+    // Não busca se a query for muito curta ou se não estiver no cliente
+    if (!query.trim() || query.trim().length < 2 || !isClient) {
+      setSearchResults([]);
+      return;
+    }
     
     setIsSearching(true);
-    setSearchResults([]);
     
     try {
       const response = await fetch(`/api/spotify?search=${encodeURIComponent(query)}`);
       const data = await response.json();
       
       if (response.ok) {
-        setSearchResults(data.tracks);
+        setSearchResults(data.tracks || []);
       } else {
         setErrorMessage(data.error || 'Erro ao buscar músicas');
         setShowError(true);
         setTimeout(() => setShowError(false), 3000);
       }
     } catch (error) {
-      setErrorMessage('Erro de conexão');
-      setShowError(true);
-      setTimeout(() => setShowError(false), 3000);
+      // Não mostra erro para buscas automáticas
+      console.error('Erro na busca:', error);
     } finally {
       setIsSearching(false);
     }
@@ -389,15 +406,14 @@ const SpotifyPlaylist = () => {
                 Buscar e Adicionar Músicas
               </h3>
               
-              {/* Search Bar */}
+              {/* Search Bar - Busca Dinâmica */}
               <div className="relative mb-6">
                 <div className="relative">
                   <input
                     type="text"
                     value={searchQuery}
                     onChange={(e) => setSearchQuery(e.target.value)}
-                    onKeyPress={(e) => e.key === 'Enter' && searchSpotify(searchQuery)}
-                    placeholder="Digite o nome da música ou artista..."
+                    placeholder="Digite o nome da música ou artista... (busca automática)"
                     className="w-full px-6 py-4 text-lg border-2 border-olive-200 rounded-full focus:border-green-500 focus:outline-none transition-colors pr-20"
                   />
                   <div className="absolute right-2 top-1/2 transform -translate-y-1/2 flex items-center gap-2">
@@ -410,20 +426,23 @@ const SpotifyPlaylist = () => {
                         <FaTimesCircle className="w-4 h-4" />
                       </button>
                     )}
-                    <button
-                      onClick={() => searchSpotify(searchQuery)}
-                      disabled={isSearching || !searchQuery.trim()}
-                      className="p-3 bg-green-500 hover:bg-green-600 text-white rounded-full transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
-                      title="Buscar músicas"
-                    >
+                    <div className="p-3">
                       {isSearching ? (
-                        <div className="w-5 h-5 border-2 border-white border-t-transparent rounded-full animate-spin"></div>
+                        <div className="w-5 h-5 border-2 border-green-500 border-t-transparent rounded-full animate-spin"></div>
                       ) : (
-                        <FaSearch className="w-5 h-5" />
+                        <FaSearch className="w-5 h-5 text-green-500" />
                       )}
-                    </button>
+                    </div>
                   </div>
                 </div>
+                
+                {/* Dica de busca dinâmica */}
+                <p className="text-sm text-gray-500 mt-2 text-center">
+                  ✨ A busca é feita automaticamente enquanto você digita
+                  {searchQuery.length > 0 && searchQuery.length < 2 && (
+                    <span className="text-orange-500"> - Digite pelo menos 2 caracteres</span>
+                  )}
+                </p>
               </div>
 
               {/* Search Results */}
