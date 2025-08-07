@@ -1,16 +1,20 @@
 import React, { useState, useRef } from 'react';
 import { FaMusic, FaVolumeMute, FaStepBackward, FaStepForward, FaInfoCircle, FaTimes, FaExpand } from 'react-icons/fa';
 import { useAudio } from '../contexts/AudioContext';
+import { useClientOnly } from '../hooks/useClientOnly';
 
 const HeaderMusicPlayer: React.FC = () => {
+  const isClient = useClientOnly();
   const { isPlaying, togglePlay, isHydrated, nextTrack, previousTrack, currentTrackName, isLoading, musicCount, currentTrackIndex } = useAudio();
   const [showControls, setShowControls] = useState(false);
   const [showTrackInfo, setShowTrackInfo] = useState(false);
   const [isExpanded, setIsExpanded] = useState(false);
   const hideTimeoutRef = useRef<NodeJS.Timeout | null>(null);
 
-  // Se o player estiver desabilitado ou não hidratado, não renderiza nada
-  if (!isHydrated || isLoading) return null;
+  // Renderização condicional sem early return
+  if (!isClient || !isHydrated || isLoading) {
+    return null;
+  }
 
   const handleMouseEnter = () => {
     if (hideTimeoutRef.current) {
