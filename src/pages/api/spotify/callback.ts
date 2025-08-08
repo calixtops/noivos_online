@@ -120,9 +120,10 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     });
     
     // Armazenar tokens em cookies seguros
+    const cookieOptions = `Path=/; HttpOnly; SameSite=Lax; Secure=${process.env.NODE_ENV === 'production'}`;
     res.setHeader('Set-Cookie', [
-      `spotify_access_token=${tokenData.access_token}; Path=/; HttpOnly; SameSite=Lax; Max-Age=${tokenData.expires_in}`,
-      `spotify_refresh_token=${tokenData.refresh_token}; Path=/; HttpOnly; SameSite=Lax; Max-Age=31536000`,
+      `spotify_access_token=${tokenData.access_token}; ${cookieOptions}; Max-Age=${tokenData.expires_in || 3600}`,
+      `spotify_refresh_token=${tokenData.refresh_token || ''}; ${cookieOptions}; Max-Age=2592000`,
       'spotify_state=; Path=/; HttpOnly; SameSite=Lax; Max-Age=0', // Limpar state
       'spotify_state_debug=; Path=/; SameSite=Lax; Max-Age=0' // Limpar state debug
     ]);

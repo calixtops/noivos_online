@@ -8,7 +8,14 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
   const accessToken = req.cookies.spotify_access_token;
   
   if (!accessToken) {
-    return res.status(200).json({ authenticated: false });
+    return res.status(200).json({ 
+      authenticated: false,
+      reason: 'no_token',
+      debug: {
+        allCookies: Object.keys(req.cookies),
+        hasSpotifyState: !!req.cookies.spotify_state
+      }
+    });
   }
 
   try {
@@ -31,10 +38,21 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
       });
     } else {
       // Token expirado ou inválido
-      return res.status(200).json({ authenticated: false });
+      return res.status(200).json({ 
+        authenticated: false,
+        reason: 'invalid_token',
+        debug: {
+          spotifyStatus: response.status,
+          tokenLength: accessToken.length
+        }
+      });
     }
   } catch (error) {
     console.error('Erro ao verificar autenticação:', error);
-    return res.status(200).json({ authenticated: false });
+    return res.status(200).json({ 
+      authenticated: false,
+      reason: 'api_error',
+      error: error instanceof Error ? error.message : 'Unknown error'
+    });
   }
 } 

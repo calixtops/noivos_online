@@ -129,9 +129,19 @@ const SpotifyPlaylist = () => {
       const authCheck = await fetch('/api/spotify/check-auth');
       const authData = await authCheck.json();
       
+      console.log('🔍 Pre-add auth check:', authData);
+      
       if (!authData.authenticated) {
         setIsAuthenticated(false);
-        setErrorMessage('Sessão expirada. Faça login novamente com o Spotify');
+        let errorMsg = 'Sessão expirada. Faça login novamente com o Spotify';
+        
+        if (authData.reason === 'no_token') {
+          errorMsg = 'Token não encontrado. Faça login com o Spotify';
+        } else if (authData.reason === 'invalid_token') {
+          errorMsg = 'Token expirado. Faça login novamente';
+        }
+        
+        setErrorMessage(errorMsg);
         setShowError(true);
         setTimeout(() => setShowError(false), 3000);
         return;
@@ -140,6 +150,7 @@ const SpotifyPlaylist = () => {
       // Atualizar estado de autenticação
       setIsAuthenticated(true);
     } catch (error) {
+      console.error('Erro ao verificar autenticação:', error);
       setErrorMessage('Erro ao verificar autenticação');
       setShowError(true);
       setTimeout(() => setShowError(false), 3000);
@@ -235,7 +246,16 @@ const SpotifyPlaylist = () => {
       setIsCheckingAuth(true);
       const response = await fetch('/api/spotify/check-auth');
       const data = await response.json();
+      
+      // Debug info no console
+      console.log('🔍 Auth check result:', data);
+      
       setIsAuthenticated(data.authenticated);
+      
+      // Se não autenticado, mostrar razão no console
+      if (!data.authenticated && data.reason) {
+        console.log('❌ Not authenticated:', data.reason, data.debug);
+      }
     } catch (error) {
       console.error('Erro ao verificar autenticação:', error);
       setIsAuthenticated(false);
@@ -267,8 +287,11 @@ const SpotifyPlaylist = () => {
           setShowSuccess(true);
           setTimeout(() => setShowSuccess(false), 3000);
           window.history.replaceState({}, '', '/playlist');
-          // Re-verificar autenticação após login bem-sucedido com delay
-          setTimeout(() => checkAuth(), 500);
+          // Re-verificar autenticação após login bem-sucedido com delay maior
+          setTimeout(() => {
+            console.log('🔄 Re-checking auth after login...');
+            checkAuth();
+          }, 1500);
         }
         
         if (error) {
