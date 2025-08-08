@@ -7,14 +7,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
 
   const accessToken = req.cookies.spotify_access_token;
   
-  console.log('🔍 check-auth - cookies recebidos:', {
-    hasSpotifyToken: !!accessToken,
-    allCookies: Object.keys(req.cookies),
-    tokenLength: accessToken ? accessToken.length : 0
-  });
-  
   if (!accessToken) {
-    console.log('❌ Nenhum token encontrado nos cookies');
     return res.status(200).json({ authenticated: false });
   }
 

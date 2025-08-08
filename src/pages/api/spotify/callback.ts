@@ -14,7 +14,17 @@ const getRedirectUri = () => {
 const REDIRECT_URI = getRedirectUri();
 
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
+  console.log('🚀 CALLBACK CHAMADO!', {
+    method: req.method,
+    query: req.query,
+    url: req.url,
+    hasCode: !!req.query.code,
+    hasState: !!req.query.state,
+    error: req.query.error
+  });
+
   if (req.method !== 'GET' && req.method !== 'POST') {
+    console.log('❌ Método não permitido:', req.method);
     return res.status(405).json({ error: 'Method not allowed' });
   }
 
@@ -36,6 +46,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
 
   // Verificar se houve erro
   if (error) {
+    console.log('❌ Erro do Spotify:', error);
     if (req.method === 'GET') {
       return res.redirect('/playlist?error=access_denied');
     }
@@ -44,15 +55,28 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
 
   // Verificar se temos o código de autorização
   if (!code || typeof code !== 'string') {
+    console.log('❌ Código ausente');
     if (req.method === 'GET') {
       return res.redirect('/playlist?error=no_code');
     }
     return res.status(400).json({ error: 'Código de autorização não fornecido' });
   }
 
+  console.log('🎯 Parâmetros válidos:', {
+    codeLength: code.length,
+    hasState: !!state
+  });
+
   // Verificar state para segurança
   const savedState = req.cookies.spotify_state;
+  console.log('🔐 Verificando state:', {
+    received: state,
+    stored: savedState,
+    match: state === savedState
+  });
+  
   if (!state || state !== savedState) {
+    console.log('❌ State inválido');
     if (req.method === 'GET') {
       return res.redirect('/playlist?error=invalid_state');
     }
@@ -60,6 +84,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
   }
 
   try {
+    console.log('🔄 Trocando code por token...');
     // Trocar código por token de acesso
     const tokenResponse = await fetch('https://accounts.spotify.com/api/token', {
       method: 'POST',
@@ -74,7 +99,14 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
       }).toString(),
     });
 
+    console.log('📡 Resposta do token:', {
+      status: tokenResponse.status,
+      ok: tokenResponse.ok
+    });
+
     if (!tokenResponse.ok) {
+      const errorText = await tokenResponse.text();
+      console.log('❌ Erro ao obter token:', errorText);
       throw new Error('Failed to get access token');
     }
 
@@ -83,7 +115,8 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     console.log('🎯 Token recebido:', { 
       hasAccessToken: !!tokenData.access_token, 
       hasRefreshToken: !!tokenData.refresh_token,
-      expiresIn: tokenData.expires_in 
+      expiresIn: tokenData.expires_in,
+      tokenLength: tokenData.access_token ? tokenData.access_token.length : 0
     });
     
     // Armazenar tokens em cookies seguros
@@ -98,12 +131,13 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
 
     // Retornar sucesso
     if (req.method === 'GET') {
+      console.log('✅ Redirecionando para /playlist com sucesso');
       return res.redirect('/playlist?success=authenticated');
     }
     return res.status(200).json({ success: true, message: 'Autenticação realizada com sucesso!' });
 
   } catch (error) {
-    console.error('Spotify OAuth Error:', error);
+    console.error('💥 Erro no callback:', error);
     if (req.method === 'GET') {
       return res.redirect('/playlist?error=token_error');
     }

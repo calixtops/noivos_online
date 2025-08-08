@@ -24,6 +24,7 @@ const SpotifyPlaylist = () => {
   const [errorMessage, setErrorMessage] = useState('');
   const [playlistUrl, setPlaylistUrl] = useState('');
   const [isAuthenticated, setIsAuthenticated] = useState(false);
+  const [isCheckingAuth, setIsCheckingAuth] = useState(true);
   const [isLoading, setIsLoading] = useState(true);
   const [isExpanded, setIsExpanded] = useState(false);
 
@@ -196,13 +197,15 @@ const SpotifyPlaylist = () => {
     if (!isClient) return;
     
     try {
-      console.log('🔍 Verificando autenticação...');
+      setIsCheckingAuth(true);
       const response = await fetch('/api/spotify/check-auth');
       const data = await response.json();
-      console.log('🎯 Resultado da autenticação:', data);
       setIsAuthenticated(data.authenticated);
     } catch (error) {
       console.error('Erro ao verificar autenticação:', error);
+      setIsAuthenticated(false);
+    } finally {
+      setIsCheckingAuth(false);
     }
   };
 
@@ -228,8 +231,8 @@ const SpotifyPlaylist = () => {
           setShowSuccess(true);
           setTimeout(() => setShowSuccess(false), 3000);
           window.history.replaceState({}, '', '/playlist');
-          // Re-verificar autenticação após login bem-sucedido
-          checkAuth();
+          // Re-verificar autenticação após login bem-sucedido com delay
+          setTimeout(() => checkAuth(), 500);
         }
         
         if (error) {
@@ -369,9 +372,9 @@ const SpotifyPlaylist = () => {
               <div className="flex items-center justify-between">
                 <div className="flex-1">
                   <div className="flex items-center gap-3 mb-2">
-                    <div className={`w-3 h-3 rounded-full animate-pulse ${isAuthenticated ? 'bg-green-500' : 'bg-yellow-500'}`}></div>
-                    <span className={`font-semibold text-sm ${isAuthenticated ? 'text-green-700' : 'text-yellow-700'}`}>
-                      {isAuthenticated ? '🎵 Conectado ao Spotify' : '🔗 Conecte-se ao Spotify'}
+                    <div className={`w-3 h-3 rounded-full animate-pulse ${isAuthenticated ? 'bg-green-500' : isCheckingAuth ? 'bg-blue-500' : 'bg-yellow-500'}`}></div>
+                    <span className={`font-semibold text-sm ${isAuthenticated ? 'text-green-700' : isCheckingAuth ? 'text-blue-700' : 'text-yellow-700'}`}>
+                      {isCheckingAuth ? '🔄 Verificando...' : isAuthenticated ? '🎵 Conectado ao Spotify' : '🔗 Conecte-se ao Spotify'}
                     </span>
                   </div>
                   <p className="text-gray-700 text-sm">
