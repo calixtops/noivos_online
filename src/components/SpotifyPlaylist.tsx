@@ -298,21 +298,23 @@ const SpotifyPlaylist = () => {
           let errorMsg = 'Erro desconhecido';
           switch (error) {
             case 'access_denied':
-              errorMsg = 'Acesso negado pelo Spotify';
+              errorMsg = '❌ Acesso negado pelo Spotify. Este app está em modo de desenvolvimento - entre em contato com os noivos para liberar seu acesso.';
               break;
             case 'no_code':
-              errorMsg = 'Erro na autenticação';
+              errorMsg = '❌ Erro na autenticação. Tente fazer login novamente.';
               break;
             case 'invalid_state':
-              errorMsg = 'Erro de segurança na autenticação';
+              errorMsg = '❌ Erro de segurança na autenticação. Limpe os cookies e tente novamente.';
               break;
             case 'token_error':
-              errorMsg = 'Erro ao obter token de acesso';
+              errorMsg = '❌ Erro ao obter token. O app pode estar em modo de desenvolvimento.';
               break;
+            default:
+              errorMsg = `❌ Erro: ${error}`;
           }
           setErrorMessage(errorMsg);
           setShowError(true);
-          setTimeout(() => setShowError(false), 3000);
+          setTimeout(() => setShowError(false), 8000); // Mais tempo para ler
           window.history.replaceState({}, '', '/playlist');
         }
       }
@@ -424,6 +426,22 @@ const SpotifyPlaylist = () => {
                 Contribua com músicas para nossa playlist de casamento no Spotify! 
                 Ajude-nos a criar a trilha sonora perfeita para nossa celebração.
               </p>
+              
+              {/* Aviso sobre modo de desenvolvimento */}
+              <div className="bg-blue-50 border border-blue-200 rounded-lg p-4 max-w-2xl mx-auto mt-6">
+                <div className="flex items-start gap-3">
+                  <div className="text-blue-500 mt-0.5">ℹ️</div>
+                  <div>
+                    <p className="text-sm text-blue-700 font-medium mb-1">
+                      Informação sobre o acesso
+                    </p>
+                    <p className="text-xs text-blue-600">
+                      Se você não conseguir fazer login ou adicionar músicas, pode ser que seu usuário precise ser 
+                      adicionado ao app. Entre em contato conosco caso tenha problemas!
+                    </p>
+                  </div>
+                </div>
+              </div>
             </div>
 
             {/* Status Card */}
