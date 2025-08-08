@@ -616,83 +616,159 @@ const SpotifyPlaylist = () => {
 
             {/* Playlist Preview */}
             <div className="bg-white/80 backdrop-blur-sm rounded-2xl p-6 shadow-lg border border-green-200">
-              <div className="flex items-center justify-between mb-6">
-                <h3 className="text-xl font-semibold text-gray-800">
-                  Nossa Playlist
-                </h3>
-                <div className="flex items-center gap-2">
-                  <span className="text-sm text-gray-500 bg-gray-100 px-3 py-1 rounded-full">
-                    {playlistTracks.length} músicas
-                  </span>
+              <div className="flex items-center justify-between mb-8">
+                <div>
+                  <h3 className="text-2xl font-semibold text-gray-800 mb-1">
+                    Nossa Playlist
+                  </h3>
+                  <p className="text-gray-600 text-sm">
+                    Trilha sonora criada com amor pelos nossos convidados
+                  </p>
+                </div>
+                <div className="flex items-center gap-3">
+                  <div className="flex items-center gap-2 bg-gradient-to-r from-green-100 to-olive-100 px-4 py-2 rounded-full">
+                    <FaMusic className="text-green-600 text-sm" />
+                    <span className="text-sm font-medium text-green-700">
+                      {playlistTracks.length} {playlistTracks.length === 1 ? 'música' : 'músicas'}
+                    </span>
+                  </div>
                 </div>
               </div>
               
               {playlistTracks.length > 0 ? (
-                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 max-h-96 overflow-y-auto">
-                  {playlistTracks.slice(0, isExpanded ? playlistTracks.length : 6).map((track, index) => (
+                <div className="space-y-3">
+                  {playlistTracks.slice(0, isExpanded ? playlistTracks.length : 8).map((track, index) => (
                     <motion.div
                       key={track.uri}
-                      initial={{ opacity: 0, scale: 0.9 }}
-                      animate={{ opacity: 1, scale: 1 }}
-                      transition={{ delay: index * 0.1 }}
-                      className="bg-white rounded-xl p-4 shadow-md border border-gray-100 hover:shadow-lg transition-all duration-300 group relative"
+                      initial={{ opacity: 0, x: -20 }}
+                      animate={{ opacity: 1, x: 0 }}
+                      transition={{ delay: index * 0.05 }}
+                      className="group bg-white rounded-xl p-4 shadow-sm border border-gray-100 hover:shadow-md hover:border-green-200 transition-all duration-300"
                     >
-                      {/* Número da música */}
-                      <div className="absolute -top-2 -left-2 w-8 h-8 bg-green-500 text-white rounded-full flex items-center justify-center text-sm font-bold shadow-lg">
-                        {index + 1}
-                      </div>
-                      
-                      {/* Imagem do álbum */}
-                      <div className="relative mb-3">
-                        <img
-                          src={track.image}
-                          alt={track.album}
-                          className="w-full h-32 rounded-lg object-cover shadow-md"
-                          onError={(e) => {
-                            (e.target as HTMLImageElement).src = '/images/audio/default-album.jpg';
-                          }}
-                        />
-                      </div>
-                      
-                      {/* Informações da música */}
-                      <div className="space-y-2">
-                        <h4 className="font-semibold text-gray-800 text-sm leading-tight line-clamp-2">
-                          {track.name}
-                        </h4>
-                        <p className="text-xs text-gray-600 font-medium">
-                          {track.artist}
-                        </p>
-                        <p className="text-xs text-gray-500 line-clamp-1">
-                          {track.album}
-                        </p>
+                      <div className="flex items-center gap-4">
+                        {/* Número da faixa */}
+                        <div className="flex-shrink-0 w-8 h-8 bg-gradient-to-br from-green-500 to-green-600 text-white rounded-full flex items-center justify-center text-sm font-bold shadow-sm">
+                          {index + 1}
+                        </div>
                         
-                        {/* Duração */}
-                        <div className="flex items-center justify-between pt-2">
-                          <span className="text-xs bg-gray-100 text-gray-600 px-2 py-1 rounded-full">
+                        {/* Imagem do álbum */}
+                        <div className="flex-shrink-0 relative">
+                          <img
+                            src={track.image}
+                            alt={track.album}
+                            className="w-16 h-16 rounded-lg object-cover shadow-md group-hover:shadow-lg transition-shadow duration-300"
+                            onError={(e) => {
+                              (e.target as HTMLImageElement).src = '/images/audio/default-album.jpg';
+                            }}
+                          />
+                          <div className="absolute inset-0 bg-black bg-opacity-0 group-hover:bg-opacity-10 rounded-lg transition-all duration-300"></div>
+                        </div>
+                        
+                        {/* Informações da música */}
+                        <div className="flex-1 min-w-0">
+                          <h4 className="font-semibold text-gray-900 text-base leading-tight truncate group-hover:text-green-700 transition-colors">
+                            {track.name}
+                          </h4>
+                          <p className="text-gray-600 text-sm font-medium mt-1">
+                            {track.artist}
+                          </p>
+                          <p className="text-gray-500 text-xs mt-1 truncate">
+                            {track.album}
+                          </p>
+                        </div>
+                        
+                        {/* Duração e ações */}
+                        <div className="flex-shrink-0 flex items-center gap-3">
+                          <span className="text-xs text-gray-500 bg-gray-50 px-3 py-1 rounded-full font-medium">
                             {track.duration}
                           </span>
+                          <div className="opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                            <FaHeart className="text-green-500 text-sm cursor-pointer hover:text-green-600 transition-colors" />
+                          </div>
                         </div>
                       </div>
                     </motion.div>
                   ))}
+                  
+                  {/* Gradiente fade no final se houver mais músicas */}
+                  {!isExpanded && playlistTracks.length > 8 && (
+                    <div className="relative">
+                      <div className="absolute inset-0 bg-gradient-to-t from-white via-white/80 to-transparent z-10 pointer-events-none h-16 -mt-8"></div>
+                    </div>
+                  )}
                 </div>
               ) : (
-                <div className="text-center py-8">
-                  <FaMusic className="text-4xl text-gray-300 mx-auto mb-4" />
-                  <p className="text-gray-500">Nenhuma música adicionada ainda.</p>
-                  <p className="text-gray-400 text-sm">Use a busca acima para adicionar músicas!</p>
+                <div className="text-center py-16">
+                  <div className="bg-gradient-to-br from-gray-100 to-gray-50 rounded-full w-20 h-20 flex items-center justify-center mx-auto mb-6">
+                    <FaMusic className="text-3xl text-gray-400" />
+                  </div>
+                  <h4 className="text-xl font-semibold text-gray-700 mb-2">
+                    A playlist está esperando por você!
+                  </h4>
+                  <p className="text-gray-500 max-w-md mx-auto">
+                    Seja o primeiro a adicionar uma música especial para nossa celebração. 
+                    Use a busca acima para encontrar suas músicas favoritas.
+                  </p>
                 </div>
               )}
 
-              {/* Botão Ver Mais */}
-              {playlistTracks.length > 6 && (
-                <div className="text-center mt-6">
+              {/* Botão Ver Mais/Menos */}
+              {playlistTracks.length > 8 && (
+                <div className="text-center mt-8 pt-6 border-t border-gray-100">
                   <button
                     onClick={() => setIsExpanded(!isExpanded)}
-                    className="px-6 py-2 bg-olive-500 hover:bg-olive-600 text-white rounded-full transition-colors"
+                    className="inline-flex items-center gap-2 px-6 py-3 bg-gradient-to-r from-olive-500 to-olive-600 hover:from-olive-600 hover:to-olive-700 text-white rounded-full transition-all duration-300 shadow-md hover:shadow-lg font-medium"
                   >
-                    {isExpanded ? 'Ver Menos' : `Ver Mais (${playlistTracks.length - 6})`}
+                    <FaMusic className="text-sm" />
+                    {isExpanded ? (
+                      <span>Ver Menos</span>
+                    ) : (
+                      <span>Ver Todas ({playlistTracks.length} músicas)</span>
+                    )}
                   </button>
+                </div>
+              )}
+
+              {/* Estatísticas da playlist (se houver músicas) */}
+              {playlistTracks.length > 0 && (
+                <div className="mt-8 pt-6 border-t border-gray-100">
+                  <div className="grid grid-cols-2 sm:grid-cols-4 gap-4">
+                    <div className="text-center">
+                      <div className="text-2xl font-bold text-green-600">
+                        {playlistTracks.length}
+                      </div>
+                      <div className="text-xs text-gray-500 uppercase tracking-wide">
+                        Músicas
+                      </div>
+                    </div>
+                    <div className="text-center">
+                      <div className="text-2xl font-bold text-olive-600">
+                        {new Set(playlistTracks.map(t => t.artist)).size}
+                      </div>
+                      <div className="text-xs text-gray-500 uppercase tracking-wide">
+                        Artistas
+                      </div>
+                    </div>
+                    <div className="text-center">
+                      <div className="text-2xl font-bold text-green-600">
+                        {Math.round(playlistTracks.reduce((acc, track) => {
+                          const [min, sec] = track.duration.split(':').map(Number);
+                          return acc + (min * 60 + sec);
+                        }, 0) / 60)}
+                      </div>
+                      <div className="text-xs text-gray-500 uppercase tracking-wide">
+                        Minutos
+                      </div>
+                    </div>
+                    <div className="text-center">
+                      <div className="text-2xl font-bold text-olive-600">
+                        💕
+                      </div>
+                      <div className="text-xs text-gray-500 uppercase tracking-wide">
+                        Com Amor
+                      </div>
+                    </div>
+                  </div>
                 </div>
               )}
             </div>
