@@ -21,7 +21,40 @@ const SpotifyPlaylist = () => {
   const [isAdding, setIsAdding] = useState(false);
   const [showSuccess, setShowSuccess] = useState(false);
   const [showError, setShowError] = useState(false);
+  const [successMessage, setSuccessMessage] = useState('');
   const [errorMessage, setErrorMessage] = useState('');
+  
+  // Mensagens de sucesso variadas e divertidas
+  const getSuccessMessage = (action = 'default') => {
+    const messages = {
+      songAdded: [
+        '🎵 Música adicionada com amor!',
+        '💕 Sua música está na nossa playlist!',
+        '🎶 Que escolha maravilhosa!',
+        '✨ Música perfeita para nosso grande dia!',
+        '💃 Essa vai animar a festa!',
+        '🕺 Vai ser linda na nossa celebração!'
+      ],
+      playlist: [
+        '📋 Playlist copiada para área de transferência!',
+        '🔗 Link compartilhado com sucesso!',
+        '💌 Playlist pronta para compartilhar!'
+      ],
+      login: [
+        '🎉 Bem-vindo(a) à nossa playlist!',
+        '💚 Login realizado com sucesso!',
+        '🎵 Agora você pode adicionar músicas!'
+      ],
+      default: [
+        '✨ Tudo certo por aqui!',
+        '💕 Obrigado por participar!',
+        '🎊 Sucesso total!'
+      ]
+    };
+    
+    const messageList = messages[action] || messages.default;
+    return messageList[Math.floor(Math.random() * messageList.length)];
+  };
   const [playlistUrl, setPlaylistUrl] = useState('');
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [isCheckingAuth, setIsCheckingAuth] = useState(true);
@@ -132,6 +165,7 @@ const SpotifyPlaylist = () => {
       if (response.ok) {
         setPlaylistTracks(prev => [...prev, track]);
         setSearchResults(prev => prev.filter(t => t.uri !== track.uri));
+        setSuccessMessage(getSuccessMessage('songAdded'));
         setShowSuccess(true);
         setTimeout(() => setShowSuccess(false), 3000);
       } else {
@@ -187,6 +221,7 @@ const SpotifyPlaylist = () => {
       });
     } else if (navigator.clipboard) {
       navigator.clipboard.writeText(url);
+      setSuccessMessage(getSuccessMessage('playlist'));
       setShowSuccess(true);
       setTimeout(() => setShowSuccess(false), 3000);
     }
@@ -228,6 +263,7 @@ const SpotifyPlaylist = () => {
         const error = urlParams.get('error');
         
         if (success === 'authenticated') {
+          setSuccessMessage(getSuccessMessage('login'));
           setShowSuccess(true);
           setTimeout(() => setShowSuccess(false), 3000);
           window.history.replaceState({}, '', '/playlist');
@@ -329,7 +365,7 @@ const SpotifyPlaylist = () => {
             className="fixed top-20 left-1/2 transform -translate-x-1/2 z-50 bg-green-500 text-white px-6 py-3 rounded-full shadow-lg flex items-center gap-2"
           >
             <FaCheck className="w-4 h-4" />
-            <span>Operação realizada com sucesso!</span>
+            <span>{successMessage || getSuccessMessage()}</span>
           </motion.div>
         )}
       </AnimatePresence>
