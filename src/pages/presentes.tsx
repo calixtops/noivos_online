@@ -82,6 +82,23 @@ const Presentes = () => {
   const [showModal, setShowModal] = useState(false);
   const [selectedGift, setSelectedGift] = useState(null);
   const [isClient, setIsClient] = useState(false);
+  const [copyFeedback, setCopyFeedback] = useState({ show: false, message: '' });
+  
+  // Função para copiar com feedback
+  const handleCopyPix = async () => {
+    try {
+      await navigator.clipboard.writeText(pixCode);
+      setCopyFeedback({ show: true, message: '✅ Chave PIX copiada!' });
+      setTimeout(() => {
+        setCopyFeedback({ show: false, message: '' });
+      }, 3000);
+    } catch (error) {
+      setCopyFeedback({ show: true, message: '❌ Erro ao copiar. Tente novamente.' });
+      setTimeout(() => {
+        setCopyFeedback({ show: false, message: '' });
+      }, 3000);
+    }
+  };
   
   const { searchTerm, setSearchTerm, priceFilter, setPriceFilter, sortBy, setSortBy, filteredAndSortedGifts } = useGiftFilters();
   const { currentPage, totalPages, paginatedItems, handlePageChange, setCurrentPage } = usePagination(filteredAndSortedGifts);
@@ -417,7 +434,7 @@ const Presentes = () => {
                     <span className="font-mono text-olive-700 font-bold flex-1 text-xs sm:text-sm break-all">{pixCode}</span>
                     <button
                       className="bg-olive-600 hover:bg-olive-700 text-cream px-2 sm:px-3 lg:px-4 py-1.5 sm:py-2 rounded-lg font-semibold transition-all shadow-lg hover:shadow-xl flex items-center gap-1 sm:gap-2 text-xs sm:text-sm w-full sm:w-auto whitespace-nowrap"
-                      onClick={() => navigator.clipboard.writeText(pixCode)}
+                      onClick={handleCopyPix}
                     >
                       📋 Copiar
                     </button>
@@ -472,7 +489,7 @@ const Presentes = () => {
                     <span className="font-mono text-olive-700 font-bold break-all text-base flex-1">{pixCode}</span>
                     <button
                       className="bg-olive-600 hover:bg-olive-700 text-white px-6 py-3 rounded-xl font-semibold transition-all shadow-lg hover:shadow-xl whitespace-nowrap text-base"
-                      onClick={() => navigator.clipboard.writeText(pixCode)}
+                      onClick={handleCopyPix}
                     >
                       📋 Copiar
                     </button>
@@ -500,6 +517,15 @@ const Presentes = () => {
           </div>
         </div>
       </main>
+
+      {/* Toast de feedback para cópia */}
+      {copyFeedback.show && (
+        <div className="fixed bottom-6 right-6 z-50 bg-white shadow-2xl rounded-xl p-4 border border-gray-200 animate-slide-up">
+          <div className="flex items-center gap-3">
+            <span className="text-sm font-medium text-gray-800">{copyFeedback.message}</span>
+          </div>
+        </div>
+      )}
 
       <Footer />
     </div>
