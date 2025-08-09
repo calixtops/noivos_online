@@ -22,17 +22,6 @@ const Header = () => {
 
   const toggleMenu = () => setIsMenuOpen(!isMenuOpen);
 
-  // Componente do player com proteção total contra hidratação
-  const MusicPlayerComponent = ({ isMobile = false }) => {
-    // Aguarda hidratação completa antes de renderizar
-    if (!isClient) {
-      return null;
-    }
-    
-    // Sempre usa MinimalMusicPlayer
-    return <MinimalMusicPlayer isMobile={isMobile} />;
-  };
-
   // Detectar scroll para mudar estilo do header
   useEffect(() => {
     const handleScroll = () => {
@@ -134,13 +123,13 @@ const Header = () => {
 
           {/* Desktop Music Player */}
           <div className="hidden lg:block flex-shrink-0 flex items-center gap-2">
-            <MusicPlayerComponent isMobile={false} />
+            {isClient && <MinimalMusicPlayer isMobile={false} />}
           </div>
 
           {/* Mobile Controls */}
           <div className="lg:hidden flex items-center gap-2">
             {/* Mobile Music Player */}
-            <MusicPlayerComponent isMobile={true} />
+            {isClient && <MinimalMusicPlayer isMobile={true} />}
             
             {/* Mobile Menu Button */}
             <motion.button

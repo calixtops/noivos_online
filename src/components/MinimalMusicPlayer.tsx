@@ -1,5 +1,5 @@
 import React, { useState, useRef, useEffect } from 'react';
-import { FaPlay, FaPause, FaStepBackward, FaStepForward, FaChevronDown, FaChevronUp, FaMusic } from 'react-icons/fa';
+import { FaPlay, FaPause, FaStepBackward, FaStepForward, FaChevronDown, FaChevronUp, FaMusic, FaTimes } from 'react-icons/fa';
 import { useAudio } from '../contexts/AudioContext';
 import { useClientOnly } from '../hooks/useClientOnly';
 
@@ -35,6 +35,35 @@ const MinimalMusicPlayer: React.FC<MinimalMusicPlayerProps> = ({ isMobile = fals
     };
   }, []);
 
+  // Fechar com tecla ESC
+  useEffect(() => {
+    const handleEscKey = (e) => {
+      if (e.key === 'Escape' && (isExpanded || isHovered)) {
+        setIsExpanded(false);
+        setIsHovered(false);
+      }
+    };
+
+    document.addEventListener('keydown', handleEscKey);
+    return () => document.removeEventListener('keydown', handleEscKey);
+  }, [isExpanded, isHovered]);
+
+  // Fechar clicando fora do componente
+  useEffect(() => {
+    const handleClickOutside = (e) => {
+      if (isExpanded || isHovered) {
+        const musicPlayer = e.target.closest('[data-music-player]');
+        if (!musicPlayer) {
+          setIsExpanded(false);
+          setIsHovered(false);
+        }
+      }
+    };
+
+    document.addEventListener('mousedown', handleClickOutside);
+    return () => document.removeEventListener('mousedown', handleClickOutside);
+  }, [isExpanded, isHovered]);
+
   // Renderização condicional após todos os hooks
   if (!isClient || isLoading) {
     return null;
@@ -50,10 +79,14 @@ const MinimalMusicPlayer: React.FC<MinimalMusicPlayerProps> = ({ isMobile = fals
   const handleMouseLeave = () => {
     timeoutRef.current = setTimeout(() => {
       setIsHovered(false);
-      if (!isExpanded) {
-        // Auto-collapse se não estiver fixo
-      }
     }, 1500);
+  };
+
+  const handleCloseHover = () => {
+    if (timeoutRef.current) {
+      clearTimeout(timeoutRef.current);
+    }
+    setIsHovered(false);
   };
 
   const toggleExpanded = () => {
@@ -62,7 +95,8 @@ const MinimalMusicPlayer: React.FC<MinimalMusicPlayerProps> = ({ isMobile = fals
 
   return (
     <div 
-      className={`relative ${isMobile ? 'z-40' : 'z-50'}`}
+      className="relative z-[60]"
+      data-music-player
       onMouseEnter={handleMouseEnter}
       onMouseLeave={handleMouseLeave}
     >
@@ -104,6 +138,20 @@ const MinimalMusicPlayer: React.FC<MinimalMusicPlayerProps> = ({ isMobile = fals
           {/* Controles rápidos aparecem no hover - mais visíveis */}
           {isHovered && (
             <div className="absolute top-14 right-0 bg-white/98 backdrop-blur-md rounded-xl shadow-2xl border-2 border-stone-200 p-3 transform transition-all duration-200 opacity-100 translate-y-0 min-w-[140px]">
+              {/* Botão de fechar */}
+              <div className="flex justify-end mb-2">
+                <button
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    handleCloseHover();
+                  }}
+                  className="p-1 rounded-full hover:bg-stone-100 text-stone-400 hover:text-stone-600 transition-colors"
+                  aria-label="Fechar"
+                >
+                  <FaTimes className="w-3 h-3" />
+                </button>
+              </div>
+              
               <div className="flex items-center justify-center gap-2">
                 <button
                   onClick={(e) => {
@@ -163,13 +211,22 @@ const MinimalMusicPlayer: React.FC<MinimalMusicPlayerProps> = ({ isMobile = fals
               <FaMusic className="w-4 h-4 text-olive-500" />
               <span className="text-sm font-medium text-olive-700">Música Ambiente</span>
             </div>
-            <button
-              onClick={toggleExpanded}
-              className="p-1.5 rounded-lg hover:bg-olive-100 text-olive-500 transition-colors"
-              aria-label="Recolher"
-            >
-              <FaChevronUp className="w-3 h-3" />
-            </button>
+            <div className="flex items-center gap-1">
+              <button
+                onClick={toggleExpanded}
+                className="p-1.5 rounded-lg hover:bg-olive-100 text-olive-500 transition-colors"
+                aria-label="Recolher"
+              >
+                <FaChevronUp className="w-3 h-3" />
+              </button>
+              <button
+                onClick={toggleExpanded}
+                className="p-1.5 rounded-lg hover:bg-red-100 text-red-500 transition-colors"
+                aria-label="Fechar"
+              >
+                <FaTimes className="w-3 h-3" />
+              </button>
+            </div>
           </div>
 
           {/* Informações da música */}
