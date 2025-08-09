@@ -64,7 +64,8 @@ module.exports = {
         script: ['"Dancing Script"', 'cursive'],
         elegant: ['"Cormorant Garamond"', '"Playfair Display"', 'serif'],
         classic: ['"Crimson Text"', '"Times New Roman"', 'serif'],
-        formal: ['"Libre Baskerville"', '"Georgia"', 'serif']
+        formal: ['"Libre Baskerville"', '"Georgia"', 'serif'],
+        forum: ['"Forum"', 'cursive']
       },
       backgroundImage: {
         'gradient-radial': 'radial-gradient(var(--tw-gradient-stops))',

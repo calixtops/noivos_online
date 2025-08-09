@@ -12,6 +12,42 @@ interface Track {
   duration: string;
 }
 
+// Mensagens de sucesso fora do componente para evitar re-criação
+const SUCCESS_MESSAGES = {
+  songAdded: [
+    '🎵 Música adicionada com amor!',
+    '💕 Sua música está na nossa playlist!',
+    '🎶 Que escolha maravilhosa!',
+    '✨ Música perfeita para nosso grande dia!',
+    '💃 Essa vai animar a festa!',
+    '🕺 Vai ser linda na nossa celebração!'
+  ],
+  playlist: [
+    '📋 Playlist copiada para área de transferência!',
+    '🔗 Link compartilhado com sucesso!',
+    '💌 Playlist pronta para compartilhar!'
+  ],
+  login: [
+    '🎉 Bem-vindo(a) à nossa playlist!',
+    '💚 Login realizado com sucesso!',
+    '🎵 Agora você pode adicionar músicas!'
+  ],
+  default: [
+    '✨ Tudo certo por aqui!',
+    '💕 Obrigado por participar!',
+    '🎊 Sucesso total!'
+  ]
+};
+
+const getSuccessMessage = (action = 'default') => {
+  const messageList = SUCCESS_MESSAGES[action] || SUCCESS_MESSAGES.default;
+  return messageList[Math.floor(Math.random() * messageList.length)];
+};
+
+// Constantes da playlist fora do componente
+const PLAYLIST_ID = '4Oj7QSgRJ1IbwlNblrhcFu';
+const PLAYLIST_NAME = 'Geórgia & Pedro - Nosso Casamento';
+
 const SpotifyPlaylist = () => {
   const isClient = useClientOnly();
   const [searchQuery, setSearchQuery] = useState('');
@@ -23,51 +59,15 @@ const SpotifyPlaylist = () => {
   const [showError, setShowError] = useState(false);
   const [successMessage, setSuccessMessage] = useState('');
   const [errorMessage, setErrorMessage] = useState('');
-  
-  // Mensagens de sucesso variadas e divertidas
-  const getSuccessMessage = (action = 'default') => {
-    const messages = {
-      songAdded: [
-        '🎵 Música adicionada com amor!',
-        '💕 Sua música está na nossa playlist!',
-        '🎶 Que escolha maravilhosa!',
-        '✨ Música perfeita para nosso grande dia!',
-        '💃 Essa vai animar a festa!',
-        '🕺 Vai ser linda na nossa celebração!'
-      ],
-      playlist: [
-        '📋 Playlist copiada para área de transferência!',
-        '🔗 Link compartilhado com sucesso!',
-        '💌 Playlist pronta para compartilhar!'
-      ],
-      login: [
-        '🎉 Bem-vindo(a) à nossa playlist!',
-        '💚 Login realizado com sucesso!',
-        '🎵 Agora você pode adicionar músicas!'
-      ],
-      default: [
-        '✨ Tudo certo por aqui!',
-        '💕 Obrigado por participar!',
-        '🎊 Sucesso total!'
-      ]
-    };
-    
-    const messageList = messages[action] || messages.default;
-    return messageList[Math.floor(Math.random() * messageList.length)];
-  };
   const [playlistUrl, setPlaylistUrl] = useState('');
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [isCheckingAuth, setIsCheckingAuth] = useState(true);
   const [isLoading, setIsLoading] = useState(true);
   const [isExpanded, setIsExpanded] = useState(false);
 
-  // Playlist do casamento
-  const PLAYLIST_ID = '4Oj7QSgRJ1IbwlNblrhcFu';
-  const PLAYLIST_NAME = 'Geórgia & Pedro - Nosso Casamento';
-
   // Hook para busca dinâmica com debounce
   useEffect(() => {
-    if (!searchQuery.trim()) {
+    if (!isClient || !searchQuery.trim()) {
       setSearchResults([]);
       return;
     }
@@ -78,7 +78,7 @@ const SpotifyPlaylist = () => {
     }, 500);
 
     return () => clearTimeout(timeoutId);
-  }, [searchQuery, isClient]);
+  }, [searchQuery]);
 
   // Buscar músicas no Spotify (versão otimizada para busca dinâmica)
   const searchSpotify = async (query: string) => {
@@ -129,7 +129,7 @@ const SpotifyPlaylist = () => {
       const authCheck = await fetch('/api/spotify/check-auth');
       const authData = await authCheck.json();
       
-      console.log('🔍 Pre-add auth check:', authData);
+      // Pre-add auth check
       
       if (!authData.authenticated) {
         setIsAuthenticated(false);
@@ -247,15 +247,11 @@ const SpotifyPlaylist = () => {
       const response = await fetch('/api/spotify/check-auth');
       const data = await response.json();
       
-      // Debug info no console
-      console.log('🔍 Auth check result:', data);
+      // Auth check completed
       
       setIsAuthenticated(data.authenticated);
       
-      // Se não autenticado, mostrar razão no console
-      if (!data.authenticated && data.reason) {
-        console.log('❌ Not authenticated:', data.reason, data.debug);
-      }
+      // Auth status checked
     } catch (error) {
       console.error('Erro ao verificar autenticação:', error);
       setIsAuthenticated(false);
@@ -289,7 +285,6 @@ const SpotifyPlaylist = () => {
           window.history.replaceState({}, '', '/playlist');
           // Re-verificar autenticação após login bem-sucedido com delay maior
           setTimeout(() => {
-            console.log('🔄 Re-checking auth after login...');
             checkAuth();
           }, 1500);
         }

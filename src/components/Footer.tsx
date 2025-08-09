@@ -1,6 +1,29 @@
 import { motion } from 'framer-motion';
 import { FaHeart, FaInstagram, FaWhatsapp, FaMapMarkerAlt } from 'react-icons/fa';
 
+// Constantes de animação para evitar problemas de Fast Refresh
+const heartAnimateProps = {
+  scale: [1, 1.2, 1],
+  rotate: [0, 5, -5, 0]
+};
+
+const heartTransitionProps = {
+  duration: 2,
+  repeat: Infinity,
+  repeatDelay: 3
+};
+
+const heartSpanAnimateProps = {
+  scale: [1, 1.3, 1],
+  rotate: [0, 10, -10, 0]
+};
+
+const heartSpanTransitionProps = {
+  duration: 1.5,
+  repeat: Infinity,
+  repeatDelay: 2
+};
+
 const Footer = () => {
   const currentYear = new Date().getFullYear();
 
@@ -17,7 +40,7 @@ const Footer = () => {
             transition={{ duration: 0.6 }}
             viewport={{ once: true }}
           >
-            <h3 className="text-2xl font-serif font-bold text-gray-800 mb-2">
+            <h3 className="text-2xl font-forum font-bold text-gray-800 mb-2">
               Geórgia & Pedro
             </h3>
             <p className="text-gray-600">06 de Junho de 2026</p>
@@ -29,15 +52,8 @@ const Footer = () => {
               viewport={{ once: true }}
             >
               <motion.div
-                animate={{ 
-                  scale: [1, 1.2, 1],
-                  rotate: [0, 5, -5, 0]
-                }}
-                transition={{ 
-                  duration: 2,
-                  repeat: Infinity,
-                  repeatDelay: 3
-                }}
+                animate={heartAnimateProps}
+                transition={heartTransitionProps}
               >
                 <FaHeart className="text-rose-500 text-xl mx-2" />
               </motion.div>
@@ -145,19 +161,11 @@ const Footer = () => {
               Feito com 
               <motion.span
                 className="mx-2"
-                animate={{ 
-                  scale: [1, 1.3, 1],
-                  rotate: [0, 10, -10, 0]
-                }}
-                transition={{ 
-                  duration: 1.5,
-                  repeat: Infinity,
-                  repeatDelay: 2
-                }}
+                animate={heartSpanAnimateProps}
+                transition={heartSpanTransitionProps}
               >
                 <FaHeart className="text-rose-500" />
               </motion.span>
-              para nosso amor
             </motion.p>
           </div>
         </motion.div>

@@ -24,15 +24,12 @@ const Header = () => {
 
   // Componente do player com proteção total contra hidratação
   const MusicPlayerComponent = ({ isMobile = false }) => {
-    console.log('🎛️ MusicPlayerComponent renderizado', { isClient, isMobile });
-    
     // Aguarda hidratação completa antes de renderizar
     if (!isClient) {
       return null;
     }
     
     // Sempre usa MinimalMusicPlayer
-    console.log('🎵 Usando MinimalMusicPlayer');
     return <MinimalMusicPlayer isMobile={isMobile} />;
   };
 

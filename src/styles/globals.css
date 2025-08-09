@@ -22,6 +22,12 @@ body {
   text-size-adjust: 100%;
 }
 
+/* Garantir que a fonte Forum seja carregada corretamente */
+.font-forum {
+  font-family: 'Forum', cursive;
+  font-display: swap; /* Evita FOIT (Flash of Invisible Text) */
+}
+
 a {
   color: inherit;
   text-decoration: none;

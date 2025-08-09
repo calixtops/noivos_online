@@ -24,15 +24,12 @@ const Header = () => {
 
   // Componente do player com proteção total contra hidratação
   const MusicPlayerComponent = ({ isMobile = false }) => {
-    console.log('🎛️ MusicPlayerComponent renderizado', { isClient, isMobile });
-    
     // Aguarda hidratação completa antes de renderizar
     if (!isClient) {
       return null;
     }
     
     // Sempre usa MinimalMusicPlayer
-    console.log('🎵 Usando MinimalMusicPlayer');
     return <MinimalMusicPlayer isMobile={isMobile} />;
   };
 
@@ -85,8 +82,8 @@ const Header = () => {
                   <FaHeart className="w-5 h-5 sm:w-6 sm:h-6" />
                 </div>
                 <div className="hidden sm:block">
-                  <h1 className="text-xl lg:text-2xl font-bold bg-gradient-to-r from-olive-600 to-olive-800 bg-clip-text text-transparent">
-                    Pedro & Georgia
+                  <h1 className="text-xl lg:text-2xl font-forum font-bold bg-gradient-to-r from-olive-600 to-olive-800 bg-clip-text text-transparent">
+                    Geórgia & Pedro
                   </h1>
                   <div className="flex items-center gap-2">
                     <motion.div 

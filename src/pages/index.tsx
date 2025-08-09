@@ -2,9 +2,8 @@ import Head from 'next/head';
 import Header from '../components/Header';
 import Footer from '../components/Footer';
 import Countdown from '../components/Countdown';
-import { FaHeart, FaCalendarAlt, FaSpotify, FaMusic, FaUsers, FaArrowRight } from 'react-icons/fa';
+import { FaHeart, FaCalendarAlt } from 'react-icons/fa';
 import { motion } from 'framer-motion';
-import Link from 'next/link';
 
 const Home = () => {
   return (
@@ -32,19 +31,19 @@ const Home = () => {
                 {/* Nomes principais - Responsivo */}
                 <div className="mb-8">
                   {/* Versão Desktop */}
-                  <h1 className="hidden sm:block font-script text-6xl sm:text-7xl lg:text-8xl text-olive-800 leading-tight">
+                  <h1 className="hidden sm:block font-forum text-6xl sm:text-7xl lg:text-8xl text-olive-800 leading-tight">
                     Geórgia & Pedro
                   </h1>
                   
                   {/* Versão Mobile */}
                   <div className="block sm:hidden text-center">
-                    <h1 className="font-script text-4xl text-olive-800 leading-tight">
+                    <h1 className="font-forum text-4xl text-olive-800 leading-tight">
                       Geórgia
                     </h1>
-                    <div className="font-script text-3xl text-olive-600 my-2">
+                    <div className="font-forum text-3xl text-olive-600 my-2">
                       &
                     </div>
-                    <h1 className="font-script text-4xl text-olive-800 leading-tight">
+                    <h1 className="font-forum text-4xl text-olive-800 leading-tight">
                       Pedro
                     </h1>
                   </div>
@@ -107,9 +106,6 @@ const Home = () => {
                   <p className="text-olive-700 font-semibold text-lg">16:00h</p>
                   <p className="text-stone-600 font-medium">Casa Branca Eventos</p>
                   <p className="text-stone-600">Aquiraz - CE</p>
-                  <div className="mt-4 pt-4 border-t border-olive-200">
-                    <p className="text-stone-500 text-sm">União das almas</p>
-                  </div>
                 </div>
               </div>
 
@@ -123,9 +119,6 @@ const Home = () => {
                   <p className="text-olive-700 font-semibold text-lg">18:00h</p>
                   <p className="text-stone-600 font-medium">Mesmo local</p>
                   <p className="text-stone-600">Jantar & Festa</p>
-                  <div className="mt-4 pt-4 border-t border-olive-200">
-                    <p className="text-stone-500 text-sm">Celebração da vida</p>
-                  </div>
                 </div>
               </div>
             </div>
@@ -197,138 +190,13 @@ const Home = () => {
                 href="/playlist"
                 className="border-2 border-cream-200 text-cream-100 px-8 py-4 rounded-full font-semibold hover:bg-cream-100 hover:text-olive-800 transition-all duration-300 text-center"
               >
-                🎵 Contribuir na Playlist
+                🎵 Contribuir para a Playlist
               </a>
             </div>
           </div>
         </section>
 
-        {/* Playlist Colaborativa Section */}
-        <section className="py-20 bg-gradient-to-br from-green-50 via-olive-50 to-green-50 relative overflow-hidden">
-          {/* Elementos decorativos de fundo */}
-          <div className="absolute inset-0 opacity-5">
-            <div className="absolute top-10 left-10 w-32 h-32 bg-green-400 rounded-full blur-3xl"></div>
-            <div className="absolute bottom-20 right-20 w-40 h-40 bg-olive-400 rounded-full blur-3xl"></div>
-            <div className="absolute top-1/2 left-1/3 w-24 h-24 bg-green-300 rounded-full blur-2xl"></div>
-          </div>
-          
-          <div className="container mx-auto px-4 sm:px-6 lg:px-8 relative">
-            <div className="max-w-4xl mx-auto">
-              {/* Header da Seção */}
-              <motion.div 
-                className="text-center mb-12"
-                initial={{ opacity: 0, y: 30 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                transition={{ duration: 0.6 }}
-              >
-                <div className="flex items-center justify-center gap-4 mb-6">
-                  <div className="relative">
-                    <FaSpotify className="text-5xl text-green-500" />
-                    <motion.div
-                      className="absolute -top-1 -right-1 w-4 h-4 bg-green-400 rounded-full"
-                      animate={{ scale: [1, 1.2, 1] }}
-                      transition={{ duration: 2, repeat: Infinity }}
-                    />
-                  </div>
-                  <h2 className="font-serif text-4xl sm:text-5xl text-olive-800">
-                    Nossa Playlist Colaborativa
-                  </h2>
-                </div>
-                
-                <p className="text-xl text-gray-600 max-w-3xl mx-auto leading-relaxed">
-                  Ajude-nos a criar a trilha sonora perfeita para nossa celebração! 
-                  Contribua com suas músicas favoritas e faça parte da nossa playlist especial.
-                </p>
-              </motion.div>
 
-              {/* Cards de Benefícios */}
-              <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mb-12">
-                <motion.div
-                  className="bg-white/80 backdrop-blur-sm rounded-2xl p-6 shadow-lg border border-green-200 text-center"
-                  initial={{ opacity: 0, y: 30 }}
-                  whileInView={{ opacity: 1, y: 0 }}
-                  viewport={{ once: true }}
-                  transition={{ duration: 0.6, delay: 0.1 }}
-                >
-                  <div className="w-16 h-16 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-4">
-                    <FaUsers className="text-2xl text-green-600" />
-                  </div>
-                  <h3 className="text-xl font-semibold text-gray-800 mb-3">Colaboração</h3>
-                  <p className="text-gray-600">
-                    Todos podem contribuir com suas músicas favoritas para criar uma playlist única
-                  </p>
-                </motion.div>
-
-                <motion.div
-                  className="bg-white/80 backdrop-blur-sm rounded-2xl p-6 shadow-lg border border-green-200 text-center"
-                  initial={{ opacity: 0, y: 30 }}
-                  whileInView={{ opacity: 1, y: 0 }}
-                  viewport={{ once: true }}
-                  transition={{ duration: 0.6, delay: 0.2 }}
-                >
-                  <div className="w-16 h-16 bg-olive-100 rounded-full flex items-center justify-center mx-auto mb-4">
-                    <FaMusic className="text-2xl text-olive-600" />
-                  </div>
-                  <h3 className="text-xl font-semibold text-gray-800 mb-3">Diversidade</h3>
-                  <p className="text-gray-600">
-                    Músicas de diferentes estilos e épocas para agradar a todos os convidados
-                  </p>
-                </motion.div>
-
-                <motion.div
-                  className="bg-white/80 backdrop-blur-sm rounded-2xl p-6 shadow-lg border border-green-200 text-center"
-                  initial={{ opacity: 0, y: 30 }}
-                  whileInView={{ opacity: 1, y: 0 }}
-                  viewport={{ once: true }}
-                  transition={{ duration: 0.6, delay: 0.3 }}
-                >
-                  <div className="w-16 h-16 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-4">
-                    <FaSpotify className="text-2xl text-green-600" />
-                  </div>
-                  <h3 className="text-xl font-semibold text-gray-800 mb-3">Spotify</h3>
-                  <p className="text-gray-600">
-                    Integração completa com o Spotify para uma experiência musical perfeita
-                  </p>
-                </motion.div>
-              </div>
-
-              {/* Call to Action Principal */}
-              <motion.div
-                className="text-center"
-                initial={{ opacity: 0, scale: 0.9 }}
-                whileInView={{ opacity: 1, scale: 1 }}
-                viewport={{ once: true }}
-                transition={{ duration: 0.6, delay: 0.4 }}
-              >
-                <div className="bg-gradient-to-r from-green-500 to-olive-600 rounded-3xl p-8 shadow-2xl">
-                  <h3 className="text-2xl sm:text-3xl font-bold text-white mb-4">
-                    Faça Parte da Nossa História Musical
-                  </h3>
-                  <p className="text-green-100 text-lg mb-8 max-w-2xl mx-auto">
-                    Conecte-se com o Spotify e adicione suas músicas favoritas à nossa playlist colaborativa. 
-                    Cada música será uma lembrança especial de quem você é para nós.
-                  </p>
-                  
-                  <Link href="/playlist">
-                    <motion.button
-                      className="group bg-white text-green-600 px-8 py-4 rounded-full font-bold text-lg shadow-lg hover:shadow-xl transition-all duration-300 flex items-center gap-3 mx-auto"
-                      whileHover={{ scale: 1.05 }}
-                      whileTap={{ scale: 0.95 }}
-                    >
-                      <FaSpotify className="text-xl" />
-                      <span>Participar da Playlist</span>
-                      <FaArrowRight className="text-lg group-hover:translate-x-1 transition-transform duration-300" />
-                    </motion.button>
-                  </Link>
-                </div>
-              </motion.div>
-            </div>
-          </div>
-          
-          {/* Transição elegante para o footer */}
-          <div className="absolute bottom-0 left-0 right-0 h-20 bg-gradient-to-b from-transparent to-white/30 pointer-events-none"></div>
-        </section>
 
       </main>
 

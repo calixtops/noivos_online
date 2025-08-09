@@ -35,18 +35,8 @@ const MinimalMusicPlayer: React.FC<MinimalMusicPlayerProps> = ({ isMobile = fals
     };
   }, []);
 
-  // Verificações condicionais após todos os hooks
-  console.log('🎵 MinimalMusicPlayer renderizado:', { 
-    isClient, 
-    isHydrated, 
-    isLoading, 
-    musicCount, 
-    currentTrackName,
-    isPlaying 
-  });
-  
-  // Renderização condicional sem early return
-  if (!isClient || !isHydrated || isLoading) {
+  // Renderização condicional após todos os hooks
+  if (!isClient || isLoading) {
     return null;
   }
 
@@ -81,10 +71,7 @@ const MinimalMusicPlayer: React.FC<MinimalMusicPlayerProps> = ({ isMobile = fals
         <div className="relative">
           {/* Botão principal - mais visível */}
           <button
-            onClick={() => {
-              console.log('🎵 MinimalMusicPlayer: Botão principal clicado');
-              togglePlay();
-            }}
+            onClick={togglePlay}
             className={`
               relative w-12 h-12 rounded-full transition-all duration-300 ease-out shadow-lg
               ${isPlaying 
@@ -121,7 +108,6 @@ const MinimalMusicPlayer: React.FC<MinimalMusicPlayerProps> = ({ isMobile = fals
                 <button
                   onClick={(e) => {
                     e.stopPropagation();
-                    console.log('⏮️ MinimalMusicPlayer: Anterior clicado');
                     previousTrack();
                   }}
                   className="p-2 rounded-lg hover:bg-olive-100 text-olive-600 transition-colors active:scale-95"
@@ -133,7 +119,6 @@ const MinimalMusicPlayer: React.FC<MinimalMusicPlayerProps> = ({ isMobile = fals
                 <button
                   onClick={(e) => {
                     e.stopPropagation();
-                    console.log('⏭️ MinimalMusicPlayer: Próxima clicado');
                     nextTrack();
                   }}
                   className="p-2 rounded-lg hover:bg-olive-100 text-olive-600 transition-colors active:scale-95"
@@ -147,7 +132,6 @@ const MinimalMusicPlayer: React.FC<MinimalMusicPlayerProps> = ({ isMobile = fals
                 <button
                   onClick={(e) => {
                     e.stopPropagation();
-                    console.log('🔽 MinimalMusicPlayer: Expandir clicado');
                     toggleExpanded();
                   }}
                   className="p-2 rounded-lg hover:bg-olive-100 text-olive-600 transition-colors active:scale-95"
