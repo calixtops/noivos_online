@@ -777,9 +777,9 @@ const SpotifyPlaylist = () => {
                       <div className="text-2xl font-bold text-olive-600">
                         💕
                       </div>
-                      <div className="text-xs text-gray-500 uppercase tracking-wide">
+                      {/* <div className="text-xs text-gray-500 uppercase tracking-wide">
                         Com Amor
-                      </div>
+                      </div> */}
                     </div>
                   </div>
                 </div>

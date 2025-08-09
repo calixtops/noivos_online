@@ -3,7 +3,7 @@ import Header from '../components/Header';
 import Footer from '../components/Footer';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useState, useRef, useEffect } from 'react';
-import { FaCalendarAlt, FaMapMarkerAlt, FaHeart, FaBed, FaRoute } from 'react-icons/fa';
+import { FaCalendarAlt, FaMapMarkerAlt, FaHeart, FaBed, FaRoute, FaUmbrella, FaCar, FaSun } from 'react-icons/fa';
 
 const Programacao = () => {
   const [activeTab, setActiveTab] = useState(0);
@@ -137,6 +137,15 @@ const Programacao = () => {
                           </div>
                         </div>
 
+                        <div className="flex items-start gap-3">
+                          <FaCar className="text-olive-600 text-lg mt-1 flex-shrink-0" />
+                          <div>
+                            <p className="font-medium text-olive-800">Distância</p>
+                            <p className="text-stone-600">50 minutos de Fortaleza</p>
+                            <p className="text-stone-500 text-sm">Considere hospedagem na região</p>
+                          </div>
+                        </div>
+
                         <div className="pt-4">
                           <a
                             href="https://maps.app.goo.gl/jWucTajJeoit49hY8"
@@ -205,9 +214,85 @@ const Programacao = () => {
                   </div>
                 </motion.div>
               )}
+
+
             </AnimatePresence>
           </div>
         </section>
+
+        {/* 
+        DICAS SUTIS PARA O EVENTO - COMENTADO TEMPORARIAMENTE
+        
+        <section className="py-12 px-6 bg-gradient-to-br from-cream-50 to-olive-50">
+          <div className="max-w-4xl mx-auto">
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.6 }}
+              viewport={{ once: true }}
+              className="text-center mb-8"
+            >
+              <h2 className="font-serif text-xl sm:text-2xl text-olive-800 mb-3">
+                Dicas para o Grande Dia
+              </h2>
+              <div className="w-16 h-0.5 bg-olive-400 rounded mx-auto"></div>
+            </motion.div>
+
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+              <motion.div
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.6, delay: 0.1 }}
+                viewport={{ once: true }}
+                className="bg-white/50 backdrop-blur-sm border border-olive-100 rounded-lg p-6 text-center"
+              >
+                <div className="w-12 h-12 bg-blue-100 rounded-full flex items-center justify-center mx-auto mb-4">
+                  <FaUmbrella className="text-blue-600 text-xl" />
+                </div>
+                <h3 className="font-medium text-olive-800 mb-3">Evento na Praia</h3>
+                <p className="text-stone-600 text-sm leading-relaxed">
+                  Roupas leves e calçados confortáveis são recomendados. 
+                  Não esqueça do protetor solar! 🌊
+                </p>
+              </motion.div>
+
+              <motion.div
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.6, delay: 0.2 }}
+                viewport={{ once: true }}
+                className="bg-white/50 backdrop-blur-sm border border-olive-100 rounded-lg p-6 text-center"
+              >
+                <div className="w-12 h-12 bg-amber-100 rounded-full flex items-center justify-center mx-auto mb-4">
+                  <FaSun className="text-amber-600 text-xl" />
+                </div>
+                <h3 className="font-medium text-olive-800 mb-3">Final de Tarde</h3>
+                <p className="text-stone-600 text-sm leading-relaxed">
+                  Traga uma pashmina para a brisa do mar. 
+                  O pôr do sol será inesquecível! 🌅
+                </p>
+              </motion.div>
+
+              <motion.div
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.6, delay: 0.3 }}
+                viewport={{ once: true }}
+                className="bg-white/50 backdrop-blur-sm border border-olive-100 rounded-lg p-6 text-center"
+              >
+                <div className="w-12 h-12 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-4">
+                  <FaCar className="text-green-600 text-xl" />
+                </div>
+                <h3 className="font-medium text-olive-800 mb-3">Chegada</h3>
+                <p className="text-stone-600 text-sm leading-relaxed">
+                  Estacionamento disponível no local. 
+                  Chegue 15 minutos antes para acomodação. 🚗
+                </p>
+              </motion.div>
+            </div>
+          </div>
+        </section>
+        */}
 
         {/* Call to Action - Estilo Clássico */}
         <section className="py-16 bg-olive-700 text-cream-50">
