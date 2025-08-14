@@ -7,13 +7,13 @@ const DynamicHeader = dynamic(() => import('./Header'), {
   loading: () => (
     <header className="bg-white/90 backdrop-blur-md sticky top-0 z-50 border-b border-olive-100/50 shadow-lg shadow-olive-100/20">
       <div className="container mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="flex justify-between items-center py-4 lg:py-6">
-          <div className="flex-shrink-0">
-            <h1 className="text-2xl sm:text-3xl lg:text-4xl font-classic text-olive-600 font-medium tracking-wide">
-              Geórgia & Pedro
+        <div className="flex items-center justify-between">
+          <div className="flex items-center space-x-4">
+            <h1 className="text-xl font-bold text-gray-800">
+              João & Maria
             </h1>
             <p className="text-xs sm:text-sm text-gray-600 mt-1 opacity-75">
-              06 de Junho de 2026
+              15 de Dezembro de 2024
             </p>
           </div>
           <div className="lg:hidden">
@@ -32,13 +32,13 @@ const SafeHeader = () => {
     return (
       <header className="bg-white/90 backdrop-blur-md sticky top-0 z-50 border-b border-olive-100/50 shadow-lg shadow-olive-100/20">
         <div className="container mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex justify-between items-center py-4 lg:py-6">
-            <div className="flex-shrink-0">
-              <h1 className="text-2xl sm:text-3xl lg:text-4xl font-classic text-olive-600 font-medium tracking-wide">
-                Geórgia & Pedro
+          <div className="flex items-center justify-between">
+            <div className="flex items-center space-x-4">
+              <h1 className="text-xl font-bold text-gray-800">
+                João & Maria
               </h1>
               <p className="text-xs sm:text-sm text-gray-600 mt-1 opacity-75">
-                06 de Junho de 2026
+                15 de Dezembro de 2024
               </p>
             </div>
           </div>

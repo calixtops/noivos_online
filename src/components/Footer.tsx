@@ -41,9 +41,9 @@ const Footer = () => {
             viewport={{ once: true }}
           >
             <h3 className="text-2xl font-forum font-bold text-gray-800 mb-2">
-              Geórgia & Pedro
+              João & Maria
             </h3>
-            <p className="text-gray-600">06 de Junho de 2026</p>
+            <p className="text-gray-600">15 de Dezembro de 2024</p>
             <motion.div 
               className="flex items-center justify-center md:justify-start mt-3"
               initial={{ scale: 0 }}
@@ -106,7 +106,7 @@ const Footer = () => {
               {/* Redes Sociais */}
               <div className="flex justify-center md:justify-end gap-4">
                 <motion.a
-                  href="https://www.instagram.com/calixtops_/"
+                  href="#"
                   target="_blank"
                   rel="noopener noreferrer"
                   className="w-10 h-10 bg-gradient-to-br from-rose-500 to-rose-600 rounded-full flex items-center justify-center text-white hover:from-rose-600 hover:to-rose-700 transition-all duration-300 shadow-lg"
@@ -117,7 +117,7 @@ const Footer = () => {
                   <FaInstagram className="text-sm" />
                 </motion.a>
                 <motion.a
-                  href="https://wa.me/qr/7VZA5YSZPPZ2A1"
+                  href="#"
                   target="_blank"
                   rel="noopener noreferrer"
                   className="w-10 h-10 bg-gradient-to-br from-green-500 to-green-600 rounded-full flex items-center justify-center text-white hover:from-green-600 hover:to-green-700 transition-all duration-300 shadow-lg"
@@ -148,7 +148,7 @@ const Footer = () => {
               transition={{ delay: 0.8, duration: 0.6 }}
               viewport={{ once: true }}
             >
-              © {currentYear} Geórgia & Pedro - Nosso Grande Dia
+              © {currentYear} João & Maria - Nosso Grande Dia
             </motion.p>
             
             <motion.p 

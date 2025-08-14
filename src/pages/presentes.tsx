@@ -6,7 +6,7 @@ import OptimizedImage from '../components/OptimizedImage';
 import { FaSearch, FaFilter, FaHeart, FaShoppingCart, FaTimes } from 'react-icons/fa';
 import gifts from '../../data/gifts.json';
 
-const pixCode = '62118595387';
+const pixCode = 'sua_chave_pix_aqui';
 
 // Hook customizado para filtros
 const useGiftFilters = () => {
@@ -148,7 +148,9 @@ const Presentes = () => {
   return (
     <div className="min-h-screen flex flex-col bg-gradient-to-br from-cream-50 via-cream-25 to-olive-50">
       <Head>
-        <title>Lista de Presentes - Pedro & Geórgia</title>
+        <title>Lista de Presentes - João & Maria</title>
+        <meta name="description" content="Lista de presentes para João e Maria - Contribua para nossa nova jornada" />
+        <meta name="viewport" content="width=device-width, initial-scale=1" />
       </Head>
 
       <Header />
@@ -226,7 +228,7 @@ const Presentes = () => {
               </span>
               <span className="hidden sm:flex items-center gap-2 bg-olive-50 px-3 py-1.5 rounded-full text-olive-700">
                 <span className="text-lg">🌿</span>
-                <span className="font-medium">Feito com amor para Pedro & Geórgia</span>
+                <span className="font-medium">Feito com amor para João & Maria</span>
               </span>
             </div>
           </div>

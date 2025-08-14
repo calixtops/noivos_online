@@ -9,8 +9,8 @@ const Home = () => {
   return (
     <div className="min-h-screen flex flex-col bg-gradient-to-br from-cream-50 via-cream-100 to-olive-50">
       <Head>
-        <title>Geórgia & Pedro - 06 de Junho de 2026</title>
-        <meta name="description" content="Celebrando o amor de Geórgia e Pedro em 06 de Junho de 2026" />
+        <title>João & Maria - 15 de Dezembro de 2026</title>
+        <meta name="description" content="Celebrando o amor de João e Maria em 15 de Dezembro de 2026" />
         <meta name="viewport" content="width=device-width, initial-scale=1" />
       </Head>
 
@@ -32,19 +32,19 @@ const Home = () => {
                 <div className="mb-8">
                   {/* Versão Desktop */}
                   <h1 className="hidden sm:block font-forum text-6xl sm:text-7xl lg:text-8xl text-olive-800 leading-tight">
-                    Geórgia & Pedro
+                    João & Maria
                   </h1>
                   
                   {/* Versão Mobile */}
                   <div className="block sm:hidden text-center">
                     <h1 className="font-forum text-4xl text-olive-800 leading-tight">
-                      Geórgia
+                      João
                     </h1>
                     <div className="font-forum text-3xl text-olive-600 my-2">
                       &
                     </div>
                     <h1 className="font-forum text-4xl text-olive-800 leading-tight">
-                      Pedro
+                      Maria
                     </h1>
                   </div>
                 </div>
@@ -65,7 +65,7 @@ const Home = () => {
                 <div className="inline-block bg-olive-100 border-2 border-olive-300 rounded-xl px-6 py-4 sm:px-10 sm:py-5 shadow-lg mb-8">
                   <div className="flex items-center gap-3 sm:gap-4 text-olive-800">
                     <FaCalendarAlt className="text-olive-600 text-lg sm:text-xl" />
-                    <span className="font-serif text-xl sm:text-2xl font-semibold">06 de Junho de 2026</span>
+                    <span className="font-serif text-xl sm:text-2xl font-semibold">15 de Dezembro de 2026</span>
                   </div>
                 </div>
 
@@ -74,7 +74,7 @@ const Home = () => {
                   <h3 className="font-serif text-lg sm:text-xl text-olive-700 mb-4">
                     Faltam apenas:
                   </h3>
-                  <Countdown targetDate="2026-06-06T16:00:00" />
+                  <Countdown targetDate="2026-12-15T16:00:00" />
                 </div>
               </div>
             </div>
@@ -104,8 +104,8 @@ const Home = () => {
                 <h3 className="font-serif text-2xl text-olive-800 mb-4">Cerimônia</h3>
                 <div className="space-y-2">
                   <p className="text-olive-700 font-semibold text-lg">16:00h</p>
-                  <p className="text-stone-600 font-medium">Casa Branca Eventos</p>
-                  <p className="text-stone-600">Aquiraz - CE</p>
+                  <p className="text-stone-600 font-medium">Espaço de Eventos</p>
+                  <p className="text-stone-600">São Paulo - SP</p>
                 </div>
               </div>
 
@@ -185,12 +185,6 @@ const Home = () => {
                 className="bg-cream-100 text-olive-800 px-8 py-4 rounded-full font-semibold hover:bg-cream-200 transition-colors duration-300 text-center shadow-lg"
               >
                 🤝 Confirmar Presença
-              </a>
-              <a
-                href="/playlist"
-                className="border-2 border-cream-200 text-cream-100 px-8 py-4 rounded-full font-semibold hover:bg-cream-100 hover:text-olive-800 transition-all duration-300 text-center"
-              >
-                🎵 Contribuir para a Playlist
               </a>
             </div>
           </div>

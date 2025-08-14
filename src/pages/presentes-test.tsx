@@ -5,7 +5,7 @@ const PresentesTest = () => {
   return (
     <div className="min-h-screen flex items-center justify-center bg-gray-50">
       <Head>
-        <title>Teste de Presentes - Pedro & Geórgia</title>
+        <title>Teste de Presentes - João & Maria</title>
       </Head>
       
       <div className="text-center">

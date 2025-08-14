@@ -1,5 +1,4 @@
 import React, { createContext, useContext, useState, useRef, useEffect, useCallback, useMemo } from 'react';
-import { useClientOnly } from '../hooks/useClientOnly';
 
 interface AudioContextType {
   isPlaying: boolean;
@@ -16,21 +15,24 @@ interface AudioContextType {
 const AudioContext = createContext<AudioContextType | null>(null);
 
 export function AudioProvider({ children }: { children: React.ReactNode }) {
-  const isClient = useClientOnly();
   const [isPlaying, setIsPlaying] = useState(false);
   const [currentTrackIndex, setCurrentTrackIndex] = useState(0);
   const [musicList, setMusicList] = useState<Array<{ file: string; name: string }>>([]);
   const [isLoading, setIsLoading] = useState(true);
+  const [isHydrated, setIsHydrated] = useState(false);
   const audioRef = useRef<HTMLAudioElement | null>(null);
 
-  // Log removido para evitar quebrar Fast Refresh
+  // Marcar como hidratado após a primeira renderização no cliente
+  useEffect(() => {
+    setIsHydrated(true);
+  }, []);
 
   // Memoizar a lista de músicas para evitar re-renderizações
   const memoizedMusicList = useMemo(() => musicList, [musicList]);
 
-  // Carrega a lista de músicas da API - só executa no cliente
+  // Carrega a lista de músicas da API - só executa no cliente após hidratação
   useEffect(() => {
-    if (!isClient || musicList.length > 0) return; // Não recarregar se já temos músicas
+    if (!isHydrated || musicList.length > 0) return; // Não recarregar se já temos músicas
     
     const loadMusicList = async () => {
       try {
@@ -64,7 +66,7 @@ export function AudioProvider({ children }: { children: React.ReactNode }) {
     };
     
     loadMusicList();
-  }, [isClient]);
+  }, [isHydrated, musicList.length]);
 
   const loadTrack = useCallback((index: number) => {
     if (memoizedMusicList.length === 0) return;
@@ -87,7 +89,7 @@ export function AudioProvider({ children }: { children: React.ReactNode }) {
   }, [memoizedMusicList, isPlaying]);
 
   const togglePlay = useCallback(() => {
-    if (memoizedMusicList.length === 0 || isLoading) {
+    if (memoizedMusicList.length === 0 || isLoading || !isHydrated) {
       return;
     }
     
@@ -104,48 +106,60 @@ export function AudioProvider({ children }: { children: React.ReactNode }) {
       audioRef.current!.pause();
       setIsPlaying(false);
     }
-  }, [memoizedMusicList, isLoading, currentTrackIndex, loadTrack]);
+  }, [memoizedMusicList, isLoading, isHydrated, currentTrackIndex, loadTrack]);
 
   const nextTrack = useCallback(() => {
-    if (memoizedMusicList.length === 0) return;
+    if (memoizedMusicList.length === 0 || !isHydrated) return;
+    
     const nextIndex = (currentTrackIndex + 1) % memoizedMusicList.length;
     setCurrentTrackIndex(nextIndex);
     loadTrack(nextIndex);
-  }, [memoizedMusicList, currentTrackIndex, loadTrack]);
+  }, [memoizedMusicList, currentTrackIndex, isHydrated, loadTrack]);
 
   const previousTrack = useCallback(() => {
-    if (memoizedMusicList.length === 0) return;
+    if (memoizedMusicList.length === 0 || !isHydrated) return;
+    
     const prevIndex = currentTrackIndex === 0 ? memoizedMusicList.length - 1 : currentTrackIndex - 1;
     setCurrentTrackIndex(prevIndex);
     loadTrack(prevIndex);
-  }, [memoizedMusicList, currentTrackIndex, loadTrack]);
+  }, [memoizedMusicList, currentTrackIndex, isHydrated, loadTrack]);
 
-  // Memoizar nome da música atual separadamente
-  const currentTrackName = useMemo(() => {
-    return memoizedMusicList[currentTrackIndex]?.name || '';
-  }, [memoizedMusicList, currentTrackIndex]);
+  // Carregar track quando o índice mudar
+  useEffect(() => {
+    if (isHydrated && memoizedMusicList.length > 0) {
+      loadTrack(currentTrackIndex);
+    }
+  }, [currentTrackIndex, memoizedMusicList, isHydrated, loadTrack]);
 
-  // Memoizar valores do contexto para evitar re-renderizações
+  // Limpar audio quando o componente for desmontado
+  useEffect(() => {
+    return () => {
+      if (audioRef.current) {
+        audioRef.current.pause();
+        audioRef.current = null;
+      }
+    };
+  }, []);
+
   const contextValue = useMemo(() => ({
     isPlaying,
     togglePlay,
-    isHydrated: isClient,
+    isHydrated,
     nextTrack,
     previousTrack,
     currentTrackIndex,
-    currentTrackName,
+    currentTrackName: memoizedMusicList[currentTrackIndex]?.name || '',
     isLoading,
     musicCount: memoizedMusicList.length
   }), [
     isPlaying,
     togglePlay,
-    isClient,
+    isHydrated,
     nextTrack,
     previousTrack,
     currentTrackIndex,
-    currentTrackName,
-    isLoading,
-    memoizedMusicList
+    memoizedMusicList,
+    isLoading
   ]);
 
   return (

@@ -83,10 +83,10 @@ const Header = () => {
                 </div>
                 <div className="hidden sm:block">
                   <h1 className="text-xl lg:text-2xl font-bold bg-gradient-to-r from-olive-600 to-olive-800 bg-clip-text text-transparent">
-                    Pedro & Georgia
+                    João & Maria
                   </h1>
                   <p className="text-sm text-olive-600/80 font-medium">
-                    06 de Junho de 2026
+                    15 de Dezembro de 2024
                   </p>
                 </div>
               </div>

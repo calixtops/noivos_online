@@ -37,6 +37,7 @@ const AdminConfirmacoes = () => {
   const [deletingId, setDeletingId] = useState<string | null>(null);
   const [showDeleteModal, setShowDeleteModal] = useState<{ id: string; name: string } | null>(null);
   const [refreshing, setRefreshing] = useState(false);
+  const [isDemo, setIsDemo] = useState(false);
 
   useEffect(() => {
     fetchConfirmacoes();
@@ -51,6 +52,7 @@ const AdminConfirmacoes = () => {
       if (data.success) {
         setConfirmacoes(data.confirmacoes);
         setStats(data.stats);
+        setIsDemo(data.demo || false);
       } else {
         setError(data.error || 'Erro ao carregar confirmações');
       }
@@ -165,7 +167,7 @@ const AdminConfirmacoes = () => {
   return (
     <div className="min-h-screen bg-gradient-to-br from-cream-50 to-olive-50 p-4">
       <Head>
-        <title>Confirmações - Admin | Pedro & Geórgia</title>
+        <title>Confirmações - Admin | João & Maria</title>
       </Head>
 
       <div className="max-w-7xl mx-auto">
@@ -174,7 +176,15 @@ const AdminConfirmacoes = () => {
             <FaHeart className="inline mr-3 text-olive-500" />
             Dashboard de Confirmações
           </h1>
-          <p className="text-stone-600 text-lg">Geórgia & Pedro - 06 de Junho de 2026</p>
+          <p className="text-stone-600 text-lg">João & Maria - 15 de Dezembro de 2024</p>
+          
+          {/* Indicador de Demonstração */}
+          {isDemo && (
+            <div className="mt-4 inline-flex items-center gap-2 bg-blue-100 border border-blue-300 text-blue-800 px-4 py-2 rounded-lg">
+              <FaExclamationTriangle className="text-blue-600" />
+              <span className="text-sm font-medium">Modo Demonstração - Dados Fictícios</span>
+            </div>
+          )}
         </header>
 
         {/* Dashboard Principal */}

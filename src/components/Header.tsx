@@ -4,13 +4,12 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { useState, useEffect } from 'react';
 import { FaBars, FaTimes, FaHeart } from 'react-icons/fa';
 import MinimalMusicPlayer from './MinimalMusicPlayer';
-import { useClientOnly } from '../hooks/useClientOnly';
 
 const Header = () => {
   const router = useRouter();
-  const isClient = useClientOnly();
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isScrolled, setIsScrolled] = useState(false);
+  const [isMounted, setIsMounted] = useState(false);
   
   const navItems = [
     { path: '/', label: 'Home', icon: '🏠' },
@@ -21,6 +20,11 @@ const Header = () => {
   ];
 
   const toggleMenu = () => setIsMenuOpen(!isMenuOpen);
+
+  // Marcar como montado após hidratação
+  useEffect(() => {
+    setIsMounted(true);
+  }, []);
 
   // Detectar scroll para mudar estilo do header
   useEffect(() => {
@@ -72,7 +76,7 @@ const Header = () => {
                 </div>
                 <div className="hidden sm:block">
                   <h1 className="text-xl lg:text-2xl font-forum font-bold bg-gradient-to-r from-olive-600 to-olive-800 bg-clip-text text-transparent">
-                    Geórgia & Pedro
+                    João & Maria
                   </h1>
                   <div className="flex items-center gap-2">
                     <motion.div 
@@ -82,7 +86,7 @@ const Header = () => {
                       transition={{ duration: 0.8, delay: 0.3 }}
                     />
                     <p className="text-sm text-olive-600/80 font-medium px-2">
-                      6 de junho, 2026
+                      15 de dezembro, 2024
                     </p>
                     <motion.div 
                       className="h-px bg-gradient-to-r from-olive-600 to-olive-400 flex-1"
@@ -123,13 +127,13 @@ const Header = () => {
 
           {/* Desktop Music Player */}
           <div className="hidden lg:block flex-shrink-0 flex items-center gap-2">
-            {isClient && <MinimalMusicPlayer isMobile={false} />}
+            {isMounted && <MinimalMusicPlayer isMobile={false} />}
           </div>
 
           {/* Mobile Controls */}
           <div className="lg:hidden flex items-center gap-2">
             {/* Mobile Music Player */}
-            {isClient && <MinimalMusicPlayer isMobile={true} />}
+            {isMounted && <MinimalMusicPlayer isMobile={true} />}
             
             {/* Mobile Menu Button */}
             <motion.button

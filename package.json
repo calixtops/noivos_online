@@ -1,6 +1,7 @@
 {
-  "name": "casamento-pedro-georgia",
+  "name": "wedding-website-template",
   "version": "1.0.0",
+  "description": "Template profissional de site de casamento com funcionalidades modernas",
   "scripts": {
     "dev": "next dev",
     "build": "next build",

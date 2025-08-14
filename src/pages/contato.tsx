@@ -103,8 +103,8 @@ const Contato: React.FC = () => {
   return (
     <div className="min-h-screen flex flex-col bg-gradient-to-br from-cream-50 via-cream-25 to-olive-50">
       <Head>
-        <title>Contato - Pedro & Geórgia</title>
-        <meta name="description" content="Confirme sua presença no casamento de Pedro e Geórgia - 06 de Junho de 2026" />
+        <title>Contato - João & Maria</title>
+        <meta name="description" content="Confirme sua presença no casamento de João e Maria - 15 de Dezembro de 2024" />
         <meta name="viewport" content="width=device-width, initial-scale=1" />
       </Head>
 
@@ -456,7 +456,7 @@ const Contato: React.FC = () => {
                       <FaHeart className="text-olive-500 text-xl mt-1 animate-pulse-love" />
                       <div>
                         <p className="font-semibold text-stone-800">Data e Horário</p>
-                        <p className="text-stone-600">06 de Junho de 2026</p>
+                        <p className="text-stone-600">15 de Dezembro de 2024</p>
                         <p className="text-stone-600">A partir das 16h</p>
                       </div>
                     </div>

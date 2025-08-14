@@ -17,33 +17,45 @@ interface Photo {
 // Timeline dos momentos
 const timeline = [
   {
-    year: "2017",
-    title: "Primeira Temporada",
-    description: "10 de junho - nos conhecemos em uma ensolarada tarde de sábado. Praias, viagens, festas e shows marcaram esse período especial.",
-    emoji: "🌅"
+    year: "2018",
+    title: "Primeiro Encontro",
+    description: "Um encontro casual em uma cafeteria no centro da cidade. Uma conversa que durou horas e mudou nossas vidas para sempre. Naquele dia, soubemos que algo especial estava acontecendo.",
+    emoji: "☕"
   },
   {
-    year: "2018", 
-    title: "Caminhos Diferentes",
-    description: "Decidimos seguir caminhos diferentes, sem saber que era apenas um 'até logo'.",
-    emoji: "🛤️"
+    year: "2019", 
+    title: "Primeiros Passos",
+    description: "Começamos a nos conhecer melhor, compartilhando sonhos, risadas e momentos especiais. Cada encontro era uma nova descoberta sobre o outro.",
+    emoji: "💕"
+  },
+  {
+    year: "2020",
+    title: "Superando Desafios",
+    description: "Um ano de desafios que nos aproximou ainda mais. Aprendemos a valorizar cada momento juntos e a importância de estar presente na vida um do outro.",
+    emoji: "🌟"
+  },
+  {
+    year: "2021",
+    title: "Primeira Viagem",
+    description: "Nossa primeira viagem juntos! Descobrimos novos lugares, criamos memórias inesquecíveis e confirmamos que queremos compartilhar muitas aventuras.",
+    emoji: "✈️"
+  },
+  {
+    year: "2022",
+    title: "Morando Juntos",
+    description: "Decidimos dar o próximo passo e começamos a morar juntos. Aprendemos a conviver, a dividir responsabilidades e a construir nosso lar.",
+    emoji: "🏠"
   },
   {
     year: "2023",
-    title: "Segunda Temporada",
-    description: "5 anos depois, nos reencontramos mais maduros e decididos. Reunimos famílias, amigos e pets.",
-    emoji: "💫"
-  },
-  {
-    year: "2025",
-    title: "O Pedido Especial",
-    description: "No nosso simbólico junho, noivamos sob a luz da lua cheia ao som de reggae, indo de bicicleta à praia do poço da draga.",
+    title: "O Pedido de Casamento",
+    description: "Em uma noite mágica, no local do nosso primeiro encontro, João fez o pedido mais importante de nossas vidas. Um momento perfeito que nunca esqueceremos.",
     emoji: "💍"
   },
   {
-    year: "2026",
-    title: "Terceira Temporada",
-    description: "Junho de 2026 - enfim casados! O início de nossa terceira e mais especial temporada.",
+    year: "2024",
+    title: "Nosso Grande Dia",
+    description: "15 de dezembro de 2024 - enfim casados! O início de nossa jornada como família, celebrando o amor e a união de duas almas.",
     emoji: "💒"
   }
 ];
@@ -53,7 +65,7 @@ const Historia = () => {
   const [isVisible, setIsVisible] = useState(false);
   const [isHydrated, setIsHydrated] = useState(false);
   const [isFullscreen, setIsFullscreen] = useState(false);
-  const [isAutoplay, setIsAutoplay] = useState(false); // Iniciar parado para evitar hidratação
+  const [isAutoplay, setIsAutoplay] = useState(false);
   const [visibleThumbnails, setVisibleThumbnails] = useState({ start: 0, end: 10 });
   const [galleryPhotos, setGalleryPhotos] = useState<Photo[]>([]);
   const [isLoadingPhotos, setIsLoadingPhotos] = useState(true);
@@ -66,15 +78,15 @@ const Historia = () => {
     try {
       const fallbackPhotos: Photo[] = [];
       
-      // Tenta carregar até 100 fotos (pode ajustar este número)
+      // Tenta carregar até 100 fotos com padrão "image (X).jpeg"
       for (let i = 1; i <= 100; i++) {
-        const extensions = ['jpg', 'jpeg', 'png', 'webp'];
+        const extensions = ['jpeg', 'jpg', 'png', 'webp'];
         let photoFound = false;
         
         for (const ext of extensions) {
-          const photoPath = `/images/historia/${i}.${ext}`;
+          // Padrão: "image (1).jpeg", "image (2).jpeg", etc.
+          const photoPath = `/images/historia/image (${i}).${ext}`;
           
-          // Verifica se a imagem existe usando fetch
           try {
             const response = await fetch(photoPath, { method: 'HEAD' });
             if (response.ok) {
@@ -85,10 +97,10 @@ const Historia = () => {
                 caption: getPhotoCaption(i)
               });
               photoFound = true;
-              break; // Se encontrou, para de testar extensões
+              break;
             }
           } catch {
-            continue; // Tenta próxima extensão
+            continue;
           }
         }
         
@@ -99,7 +111,7 @@ const Historia = () => {
             let foundInRange = false;
             for (const ext of extensions) {
               try {
-                const response = await fetch(`/images/historia/${j}.${ext}`, { method: 'HEAD' });
+                const response = await fetch(`/images/historia/image (${j}).${ext}`, { method: 'HEAD' });
                 if (response.ok) {
                   foundInRange = true;
                   break;
@@ -110,17 +122,16 @@ const Historia = () => {
             }
             if (!foundInRange) consecutiveNotFound++;
           }
-          if (consecutiveNotFound >= 5) break; // Para se não encontrar 5 seguidas
+          if (consecutiveNotFound >= 5) break;
         }
       }
       
       setGalleryPhotos(fallbackPhotos);
     } catch (error) {
       console.log('Erro ao carregar fotos, usando fallback básico');
-      // Fallback para um número fixo se der erro
-      const basicPhotos: Photo[] = Array.from({ length: 70 }, (_, i) => ({
+      const basicPhotos: Photo[] = Array.from({ length: 10 }, (_, i) => ({
         id: i + 1,
-        src: `/images/historia/${i + 1}.jpg`,
+        src: `/images/historia/image (${i + 1}).jpeg`,
         alt: `Momento especial ${i + 1}`,
         caption: getPhotoCaption(i + 1)
       }));
@@ -133,19 +144,42 @@ const Historia = () => {
   // Função para gerar legendas baseadas no número da foto
   const getPhotoCaption = (photoNumber: number): string => {
     const captions = [
-      "10 de junho de 2017 - Nosso primeiro encontro",
-      "Primeira temporada - Momentos de alegria", 
-      "Praias e viagens da primeira temporada",
-      "Reencontro - Segunda temporada começa",
-      "Reunindo famílias e amigos",
-      "O pedido sob a lua cheia - Praia do Poço da Draga",
-      "Noivos - Rumo à terceira temporada",
-      "Momentos especiais juntos",
-      "Aventuras e descobertas",
-      "Construindo nossa história"
+      "Nosso primeiro encontro - O início de tudo",
+      "Primeiros momentos juntos - Descobrindo o amor", 
+      "Momentos especiais - Construindo memórias",
+      "Nossa primeira viagem - Aventuras juntos",
+      "Celebrando conquistas - Cada passo importa",
+      "Momentos em família - Unindo laços",
+      "O pedido de casamento - Noite mágica",
+      "Preparativos do casamento - Sonhos se realizando",
+      "Ensaio fotográfico - Capturando momentos",
+      "Celebração com amigos - Compartilhando alegria",
+      "Momentos românticos - Amor em cada detalhe",
+      "Aventuras e descobertas - Explorando o mundo juntos",
+      "Construindo nosso lar - Sonhos se materializando",
+      "Momentos de reflexão - Gratidão por tudo",
+      "Celebrando o amor - Cada dia é especial"
     ];
     
-    return captions[photoNumber - 1] || `Nosso momento especial ${photoNumber}`;
+    if (photoNumber <= captions.length) {
+      return captions[photoNumber - 1];
+    } else {
+      const genericCaptions = [
+        "Momentos especiais juntos",
+        "Construindo nossa história",
+        "Amor em cada detalhe",
+        "Memórias inesquecíveis",
+        "Sonhos se realizando",
+        "Aventuras compartilhadas",
+        "Momentos de felicidade",
+        "Celebrando nossa união",
+        "Cada dia é uma nova descoberta",
+        "Amor que cresce a cada momento"
+      ];
+      
+      const index = (photoNumber - captions.length - 1) % genericCaptions.length;
+      return genericCaptions[index];
+    }
   };
 
   const prevPhoto = () => setCurrent((current - 1 + galleryPhotos.length) % galleryPhotos.length);
@@ -182,8 +216,8 @@ const Historia = () => {
 
   useEffect(() => {
     setIsHydrated(true);
-    setIsAutoplay(true); // Ativar autoplay apenas após hidratação
-    loadPhotos(); // Carregar fotos dinamicamente
+    setIsAutoplay(true);
+    loadPhotos();
   }, []);
 
   useEffect(() => {
@@ -191,7 +225,7 @@ const Historia = () => {
     
     const interval = setInterval(() => {
       setCurrent((prev) => (prev + 1) % galleryPhotos.length);
-    }, 6000); // Mudado de 4000ms para 6000ms (6 segundos)
+    }, 6000);
     return () => clearInterval(interval);
   }, [isHydrated, isAutoplay, galleryPhotos.length]);
 
@@ -217,8 +251,8 @@ const Historia = () => {
   return (
     <div className="min-h-screen flex flex-col bg-gradient-to-br from-cream-50 via-cream-25 to-olive-50">
       <Head>
-        <title>Nossa História - Pedro & Geórgia</title>
-        <meta name="description" content="A história de amor de Pedro e Geórgia - Do primeiro encontro ao grande dia" />
+        <title>Nossa História - João & Maria</title>
+        <meta name="description" content="A história de amor de João e Maria - Do primeiro encontro ao grande dia" />
         <meta name="viewport" content="width=device-width, initial-scale=1" />
       </Head>
       
@@ -239,123 +273,64 @@ const Historia = () => {
             </motion.h1>
             
             <motion.div 
-                  className="flex items-center justify-center gap-4 mb-8"
-                  initial={{ scale: 0 }}
-                  animate={{ scale: 1 }}
-                  transition={{ delay: 0.3, duration: 0.6 }}
-                >
-                  <div className="h-px bg-gradient-to-r from-transparent via-olive-400 to-transparent flex-1 max-w-32"></div>
-                  <motion.div
-                    animate={{ 
-                      y: [0, -8, 0],
-                      rotate: [0, 5, -5, 0]
-                    }}
-                    transition={{ 
-                      duration: 4,
-                      repeat: Infinity,
-                      ease: "easeInOut"
-                    }}
-                  >
-                    <FaHeart className="text-olive-500 text-3xl animate-heartbeat" />
-                  </motion.div>
-                  <div className="h-px bg-gradient-to-r from-transparent via-olive-400 to-transparent flex-1 max-w-32"></div>
-                </motion.div>
+              className="flex items-center justify-center gap-4 mb-8"
+              initial={{ scale: 0 }}
+              animate={{ scale: 1 }}
+              transition={{ delay: 0.3, duration: 0.6 }}
+            >
+              <div className="h-px bg-gradient-to-r from-transparent via-olive-400 to-transparent flex-1 max-w-32"></div>
+              <motion.div
+                animate={{ 
+                  y: [0, -8, 0],
+                  rotate: [0, 5, -5, 0]
+                }}
+                transition={{ 
+                  duration: 4,
+                  repeat: Infinity,
+                  ease: "easeInOut"
+                }}
+              >
+                <FaHeart className="text-olive-500 text-3xl animate-heartbeat" />
+              </motion.div>
+              <div className="h-px bg-gradient-to-r from-transparent via-olive-400 to-transparent flex-1 max-w-32"></div>
+            </motion.div>
 
-                <motion.p 
-                  className="text-xl sm:text-2xl text-stone-600 max-w-3xl mx-auto leading-relaxed"
-                  initial={{ opacity: 0, y: 20 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  transition={{ delay: 0.5, duration: 0.8 }}
-                >
-                  Uma jornada de amor, cumplicidade e sonhos compartilhados que nos trouxe até aqui
-                </motion.p>
+            <motion.p 
+              className="text-xl sm:text-2xl text-stone-600 max-w-3xl mx-auto leading-relaxed"
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.5, duration: 0.8 }}
+            >
+              Uma jornada de amor, cumplicidade e sonhos compartilhados que nos trouxe até aqui
+            </motion.p>
           </div>
         </section>
 
         {/* Nossa História - Texto */}
         <section className="py-16 sm:py-20 px-4 sm:px-6 lg:px-8">
           <div className="max-w-4xl mx-auto">
-            {isHydrated ? (
-              <motion.div 
-                className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center mb-16"
-                initial={{ opacity: 0, y: 30 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.8 }}
-                viewport={{ once: true }}
-              >
-                <div>
-                  <h2 className="text-3xl sm:text-4xl font-serif font-bold text-stone-800 mb-6">
-                    Nossa História em Temporadas
-                  </h2>
-                  <div className="space-y-6 text-lg text-stone-600 leading-relaxed">
-                    <p>
-                      <span className="font-semibold text-olive-700">Primeira Temporada:</span> O que chamamos de nossa primeira temporada começou em uma ensolarada tarde de sábado do dia 10 de junho de 2017, quando nos conhecemos. A partir daí, vivemos muitos momentos felizes: praias, viagens, festas, shows, comemoramos o aniversário do Pedro e até passamos o reveillon juntos.
-                    </p>
-                    <p>
-                      Mas logo após, resolvemos seguir caminhos diferentes. Mal a gente sabia que seria apenas um "até logo"...
-                    </p>
-                    <p>
-                      <span className="font-semibold text-olive-700">Segunda Temporada:</span> 5 anos depois, nos reencontraríamos, só que desta vez mais maduros e decididos. Reunimos famílias, amigos, pets e, no mesmo junho que nos conhecemos, noivamos sob a luz da lua cheia ao som de reggae no passeio favorito da Geórgia: indo de bicicleta à praia do poço da draga.
-                    </p>
-                    <p>
-                      <span className="font-semibold text-olive-700">Terceira Temporada:</span> No nosso simbólico junho, em 2026, começará nossa terceira temporada: enfim casados! E vocês estão convidados a testemunhar e celebrar esse momento de muito amor, emoção e felicidade.
-                    </p>
-                  </div>
-                </div>
-                
-                <motion.div
-                  className="relative"
-                  whileHover={{ scale: 1.02 }}
-                  transition={{ duration: 0.3 }}
-                >
-                  <div className="relative rounded-2xl overflow-hidden shadow-2xl border border-olive-200">
-                    <Image
-                      src="/images/historia/1.jpg"
-                      alt="Nosso primeiro encontro"
-                      width={600}
-                      height={400}
-                      className="w-full h-80 object-cover"
-                    />
-                    <div className="absolute inset-0 bg-gradient-to-t from-stone-900/20 to-transparent"></div>
-                  </div>
-                </motion.div>
-              </motion.div>
-            ) : (
-              <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center mb-16">
-                <div>
-                  <h2 className="text-3xl sm:text-4xl font-serif font-bold text-stone-800 mb-6">
-                    Nossa História em Temporadas
-                  </h2>
-                  <div className="space-y-6 text-lg text-stone-600 leading-relaxed">
-                    <p>
-                      <span className="font-semibold text-olive-700">Primeira Temporada:</span> O que chamamos de nossa primeira temporada começou em uma ensolarada tarde de sábado do dia 10 de junho de 2017, quando nos conhecemos. A partir daí, vivemos muitos momentos felizes: praias, viagens, festas, shows, comemoramos o aniversário do Pedro e até passamos o reveillon juntos.
-                    </p>
-                    <p>
-                      Mas logo após, resolvemos seguir caminhos diferentes. Mal a gente sabia que seria apenas um "até logo"...
-                    </p>
-                    <p>
-                      <span className="font-semibold text-olive-700">Segunda Temporada:</span> 5 anos depois, nos reencontraríamos, só que desta vez mais maduros e decididos. Reunimos famílias, amigos, pets e, no mesmo junho que nos conhecemos, noivamos sob a luz da lua cheia ao som de reggae no passeio favorito da Geórgia: indo de bicicleta à praia do poço da draga.
-                    </p>
-                    <p>
-                      <span className="font-semibold text-olive-700">Terceira Temporada:</span> No nosso simbólico junho, em 2026, começará nossa terceira temporada: enfim casados! E vocês estão convidados a testemunhar e celebrar esse momento de muito amor, emoção e felicidade.
-                    </p>
-                  </div>
-                </div>
-                
-                <div className="relative">
-                  <div className="relative rounded-2xl overflow-hidden shadow-2xl border border-olive-200">
-                    <Image
-                      src="/images/historia/1.jpg"
-                      alt="Nosso primeiro encontro"
-                      width={600}
-                      height={400}
-                      className="w-full h-80 object-cover"
-                    />
-                    <div className="absolute inset-0 bg-gradient-to-t from-stone-900/20 to-transparent"></div>
-                  </div>
-                </div>
+            <motion.div 
+              className="text-center mb-16"
+              initial={{ opacity: 0, y: 30 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.8 }}
+              viewport={{ once: true }}
+            >
+              <h2 className="text-3xl sm:text-4xl font-serif font-bold text-stone-800 mb-6">
+                Nossa História de Amor
+              </h2>
+              <div className="space-y-6 text-lg text-stone-600 leading-relaxed max-w-3xl mx-auto">
+                <p>
+                  <span className="font-semibold text-olive-700">Primeiro Encontro:</span> Nossa história começou em uma ensolarada tarde de março de 2018, quando nos conhecemos em uma cafeteria no centro da cidade. O que deveria ser apenas uma conversa rápida se transformou em horas de risadas, sonhos compartilhados e a certeza de que algo especial estava acontecendo.
+                </p>
+                <p>
+                  Desde então, cada dia tem sido uma nova aventura. Aprendemos a nos conhecer, a nos apoiar e a crescer juntos. Nossa jornada tem sido marcada por momentos especiais, desafios superados e muito amor.
+                </p>
+                <p>
+                  <span className="font-semibold text-olive-700">Nosso Grande Dia:</span> Em dezembro de 2024, celebramos o início de nossa jornada como família. E vocês estão convidados a testemunhar e celebrar esse momento de muito amor, emoção e felicidade.
+                </p>
               </div>
-            )}
+            </motion.div>
           </div>
         </section>
 
@@ -365,20 +340,14 @@ const Historia = () => {
           className="py-16 sm:py-20 px-4 sm:px-6 lg:px-8 bg-gradient-to-br from-sage-50 to-cream-100"
         >
           <div className="max-w-6xl mx-auto">
-            {isHydrated ? (
-              <motion.h2 
-                className="text-3xl sm:text-4xl font-serif font-bold text-center text-stone-800 mb-16"
-                initial={{ opacity: 0, y: 20 }}
-                animate={isVisible ? { opacity: 1, y: 0 } : {}}
-                transition={{ duration: 0.8 }}
-              >
-                Nossa Linha do Tempo
-              </motion.h2>
-            ) : (
-              <h2 className="text-3xl sm:text-4xl font-serif font-bold text-center text-stone-800 mb-16">
-                Nossa Linha do Tempo
-              </h2>
-            )}
+            <motion.h2 
+              className="text-3xl sm:text-4xl font-serif font-bold text-center text-stone-800 mb-16"
+              initial={{ opacity: 0, y: 20 }}
+              animate={isVisible ? { opacity: 1, y: 0 } : {}}
+              transition={{ duration: 0.8 }}
+            >
+              Nossa Linha do Tempo
+            </motion.h2>
 
             <div className="relative">
               {/* Linha central */}
@@ -393,59 +362,38 @@ const Historia = () => {
                     }`}
                   >
                     <div className={`flex-1 ${index % 2 === 0 ? 'lg:text-right' : 'lg:text-left'} text-center lg:text-left`}>
-                      {isHydrated ? (
-                        <motion.div
-                          className="bg-cream rounded-2xl p-6 sm:p-8 shadow-lg border border-olive-200"
-                          initial={{ opacity: 0, x: index % 2 === 0 ? -50 : 50 }}
-                          animate={isVisible ? { opacity: 1, x: 0 } : {}}
-                          transition={{ delay: index * 0.2, duration: 0.8 }}
-                          whileHover={{ y: -5, scale: 1.02 }}
-                        >
-                          <div className="flex items-center justify-center lg:justify-start gap-3 mb-4">
-                            <motion.div
-                              className="w-12 h-12 bg-gradient-to-br from-olive-500 to-sage-600 rounded-full flex items-center justify-center text-white shadow-lg text-2xl"
-                              whileHover={{ scale: 1.1, rotate: 5 }}
-                            >
-                              {item.emoji}
-                            </motion.div>
-                            <span className="text-2xl sm:text-3xl font-bold text-stone-800">{item.year}</span>
-                          </div>
-                          <h3 className="text-xl sm:text-2xl font-serif font-bold text-stone-800 mb-3">
-                            {item.title}
-                          </h3>
-                          <p className="text-stone-600 leading-relaxed">
-                            {item.description}
-                          </p>
-                        </motion.div>
-                      ) : (
-                        <div className="bg-cream rounded-2xl p-6 sm:p-8 shadow-lg border border-olive-200">
-                          <div className="flex items-center justify-center lg:justify-start gap-3 mb-4">
-                            <div className="w-12 h-12 bg-gradient-to-br from-olive-500 to-sage-600 rounded-full flex items-center justify-center text-white shadow-lg text-2xl">
-                              {item.emoji}
-                            </div>
-                            <span className="text-2xl sm:text-3xl font-bold text-stone-800">{item.year}</span>
-                          </div>
-                          <h3 className="text-xl sm:text-2xl font-serif font-bold text-stone-800 mb-3">
-                            {item.title}
-                          </h3>
-                          <p className="text-stone-600 leading-relaxed">
-                            {item.description}
-                          </p>
+                      <motion.div
+                        className="bg-cream rounded-2xl p-6 sm:p-8 shadow-lg border border-olive-200"
+                        initial={{ opacity: 0, x: index % 2 === 0 ? -50 : 50 }}
+                        animate={isVisible ? { opacity: 1, x: 0 } : {}}
+                        transition={{ delay: index * 0.2, duration: 0.8 }}
+                        whileHover={{ y: -5, scale: 1.02 }}
+                      >
+                        <div className="flex items-center justify-center lg:justify-start gap-3 mb-4">
+                          <motion.div
+                            className="w-12 h-12 bg-gradient-to-br from-olive-500 to-sage-600 rounded-full flex items-center justify-center text-white shadow-lg text-2xl"
+                            whileHover={{ scale: 1.1, rotate: 5 }}
+                          >
+                            {item.emoji}
+                          </motion.div>
+                          <span className="text-2xl sm:text-3xl font-bold text-stone-800">{item.year}</span>
                         </div>
-                      )}
+                        <h3 className="text-xl sm:text-2xl font-serif font-bold text-stone-800 mb-3">
+                          {item.title}
+                        </h3>
+                        <p className="text-stone-600 leading-relaxed">
+                          {item.description}
+                        </p>
+                      </motion.div>
                     </div>
 
                     {/* Ponto central na timeline */}
-                    {isHydrated ? (
-                      <motion.div
-                        className="hidden lg:flex w-6 h-6 bg-cream border-4 border-olive-500 rounded-full z-10 shadow-lg"
-                        initial={{ scale: 0 }}
-                        animate={isVisible ? { scale: 1 } : {}}
-                        transition={{ delay: index * 0.2 + 0.4, duration: 0.4 }}
-                      />
-                    ) : (
-                      <div className="hidden lg:flex w-6 h-6 bg-cream border-4 border-olive-500 rounded-full z-10 shadow-lg" />
-                    )}
+                    <motion.div
+                      className="hidden lg:flex w-6 h-6 bg-cream border-4 border-olive-500 rounded-full z-10 shadow-lg"
+                      initial={{ scale: 0 }}
+                      animate={isVisible ? { scale: 1 } : {}}
+                      transition={{ delay: index * 0.2 + 0.4, duration: 0.4 }}
+                    />
 
                     <div className="flex-1 hidden lg:block"></div>
                   </div>
@@ -455,24 +403,18 @@ const Historia = () => {
           </div>
         </section>
 
-        {/* Galeria de Fotos Otimizada */}
+        {/* Galeria de Fotos */}
         <section className="py-16 sm:py-20 px-4 sm:px-6 lg:px-8">
           <div className="max-w-6xl mx-auto">
-            {isHydrated ? (
-              <motion.h2 
-                className="text-3xl sm:text-4xl font-serif font-bold text-center text-stone-800 mb-16"
-                initial={{ opacity: 0, y: 20 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.8 }}
-                viewport={{ once: true }}
-              >
-                Nossos Momentos Especiais
-              </motion.h2>
-            ) : (
-              <h2 className="text-3xl sm:text-4xl font-serif font-bold text-center text-stone-800 mb-16">
-                Nossos Momentos Especiais
-              </h2>
-            )}
+            <motion.h2 
+              className="text-3xl sm:text-4xl font-serif font-bold text-center text-stone-800 mb-16"
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.8 }}
+              viewport={{ once: true }}
+            >
+              Nossos Momentos Especiais
+            </motion.h2>
 
             <div className="flex flex-col items-center">
               {/* Loading state */}
@@ -498,7 +440,6 @@ const Historia = () => {
               ) : (
                 <>
                 {/* Carrossel Principal */}
-                {isHydrated ? (
                 <motion.div 
                   className="relative w-full max-w-4xl h-[400px] sm:h-[500px] lg:h-[600px] mb-8"
                   initial={{ opacity: 0, scale: 0.9 }}
@@ -513,7 +454,7 @@ const Historia = () => {
                       initial={{ opacity: 0, x: 300 }}
                       animate={{ opacity: 1, x: 0 }}
                       exit={{ opacity: 0, x: -300 }}
-                      transition={{ duration: 0.8 }} // Mudado de 0.5s para 0.8s para transição mais suave
+                      transition={{ duration: 0.8 }}
                     >
                       <Image
                         src={galleryPhotos[current].src}
@@ -524,7 +465,7 @@ const Historia = () => {
                         quality={85}
                         sizes="(max-width: 768px) 100vw, (max-width: 1200px) 80vw, 70vw"
                         placeholder="blur"
-                        blurDataURL="data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/2wBDAAYEBQYFBAYGBQYHBwYIChAKCgkJChQODwwQFxQYGBcUFhYaHSUfGhsjHBYWICwgIyYnKSopGR8tMC0oMCUoKSj/2wBDAQcHBwoIChMKChMoGhYaKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCj/wAARCAAIAAoDASIAAhEBAxEB/8QAFQABAQAAAAAAAAAAAAAAAAAAAAv/xAAhEAACAQMDBQAAAAAAAAAAAAABAgMABAUGIWGRkbHBE//EABUBAQEAAAAAAAAAAAAAAAAAAAMF/8QAGhEAAgIDAAAAAAAAAAAAAAAAAAECEgMRkf/aAAwDAQACEQMRAD8AltJagyeH0AthI5xdrLcNM91BF5pX2HaH9bcfaSXWGaRmknyJckliyjqTzSlT54b6bk+h0R//2Q=="
+                        blurDataURL="data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/2wBDAAYEBQYFBAYGBQYHBwYIChAKCgkJChQODwwQFxQYGBcUFhYaHSUfGhsjHBYWICwgIyYnKSopGR8tMC0oMCUoKSj/2wBDAQcHBwoIChMKChMoGhYaKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCj/wAARCAABAAEDASIAAhEBAxEB/8QAFQABAQAAAAAAAAAAAAAAAAAAAAv/xAAhEAACAQMDBQAAAAAAAAAAAAABAgMABAUGIWGRkbHBE//EABUBAQEAAAAAAAAAAAAAAAAAAAMF/8QAGhEAAgIDAAAAAAAAAAAAAAAAAAECEgMRkf/aAAwDAQACEQMRAD8AltJagyeH0AthI5xdrLcNM91BF5pX2HaH9bcfaSXWGaRmknyJckliyjqTzSlT54b6bk+h0R//2Q=="
                       />
                       
                       {/* Overlay com controles */}
@@ -575,43 +516,8 @@ const Historia = () => {
                     <FaChevronRight className="text-stone-800 text-lg" />
                   </motion.button>
                 </motion.div>
-              ) : (
-                <div className="relative w-full max-w-4xl h-[400px] sm:h-[500px] lg:h-[600px] mb-8">
-                  <div className="absolute inset-0 rounded-2xl overflow-hidden shadow-2xl border border-olive-200">
-                    <Image
-                      src={galleryPhotos[current].src}
-                      alt={galleryPhotos[current].alt}
-                      fill
-                      className="object-cover"
-                      priority={current < 3}
-                      quality={85}
-                      sizes="(max-width: 768px) 100vw, (max-width: 1200px) 80vw, 70vw"
-                      placeholder="blur"
-                      blurDataURL="data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/2wBDAAYEBQYFBAYGBQYHBwYIChAKCgkJChQODwwQFxQYGBcUFhYaHSUfGhsjHBYWICwgIyYnKSopGR8tMC0oMCUoKSj/2wBDAQcHBwoIChMKChMoGhYaKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCj/wAARCAAIAAoDASIAAhEBAxEB/8QAFQABAQAAAAAAAAAAAAAAAAAAAAv/xAAhEAACAQMDBQAAAAAAAAAAAAABAgMABAUGIWGRkbHBE//EABUBAQEAAAAAAAAAAAAAAAAAAAMF/8QAGhEAAgIDAAAAAAAAAAAAAAAAAAECEgMRkf/aAAwDAQACEQMRAD8AltJagyeH0AthI5xdrLcNM91BF5pX2HaH9bcfaSXWGaRmknyJckliyjqTzSlT54b6bk+h0R//2Q=="
-                    />
-                  </div>
 
-                  {/* Controles de Navegação */}
-                  <button
-                    onClick={prevPhoto}
-                    className="absolute left-4 top-1/2 -translate-y-1/2 w-12 h-12 bg-cream/90 hover:bg-cream rounded-full shadow-lg flex items-center justify-center transition-all duration-300 hover:scale-110 border border-olive-200"
-                    aria-label="Foto anterior"
-                  >
-                    <FaChevronLeft className="text-stone-800 text-lg" />
-                  </button>
-
-                  <button
-                    onClick={nextPhoto}
-                    className="absolute right-4 top-1/2 -translate-y-1/2 w-12 h-12 bg-cream/90 hover:bg-cream rounded-full shadow-lg flex items-center justify-center transition-all duration-300 hover:scale-110 border border-olive-200"
-                    aria-label="Próxima foto"
-                  >
-                    <FaChevronRight className="text-stone-800 text-lg" />
-                  </button>
-                </div>
-              )}
-
-              {/* Thumbnails Paginados */}
-              {isHydrated ? (
+                {/* Thumbnails Paginados */}
                 <motion.div 
                   className="w-full max-w-4xl"
                   initial={{ opacity: 0, y: 20 }}
@@ -704,95 +610,8 @@ const Historia = () => {
                     })}
                   </div>
                 </motion.div>
-              ) : (
-                <div className="w-full max-w-4xl">
-                  <div className="flex items-center justify-center mb-4">
-                    <button
-                      onClick={() => goToThumbnailPage('prev')}
-                      disabled={visibleThumbnails.start === 0}
-                      className={`p-3 rounded-lg transition-colors ${
-                        visibleThumbnails.start === 0 
-                          ? 'text-stone-300 cursor-not-allowed' 
-                          : 'text-stone-600 hover:text-olive-600 hover:bg-olive-50'
-                      }`}
-                      aria-label="Página anterior de thumbnails"
-                    >
-                      <FaChevronLeft />
-                    </button>
-                    
-                    <div className="mx-6 flex space-x-2">
-                      {Array.from({ length: Math.ceil(galleryPhotos.length / thumbnailsPerPage) }, (_, i) => {
-                        const isActive = i === Math.floor(visibleThumbnails.start / thumbnailsPerPage);
-                        return (
-                          <button
-                            key={i}
-                            onClick={() => {
-                              const newStart = i * thumbnailsPerPage;
-                              setVisibleThumbnails({
-                                start: newStart,
-                                end: Math.min(newStart + thumbnailsPerPage, galleryPhotos.length)
-                              });
-                            }}
-                            className={`w-3 h-3 rounded-full transition-all duration-300 ${
-                              isActive ? 'bg-olive-600 scale-125' : 'bg-stone-300 hover:bg-olive-300'
-                            }`}
-                            aria-label={`Página ${i + 1} de thumbnails`}
-                          />
-                        );
-                      })}
-                    </div>
-                    
-                    <button
-                      onClick={() => goToThumbnailPage('next')}
-                      disabled={visibleThumbnails.end >= galleryPhotos.length}
-                      className={`p-3 rounded-lg transition-colors ${
-                        visibleThumbnails.end >= galleryPhotos.length 
-                          ? 'text-stone-300 cursor-not-allowed' 
-                          : 'text-stone-600 hover:text-olive-600 hover:bg-olive-50'
-                      }`}
-                      aria-label="Próxima página de thumbnails"
-                    >
-                      <FaChevronRight />
-                    </button>
-                  </div>
-                  
-                  <div className="flex justify-center gap-2 sm:gap-3 flex-wrap">
-                    {galleryPhotos.slice(visibleThumbnails.start, visibleThumbnails.end).map((photo, idx) => {
-                      const actualIdx = visibleThumbnails.start + idx;
-                      return (
-                        <button
-                          key={photo.id}
-                          onClick={() => setCurrent(actualIdx)}
-                          className={`relative w-16 h-16 sm:w-20 sm:h-20 rounded-lg overflow-hidden border-2 transition-all duration-300 ${
-                            current === actualIdx 
-                              ? 'border-olive-500 scale-110 shadow-lg' 
-                              : 'border-stone-200 hover:border-olive-300 hover:scale-105'
-                          }`}
-                          aria-label={`Ir para foto ${actualIdx + 1}`}
-                        >
-                          <Image
-                            src={photo.src}
-                            alt={photo.alt}
-                            fill
-                            className="object-cover"
-                            sizes="80px"
-                            quality={75}
-                            loading="lazy"
-                            placeholder="blur"
-                            blurDataURL="data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/2wBDAAYEBQYFBAYGBQYHBwYIChAKCgkJChQODwwQFxQYGBcUFhYaHSUfGhsjHBYWICwgIyYnKSopGR8tMC0oMCUoKSj/2wBDAQcHBwoIChMKChMoGhYaKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCj/wAARCAABAAEDASIAAhEBAxEB/8QAFQABAQAAAAAAAAAAAAAAAAAAAAv/xAAUEAEAAAAAAAAAAAAAAAAAAAAA/8QAFQEBAQAAAAAAAAAAAAAAAAAAAAX/xAAUEQEAAAAAAAAAAAAAAAAAAAAA/9oADAMBAAIRAxEAPwCdABmX/9k="
-                          />
-                          {current === actualIdx && (
-                            <div className="absolute inset-0 bg-olive-500/20" />
-                          )}
-                        </button>
-                      );
-                    })}
-                  </div>
-                </div>
-              )}
 
-              {/* Barra de Progresso */}
-              {isHydrated ? (
+                {/* Barra de Progresso */}
                 <motion.div 
                   className="w-full max-w-2xl mt-6"
                   initial={{ opacity: 0 }}
@@ -805,7 +624,7 @@ const Historia = () => {
                       className="absolute left-0 top-0 h-full bg-gradient-to-r from-olive-500 to-sage-600 rounded-full"
                       initial={{ width: 0 }}
                       animate={{ width: `${((current + 1) / galleryPhotos.length) * 100}%` }}
-                      transition={{ duration: 0.6 }} // Mudado de 0.3s para 0.6s para acompanhar o ritmo
+                      transition={{ duration: 0.6 }}
                     />
                   </div>
                   <div className="flex justify-between mt-2 text-xs text-stone-500">
@@ -814,22 +633,7 @@ const Historia = () => {
                     <span>Fim</span>
                   </div>
                 </motion.div>
-              ) : (
-                <div className="w-full max-w-2xl mt-6">
-                  <div className="relative h-2 bg-stone-200 rounded-full overflow-hidden">
-                    <div 
-                      className="absolute left-0 top-0 h-full bg-gradient-to-r from-olive-500 to-sage-600 rounded-full transition-all duration-300"
-                      style={{ width: `${((current + 1) / galleryPhotos.length) * 100}%` }}
-                    />
-                  </div>
-                  <div className="flex justify-between mt-2 text-xs text-stone-500">
-                    <span>Início</span>
-                    <span className="font-medium text-olive-600">{current + 1} de {galleryPhotos.length}</span>
-                    <span>Fim</span>
-                  </div>
-                </div>
-              )}
-              </>
+                </>
               )}
             </div>
           </div>
@@ -846,7 +650,7 @@ const Historia = () => {
                   initial={{ opacity: 0, scale: 0.8 }}
                   animate={{ opacity: 1, scale: 1 }}
                   exit={{ opacity: 0, scale: 0.8 }}
-                  transition={{ duration: 0.5 }} // Mudado de 0.3s para 0.5s para transição mais suave
+                  transition={{ duration: 0.5 }}
                 >
                   <Image
                     src={galleryPhotos[current].src}
@@ -898,79 +702,50 @@ const Historia = () => {
         {/* Seção Final - Call to Action */}
         <section className="py-16 sm:py-20 px-4 sm:px-6 lg:px-8 bg-gradient-to-br from-olive-600 to-sage-700">
           <div className="max-w-4xl mx-auto text-center">
-            {isHydrated ? (
-              <>
-                <motion.h2 
-                  className="text-3xl sm:text-4xl lg:text-5xl font-serif font-bold text-white mb-6"
-                  initial={{ opacity: 0, y: 20 }}
-                  whileInView={{ opacity: 1, y: 0 }}
-                  transition={{ duration: 0.8 }}
-                  viewport={{ once: true }}
-                >
-                  Agora é a Sua Vez de Fazer Parte da Nossa História
-                </motion.h2>
-                
-                <motion.p 
-                  className="text-xl text-white mb-8 leading-relaxed"
-                  initial={{ opacity: 0, y: 20 }}
-                  whileInView={{ opacity: 1, y: 0 }}
-                  transition={{ duration: 0.8, delay: 0.2 }}
-                  viewport={{ once: true }}
-                >
-                  Queremos você ao nosso lado neste momento único. Sua presença tornará nosso dia ainda mais especial!
-                </motion.p>
-                
-                <motion.div 
-                  className="flex flex-col sm:flex-row gap-4 justify-center"
-                  initial={{ opacity: 0, y: 20 }}
-                  whileInView={{ opacity: 1, y: 0 }}
-                  transition={{ duration: 0.8, delay: 0.4 }}
-                  viewport={{ once: true }}
-                >
-                  <motion.a
-                    href="/programacao"
-                    className="bg-white hover:bg-cream text-olive-700 px-8 py-4 rounded-full font-semibold text-lg transition-all duration-300 shadow-lg"
-                    whileHover={{ scale: 1.05, y: -2 }}
-                    whileTap={{ scale: 0.95 }}
-                  >
-                    Ver Programação
-                  </motion.a>
-                  <motion.a
-                    href="/contato"
-                    className="border-2 border-white text-white px-8 py-4 rounded-full font-semibold text-lg hover:bg-white hover:text-olive-700 transition-all duration-300"
-                    whileHover={{ scale: 1.05, y: -2 }}
-                    whileTap={{ scale: 0.95 }}
-                  >
-                    Confirmar Presença
-                  </motion.a>
-                </motion.div>
-              </>
-            ) : (
-              <>
-                <h2 className="text-3xl sm:text-4xl lg:text-5xl font-serif font-bold text-white mb-6">
-                  Agora é a Sua Vez de Fazer Parte da Nossa História
-                </h2>
-                
-                <p className="text-xl text-white mb-8 leading-relaxed">
-                  Queremos você ao nosso lado neste momento único. Sua presença tornará nosso dia ainda mais especial!
-                </p>
-                
-                <div className="flex flex-col sm:flex-row gap-4 justify-center">
-                  <a
-                    href="/programacao"
-                    className="bg-white hover:bg-cream text-olive-700 px-8 py-4 rounded-full font-semibold text-lg transition-all duration-300 shadow-lg"
-                  >
-                    Ver Programação
-                  </a>
-                  <a
-                    href="/contato"
-                    className="border-2 border-white text-white px-8 py-4 rounded-full font-semibold text-lg hover:bg-white hover:text-olive-700 transition-all duration-300"
-                  >
-                    Confirmar Presença
-                  </a>
-                </div>
-              </>
-            )}
+            <motion.h2 
+              className="text-3xl sm:text-4xl lg:text-5xl font-serif font-bold text-white mb-6"
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.8 }}
+              viewport={{ once: true }}
+            >
+              Agora é a Sua Vez de Fazer Parte da Nossa História
+            </motion.h2>
+            
+            <motion.p 
+              className="text-xl text-white mb-8 leading-relaxed"
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.8, delay: 0.2 }}
+              viewport={{ once: true }}
+            >
+              Queremos você ao nosso lado neste momento único. Sua presença tornará nosso dia ainda mais especial!
+            </motion.p>
+            
+            <motion.div 
+              className="flex flex-col sm:flex-row gap-4 justify-center"
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.8, delay: 0.4 }}
+              viewport={{ once: true }}
+            >
+              <motion.a
+                href="/programacao"
+                className="bg-white hover:bg-cream text-olive-700 px-8 py-4 rounded-full font-semibold text-lg transition-all duration-300 shadow-lg"
+                whileHover={{ scale: 1.05, y: -2 }}
+                whileTap={{ scale: 0.95 }}
+              >
+                Ver Programação
+              </motion.a>
+              <motion.a
+                href="/contato"
+                className="border-2 border-white text-white px-8 py-4 rounded-full font-semibold text-lg hover:bg-white hover:text-olive-700 transition-all duration-300"
+                whileHover={{ scale: 1.05, y: -2 }}
+                whileTap={{ scale: 0.95 }}
+              >
+                Confirmar Presença
+              </motion.a>
+            </motion.div>
           </div>
         </section>
       </main>

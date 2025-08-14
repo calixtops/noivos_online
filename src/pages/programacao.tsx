@@ -37,8 +37,8 @@ const Programacao = () => {
   return (
     <div className="min-h-screen flex flex-col bg-gradient-to-br from-cream-50 via-cream-100 to-olive-50">
       <Head>
-        <title>Programação - Geórgia & Pedro</title>
-        <meta name="description" content="Cronograma completo do casamento de Geórgia e Pedro - 06 de Junho de 2026" />
+        <title>Programação - João & Maria</title>
+        <meta name="description" content="Cronograma completo do casamento de João e Maria - 15 de Dezembro de 2024" />
         <meta name="viewport" content="width=device-width, initial-scale=1" />
       </Head>
 
@@ -62,7 +62,7 @@ const Programacao = () => {
                 <div className="h-px bg-gradient-to-r from-transparent via-olive-400 to-transparent w-24"></div>
                 <div className="bg-olive-100 border border-olive-300 text-olive-800 px-6 py-2 rounded-lg">
                   <FaCalendarAlt className="inline mr-2" />
-                  06 de Junho de 2026
+                  15 de Dezembro de 2024
                 </div>
                 <div className="h-px bg-gradient-to-r from-transparent via-olive-400 to-transparent w-24"></div>
               </div>

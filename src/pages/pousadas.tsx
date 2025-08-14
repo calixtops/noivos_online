@@ -8,24 +8,24 @@ import { FaBed, FaMapMarkerAlt, FaPhone, FaGlobe, FaWhatsapp, FaInstagram, FaFac
 const pousadas = [
   {
     id: 1,
-    name: "Hotel Don'Ana",
-    address: "Av. Beira Mar, 900 - Praia do Presídio, Aquiraz - CE",
-    phone: "(85) 99123-4567",
-    site: "https://www.hoteldonana.com.br",
-    description: "Hotel tradicional da região, com piscina, restaurante, quartos confortáveis e excelente localização à beira-mar.",
+    name: "Hotel Central",
+    address: "Rua Principal, 100 - Centro, São Paulo - SP",
+    phone: "(11) 99999-9999",
+    site: "https://www.hotelcentral.com.br",
+    description: "Hotel tradicional da região, com piscina, restaurante, quartos confortáveis e excelente localização.",
     rating: 4.5,
     priceRange: "R$ 200-350",
-    amenities: ["wifi", "piscina", "restaurante", "estacionamento", "praia"],
+    amenities: ["wifi", "piscina", "restaurante", "estacionamento"],
     category: "hotel",
     featured: true
   },
   {
     id: 2,
-    name: "Hotel Jangadeiro",
-    address: "Av. Beira Mar, 1000 - Praia do Presídio, Aquiraz - CE",
-    phone: "(85) 99234-5678",
-    site: "https://www.hoteljangadeiro.com.br",
-    description: "Hotel com estrutura completa, café da manhã incluso, área de lazer e fácil acesso à praia.",
+    name: "Hotel Jardim",
+    address: "Av. das Flores, 200 - Jardim, São Paulo - SP",
+    phone: "(11) 88888-8888",
+    site: "https://www.hoteljardim.com.br",
+    description: "Hotel com estrutura completa, café da manhã incluso, área de lazer e fácil acesso.",
     rating: 4.2,
     priceRange: "R$ 180-300",
     amenities: ["wifi", "piscina", "restaurante", "estacionamento", "cafeManha"],
@@ -34,24 +34,24 @@ const pousadas = [
   },
   {
     id: 3,
-    name: "Pousada Mar do Presídio",
-    address: "Av. Beira Mar, 1200 - Praia do Presídio, Aquiraz - CE",
-    phone: "(85) 99999-1234",
-    site: "https://www.pousadamardopresidio.com.br",
-    description: "Pousada à beira-mar com piscina, café da manhã incluso e quartos com vista para o mar.",
+    name: "Pousada Tranquila",
+    address: "Rua da Paz, 50 - Bairro Tranquilo, São Paulo - SP",
+    phone: "(11) 77777-7777",
+    site: "https://www.pousadatranquila.com.br",
+    description: "Pousada com ambiente familiar, piscina, café da manhã incluso e quartos confortáveis.",
     rating: 4.4,
     priceRange: "R$ 150-250",
-    amenities: ["wifi", "piscina", "cafeManha", "vistaMar"],
+    amenities: ["wifi", "piscina", "cafeManha"],
     category: "pousada",
     featured: true
   },
   {
     id: 4,
-    name: "Pousada dos Coqueiros",
-    address: "Rua dos Coqueiros, 45 - Praia do Presídio, Aquiraz - CE",
-    phone: "(85) 98888-5678",
-    site: "https://wa.me/5585988885678",
-    description: "Ambiente familiar, área verde, estacionamento e fácil acesso à praia.",
+    name: "Pousada dos Sonhos",
+    address: "Av. dos Sonhos, 300 - Centro, São Paulo - SP",
+    phone: "(11) 66666-6666",
+    site: "https://wa.me/5511666666666",
+    description: "Ambiente familiar, área verde, estacionamento e localização privilegiada.",
     rating: 4.0,
     priceRange: "R$ 120-200",
     amenities: ["wifi", "estacionamento", "areaVerde"],
@@ -60,10 +60,10 @@ const pousadas = [
   },
   {
     id: 5,
-    name: "Pousada Sol e Mar",
-    address: "Rua Sol Nascente, 200 - Praia do Presídio, Aquiraz - CE",
-    phone: "(85) 99666-4321",
-    site: "https://www.instagram.com/pousadasolemar",
+    name: "Pousada Sol e Lua",
+    address: "Rua das Estrelas, 150 - Jardim, São Paulo - SP",
+    phone: "(11) 55555-5555",
+    site: "https://www.instagram.com/pousadasolelua",
     description: "Quartos climatizados, piscina, restaurante próprio e atendimento personalizado.",
     rating: 4.3,
     priceRange: "R$ 160-280",
@@ -73,10 +73,10 @@ const pousadas = [
   },
   {
     id: 6,
-    name: "Pousada Recanto do Presídio",
-    address: "Av. Principal, 800 - Praia do Presídio, Aquiraz - CE",
-    phone: "(85) 98765-4321",
-    site: "https://wa.me/5585987654321",
+    name: "Pousada Recanto",
+    address: "Av. da Tranquilidade, 80 - Centro, São Paulo - SP",
+    phone: "(11) 44444-4444",
+    site: "https://wa.me/5511444444444",
     description: "Ótima opção para famílias, com área de lazer e café da manhã regional.",
     rating: 4.1,
     priceRange: "R$ 140-220",
@@ -86,11 +86,11 @@ const pousadas = [
   },
   {
     id: 7,
-    name: "Pousada Paraíso das Dunas",
-    address: "Rua das Dunas, 99 - Praia do Presídio, Aquiraz - CE",
-    phone: "(85) 99555-6789",
-    site: "https://www.facebook.com/pousadaparaisodasdunas",
-    description: "Local tranquilo, próximo às dunas e à praia, com estacionamento e wi-fi.",
+    name: "Pousada Paraíso",
+    address: "Rua do Paraíso, 99 - Jardim, São Paulo - SP",
+    phone: "(11) 33333-3333",
+    site: "https://www.facebook.com/pousadaparaiso",
+    description: "Local tranquilo, com estacionamento e wi-fi, ideal para descanso.",
     rating: 4.0,
     priceRange: "R$ 110-180",
     amenities: ["wifi", "estacionamento", "tranquilo"],
@@ -161,8 +161,8 @@ const Pousadas = () => {
   return (
     <div className="min-h-screen flex flex-col bg-gradient-to-br from-cream-50 via-cream-25 to-olive-50">
       <Head>
-        <title>Pousadas - Pedro & Geórgia</title>
-        <meta name="description" content="Opções de hospedagem para o casamento de Pedro e Geórgia na Praia do Presídio, Aquiraz - CE" />
+        <title>Hospedagem - João & Maria</title>
+        <meta name="description" content="Sugestões de hospedagem para o casamento de João e Maria" />
         <meta name="viewport" content="width=device-width, initial-scale=1" />
       </Head>
       
