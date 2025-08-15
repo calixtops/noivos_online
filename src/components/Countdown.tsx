@@ -1,4 +1,6 @@
 import React, { useState, useEffect } from 'react';
+import { motion } from 'framer-motion';
+import { useThemeColors } from '../hooks/useThemeColors';
 
 interface CountdownProps {
   targetDate: string;
@@ -12,6 +14,7 @@ const Countdown: React.FC<CountdownProps> = ({ targetDate }) => {
     seconds: 0
   });
   const [isMounted, setIsMounted] = useState(false);
+  const colors = useThemeColors();
 
   useEffect(() => {
     setIsMounted(true);
@@ -54,10 +57,10 @@ const Countdown: React.FC<CountdownProps> = ({ targetDate }) => {
         ].map((item, index) => (
           <div
             key={item.label}
-            className="text-center bg-white/80 backdrop-blur-sm rounded-lg p-2 sm:p-4 shadow-lg border border-olive-200"
+            className={`text-center bg-white/80 backdrop-blur-sm rounded-lg p-2 sm:p-4 shadow-lg border ${colors.borderPrimary}`}
           >
-            <div className="text-lg sm:text-2xl font-bold text-olive-800">{item.value}</div>
-            <div className="text-xs sm:text-sm text-olive-600">{item.label}</div>
+            <div className={`text-lg sm:text-2xl font-bold ${colors.textPrimary}`}>{item.value}</div>
+            <div className={`text-xs sm:text-sm ${colors.textSecondary}`}>{item.label}</div>
           </div>
         ))}
       </div>
@@ -72,13 +75,17 @@ const Countdown: React.FC<CountdownProps> = ({ targetDate }) => {
         { label: 'Minutos', value: timeLeft.minutes },
         { label: 'Segundos', value: timeLeft.seconds }
       ].map((item, index) => (
-        <div
+        <motion.div
           key={item.label}
-          className="text-center bg-white/80 backdrop-blur-sm rounded-lg p-2 sm:p-4 shadow-lg border border-olive-200"
+          className={`text-center bg-white/80 backdrop-blur-sm rounded-lg p-2 sm:p-4 shadow-lg border ${colors.borderPrimary} hover:shadow-xl transition-all duration-300`}
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: index * 0.1, duration: 0.5 }}
+          whileHover={{ scale: 1.05 }}
         >
-          <div className="text-lg sm:text-2xl font-bold text-olive-800">{item.value.toString().padStart(2, '0')}</div>
-          <div className="text-xs sm:text-sm text-olive-600 font-medium">{item.label}</div>
-        </div>
+          <div className={`text-lg sm:text-2xl font-bold ${colors.textPrimary}`}>{item.value.toString().padStart(2, '0')}</div>
+          <div className={`text-xs sm:text-sm ${colors.textSecondary} font-medium`}>{item.label}</div>
+        </motion.div>
       ))}
     </div>
   );

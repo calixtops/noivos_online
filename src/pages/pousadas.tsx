@@ -1,9 +1,11 @@
+import React from 'react';
 import Head from 'next/head';
 import Header from '../components/Header';
 import Footer from '../components/Footer';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useState, useRef, useEffect } from 'react';
 import { FaBed, FaMapMarkerAlt, FaPhone, FaGlobe, FaWhatsapp, FaInstagram, FaFacebook, FaWifi, FaCar, FaSwimmingPool, FaUtensils, FaStar, FaHeart, FaFilter, FaTree, FaSnowflake, FaChild, FaWater } from 'react-icons/fa';
+import { useThemeColors } from '../hooks/useThemeColors';
 
 const pousadas = [
   {
@@ -118,6 +120,7 @@ const Pousadas = () => {
   const [filter, setFilter] = useState('all');
   const [isVisible, setIsVisible] = useState(false);
   const sectionRef = useRef<HTMLDivElement>(null);
+  const colors = useThemeColors();
 
   useEffect(() => {
     const observer = new IntersectionObserver(
@@ -159,7 +162,7 @@ const Pousadas = () => {
   };
 
   return (
-    <div className="min-h-screen flex flex-col bg-gradient-to-br from-cream-50 via-cream-25 to-olive-50">
+    <div className={`min-h-screen flex flex-col ${colors.gradientBackground}`}>
       <Head>
         <title>Hospedagem - João & Maria</title>
         <meta name="description" content="Sugestões de hospedagem para o casamento de João e Maria" />
@@ -171,10 +174,10 @@ const Pousadas = () => {
       <main className="flex-grow">
         {/* Hero Section */}
         <section className="relative py-16 sm:py-20 lg:py-24 overflow-hidden">
-          <div className="absolute inset-0 bg-gradient-to-r from-cream-100/50 to-olive-100/50"></div>
+          <div className={`absolute inset-0 bg-gradient-to-r ${colors.bgCream}/50 to-${colors.bgSecondary}/50`}></div>
           <div className="relative container mx-auto px-4 sm:px-6 lg:px-8 text-center">
             <motion.h1 
-              className="text-4xl sm:text-5xl lg:text-6xl font-serif font-bold text-stone-800 mb-6"
+              className={`text-4xl sm:text-5xl lg:text-6xl font-serif font-bold ${colors.textPrimary} mb-6`}
               initial={{ opacity: 0, y: -30 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.8 }}
@@ -188,7 +191,7 @@ const Pousadas = () => {
               animate={{ scale: 1 }}
               transition={{ delay: 0.3, duration: 0.6 }}
             >
-              <div className="h-px bg-gradient-to-r from-transparent via-olive-400 to-transparent flex-1 max-w-32"></div>
+              <div className={`h-px bg-gradient-to-r from-transparent via-${colors.textSecondary} to-transparent flex-1 max-w-32`}></div>
               <motion.div
                 animate={{ 
                   y: [0, -8, 0],
@@ -200,13 +203,13 @@ const Pousadas = () => {
                   ease: "easeInOut"
                 }}
               >
-                <FaBed className="text-olive-500 text-3xl" />
+                <FaBed className={`${colors.textAccent} text-3xl`} />
               </motion.div>
-              <div className="h-px bg-gradient-to-r from-transparent via-olive-400 to-transparent flex-1 max-w-32"></div>
+              <div className={`h-px bg-gradient-to-r from-transparent via-${colors.textSecondary} to-transparent flex-1 max-w-32`}></div>
             </motion.div>
 
             <motion.p 
-              className="text-xl sm:text-2xl text-stone-600 max-w-3xl mx-auto leading-relaxed"
+              className={`text-xl sm:text-2xl ${colors.textSecondary} max-w-3xl mx-auto leading-relaxed`}
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.5, duration: 0.8 }}
@@ -217,184 +220,176 @@ const Pousadas = () => {
         </section>
 
         {/* Filtros */}
-        <section className="py-8 px-4 sm:px-6 lg:px-8">
-          <div className="max-w-4xl mx-auto">
-            <motion.div 
-              className="flex flex-wrap justify-center gap-2 sm:gap-4 mb-8"
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.8 }}
-            >
+        <section className="py-8 bg-white/60">
+          <div className="container mx-auto px-4 sm:px-6 lg:px-8">
+            <div className="flex flex-wrap justify-center gap-3">
               {[
-                { value: 'all', label: 'Todos', icon: FaBed },
-                { value: 'featured', label: 'Recomendados', icon: FaStar },
-                { value: 'hotel', label: 'Hotéis', icon: FaBed },
-                { value: 'pousada', label: 'Pousadas', icon: FaHeart }
-              ].map((filterOption) => (
+                { key: 'all', label: 'Todas', icon: FaBed },
+                { key: 'featured', label: 'Destaques', icon: FaStar },
+                { key: 'hotel', label: 'Hotéis', icon: FaBed },
+                { key: 'pousada', label: 'Pousadas', icon: FaTree }
+              ].map(({ key, label, icon: Icon }) => (
                 <motion.button
-                  key={filterOption.value}
-                  onClick={() => setFilter(filterOption.value)}
-                  className={`flex items-center gap-2 px-4 sm:px-6 py-3 rounded-full font-semibold transition-all duration-300 ${
-                    filter === filterOption.value
-                      ? 'bg-gradient-to-r from-olive-500 to-sage-600 text-cream shadow-lg scale-105'
-                      : 'bg-cream text-stone-600 hover:bg-olive-50 hover:text-olive-600 shadow-md border border-olive-200'
+                  key={key}
+                  onClick={() => setFilter(key)}
+                  className={`flex items-center gap-2 px-4 py-2 rounded-lg font-medium transition-all duration-300 ${
+                    filter === key
+                      ? `${colors.bgPrimary} text-cream-100 shadow-md`
+                      : `${colors.bgCream} ${colors.textPrimary} hover:${colors.bgSecondary} border ${colors.borderPrimary}`
                   }`}
-                  whileHover={{ scale: filter === filterOption.value ? 1.05 : 1.02 }}
+                  whileHover={{ scale: 1.05 }}
                   whileTap={{ scale: 0.95 }}
                 >
-                  <filterOption.icon className="text-lg" />
-                  <span className="hidden sm:inline">{filterOption.label}</span>
+                  <Icon className="text-sm" />
+                  {label}
                 </motion.button>
               ))}
-            </motion.div>
+            </div>
           </div>
         </section>
 
         {/* Lista de Pousadas */}
         <section 
           ref={sectionRef}
-          className="py-8 px-4 sm:px-6 lg:px-8"
+          className={`py-16 sm:py-20 px-4 sm:px-6 lg:px-8 ${colors.gradientBackground}`}
         >
-          <div className="max-w-6xl mx-auto">
-            <AnimatePresence mode="wait">
-              <motion.div 
-                key={filter}
-                className="grid grid-cols-1 lg:grid-cols-2 gap-6 sm:gap-8"
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                exit={{ opacity: 0, y: -20 }}
-                transition={{ duration: 0.5 }}
-              >
-                {filteredPousadas.map((pousada, index) => (
-                  <motion.div
-                    key={pousada.id}
-                    className="bg-cream rounded-2xl shadow-xl p-6 sm:p-8 border border-olive-200 relative overflow-hidden"
-                    initial={{ opacity: 0, y: 30 }}
-                    animate={isVisible ? { opacity: 1, y: 0 } : {}}
-                    transition={{ delay: index * 0.1, duration: 0.6 }}
-                    whileHover={{ y: -5, scale: 1.02 }}
-                  >
-                    {/* Badge para recomendados */}
-                    {pousada.featured && (
-                      <motion.div
-                        className="absolute top-4 right-4 bg-gradient-to-r from-olive-500 to-sage-600 text-cream px-3 py-1 rounded-full text-sm font-semibold flex items-center gap-1"
-                        initial={{ scale: 0 }}
-                        animate={{ scale: 1 }}
-                        transition={{ delay: 0.3 }}
-                      >
-                        <FaStar className="text-xs" />
-                        Recomendado
-                      </motion.div>
-                    )}
+          <div className="max-w-7xl mx-auto">
+            <motion.h2 
+              className={`text-3xl sm:text-4xl font-serif font-bold text-center ${colors.textPrimary} mb-16`}
+              initial={{ opacity: 0, y: 20 }}
+              animate={isVisible ? { opacity: 1, y: 0 } : {}}
+              transition={{ duration: 0.8 }}
+            >
+              Opções de Hospedagem
+            </motion.h2>
 
-                    {/* Cabeçalho */}
-                    <div className="mb-6">
-                      <div className="flex items-start justify-between mb-4">
-                        <div>
-                          <h2 className="text-2xl sm:text-3xl font-serif font-bold text-stone-800 mb-2">
-                            {pousada.name}
-                          </h2>
-                          <div className="flex items-center gap-1 mb-2">
-                            {[...Array(5)].map((_, i) => (
-                              <FaStar 
-                                key={i}
-                                className={`text-sm ${
-                                  i < Math.floor(pousada.rating) 
-                                    ? 'text-olive-500' 
-                                    : 'text-stone-300'
-                                }`}
-                              />
-                            ))}
-                            <span className="text-stone-600 ml-2 text-sm">
-                              {pousada.rating}/5
-                            </span>
-                          </div>
-                        </div>
-                        
-                        <div className={`px-3 py-1 rounded-full text-sm font-semibold ${
-                          pousada.category === 'hotel' 
-                            ? 'bg-olive-100 text-olive-700' 
-                            : 'bg-sage-100 text-sage-700'
-                        }`}>
-                          {pousada.category === 'hotel' ? 'Hotel' : 'Pousada'}
-                        </div>
-                      </div>
-
-                      <div className="text-lg font-semibold text-olive-600 mb-4">
-                        {pousada.priceRange}/noite
-                      </div>
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+              {filteredPousadas.map((pousada, index) => (
+                <motion.div
+                  key={pousada.id}
+                  className={`${colors.bgCream} rounded-2xl shadow-lg border ${colors.borderPrimary} overflow-hidden hover:shadow-xl transition-all duration-300`}
+                  initial={{ opacity: 0, y: 50 }}
+                  animate={isVisible ? { opacity: 1, y: 0 } : {}}
+                  transition={{ delay: index * 0.1, duration: 0.8 }}
+                  whileHover={{ y: -5 }}
+                >
+                  {/* Header do Card */}
+                  <div className={`p-6 ${colors.bgSecondary} border-b ${colors.borderPrimary}`}>
+                    <div className="flex items-start justify-between mb-3">
+                      <h3 className={`text-xl font-serif font-bold ${colors.textPrimary} leading-tight`}>
+                        {pousada.name}
+                      </h3>
+                      {pousada.featured && (
+                        <span className={`px-2 py-1 ${colors.bgPrimary} text-cream-100 text-xs font-medium rounded-full`}>
+                          Destaque
+                        </span>
+                      )}
                     </div>
-
-                    {/* Endereço */}
-                    <div className="flex items-start gap-3 mb-4">
-                      <FaMapMarkerAlt className="text-olive-500 text-lg mt-1 flex-shrink-0" />
-                      <p className="text-stone-600">{pousada.address}</p>
+                    
+                    <div className="flex items-center gap-2 mb-3">
+                      <FaMapMarkerAlt className={`${colors.textSecondary} text-sm`} />
+                      <p className={`text-sm ${colors.textSecondary}`}>
+                        {pousada.address}
+                      </p>
                     </div>
+                    
+                    <div className="flex items-center gap-4">
+                      <div className="flex items-center gap-1">
+                        <FaStar className="text-yellow-500 text-sm" />
+                        <span className={`text-sm font-medium ${colors.textPrimary}`}>
+                          {pousada.rating}
+                        </span>
+                      </div>
+                      <span className={`text-sm font-medium ${colors.textSecondary}`}>
+                        {pousada.priceRange}
+                      </span>
+                    </div>
+                  </div>
 
-                    {/* Descrição */}
-                    <p className="text-stone-700 leading-relaxed mb-6">
+                  {/* Conteúdo do Card */}
+                  <div className="p-6">
+                    <p className={`text-sm ${colors.textSecondary} mb-4 leading-relaxed`}>
                       {pousada.description}
                     </p>
-
-                    {/* Comodidades */}
+                    
+                    {/* Amenidades */}
                     <div className="mb-6">
-                      <h4 className="font-semibold text-stone-800 mb-3">Comodidades:</h4>
+                      <h4 className={`text-sm font-semibold ${colors.textPrimary} mb-2`}>
+                        Amenidades:
+                      </h4>
                       <div className="flex flex-wrap gap-2">
-                        {pousada.amenities.slice(0, 4).map((amenity) => {
-                          const amenityInfo = amenityIcons[amenity as keyof typeof amenityIcons];
-                          if (!amenityInfo) return null;
-                          
+                        {pousada.amenities.map((amenity) => {
+                          const amenityIcons = {
+                            wifi: FaWifi,
+                            piscina: FaSwimmingPool,
+                            restaurante: FaUtensils,
+                            estacionamento: FaCar,
+                            cafeManha: FaUtensils,
+                            areaVerde: FaTree,
+                            arCondicionado: FaSnowflake,
+                            areaLazer: FaChild,
+                            familiar: FaHeart,
+                            tranquilo: FaWater
+                          };
+                          const Icon = amenityIcons[amenity] || FaBed;
                           return (
-                            <motion.div
+                            <span
                               key={amenity}
-                              className="flex items-center gap-2 bg-olive-50 text-olive-700 px-3 py-1 rounded-full text-sm"
-                              whileHover={{ scale: 1.05 }}
+                              className={`px-2 py-1 ${colors.bgSecondary} ${colors.textPrimary} text-xs rounded-full flex items-center gap-1`}
                             >
-                              <amenityInfo.icon className="text-xs" />
-                              <span>{amenityInfo.label}</span>
-                            </motion.div>
+                              <Icon className="text-xs" />
+                              {amenity.replace(/([A-Z])/g, ' $1').replace(/^./, str => str.toUpperCase())}
+                            </span>
                           );
                         })}
-                        {pousada.amenities.length > 4 && (
-                          <div className="bg-stone-100 text-stone-600 px-3 py-1 rounded-full text-sm">
-                            +{pousada.amenities.length - 4} mais
-                          </div>
-                        )}
                       </div>
                     </div>
 
-                    {/* Ações */}
-                    <div className="flex flex-col sm:flex-row gap-3">
-                      <motion.a
+                    {/* Contatos */}
+                    <div className="space-y-3">
+                      <a
                         href={`tel:${pousada.phone}`}
-                        className="flex items-center justify-center gap-2 bg-gradient-to-r from-olive-500 to-sage-600 text-cream px-4 py-3 rounded-xl font-semibold hover:from-olive-600 hover:to-sage-700 transition-all duration-300 flex-1"
-                        whileHover={{ scale: 1.02, y: -1 }}
-                        whileTap={{ scale: 0.98 }}
+                        className={`flex items-center gap-2 p-2 ${colors.bgSecondary} ${colors.textPrimary} rounded-lg hover:${colors.bgPrimary} hover:text-cream-100 transition-colors`}
                       >
                         <FaPhone className="text-sm" />
-                        <span className="hidden sm:inline">Ligar</span>
-                        <span className="sm:hidden">{pousada.phone}</span>
-                      </motion.a>
-
-                      <motion.a
+                        <span className="text-sm">{pousada.phone}</span>
+                      </a>
+                      
+                      <a
                         href={pousada.site}
                         target="_blank"
                         rel="noopener noreferrer"
-                        className={`flex items-center justify-center gap-2 bg-gradient-to-r ${getContactColor(pousada.site)} text-white px-4 py-3 rounded-xl font-semibold hover:scale-105 transition-all duration-300 flex-1`}
-                        whileHover={{ scale: 1.02, y: -1 }}
-                        whileTap={{ scale: 0.98 }}
+                        className={`flex items-center gap-2 p-2 ${colors.bgSecondary} ${colors.textPrimary} rounded-lg hover:${colors.bgPrimary} hover:text-cream-100 transition-colors`}
                       >
                         {(() => {
                           const IconComponent = getContactIcon(pousada.site);
-                          return <IconComponent className="text-sm" />;
+                          return React.createElement(IconComponent, { className: "text-sm" });
                         })()}
-                        Reservar
-                      </motion.a>
+                        <span className="text-sm">
+                          {pousada.site.includes('wa.me') ? 'WhatsApp' :
+                           pousada.site.includes('instagram') ? 'Instagram' :
+                           pousada.site.includes('facebook') ? 'Facebook' : 'Site'}
+                        </span>
+                      </a>
                     </div>
-                  </motion.div>
-                ))}
+                  </div>
+                </motion.div>
+              ))}
+            </div>
+
+            {filteredPousadas.length === 0 && (
+              <motion.div
+                className="text-center py-12"
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                transition={{ duration: 0.5 }}
+              >
+                <FaBed className={`${colors.textSecondary} text-4xl mx-auto mb-4`} />
+                <p className={`text-lg ${colors.textSecondary}`}>
+                  Nenhuma opção encontrada para o filtro selecionado.
+                </p>
               </motion.div>
-            </AnimatePresence>
+            )}
           </div>
         </section>
 

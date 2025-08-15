@@ -4,11 +4,13 @@ import Footer from '../components/Footer';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useState, useRef, useEffect } from 'react';
 import { FaCalendarAlt, FaMapMarkerAlt, FaHeart, FaBed, FaRoute, FaUmbrella, FaCar, FaSun } from 'react-icons/fa';
+import { useThemeColors } from '../hooks/useThemeColors';
 
 const Programacao = () => {
   const [activeTab, setActiveTab] = useState(0);
   const [isVisible, setIsVisible] = useState(false);
   const sectionRef = useRef<HTMLDivElement>(null);
+  const colors = useThemeColors();
 
   const tabs = [
     { label: "Local", icon: FaMapMarkerAlt },
@@ -35,7 +37,7 @@ const Programacao = () => {
   }, []);
 
   return (
-    <div className="min-h-screen flex flex-col bg-gradient-to-br from-cream-50 via-cream-100 to-olive-50">
+    <div className={`min-h-screen flex flex-col ${colors.gradientBackground}`}>
       <Head>
         <title>Programação - João & Maria</title>
         <meta name="description" content="Cronograma completo do casamento de João e Maria - 15 de Dezembro de 2024" />
@@ -54,20 +56,20 @@ const Programacao = () => {
               transition={{ duration: 0.8 }}
               className="mb-8"
             >
-              <h1 className="font-serif text-3xl sm:text-4xl lg:text-5xl text-olive-800 mb-6">
+              <h1 className={`font-serif text-3xl sm:text-4xl lg:text-5xl ${colors.textPrimary} mb-6`}>
                 Programação do Grande Dia
               </h1>
               
               <div className="flex items-center justify-center gap-4 mb-8">
-                <div className="h-px bg-gradient-to-r from-transparent via-olive-400 to-transparent w-24"></div>
-                <div className="bg-olive-100 border border-olive-300 text-olive-800 px-6 py-2 rounded-lg">
+                <div className={`h-px bg-gradient-to-r from-transparent via-${colors.textSecondary} to-transparent w-24`}></div>
+                <div className={`${colors.bgSecondary} border ${colors.borderSecondary} ${colors.textPrimary} px-6 py-2 rounded-lg`}>
                   <FaCalendarAlt className="inline mr-2" />
                   15 de Dezembro de 2024
                 </div>
-                <div className="h-px bg-gradient-to-r from-transparent via-olive-400 to-transparent w-24"></div>
+                <div className={`h-px bg-gradient-to-r from-transparent via-${colors.textSecondary} to-transparent w-24`}></div>
               </div>
 
-              <p className="text-lg sm:text-xl text-stone-600 max-w-2xl mx-auto leading-relaxed">
+              <p className={`text-lg sm:text-xl ${colors.textSecondary} max-w-2xl mx-auto leading-relaxed`}>
                 Um dia repleto de amor, alegria e momentos inesquecíveis
               </p>
             </motion.div>
@@ -84,8 +86,8 @@ const Programacao = () => {
                   onClick={() => setActiveTab(index)}
                   className={`flex items-center gap-2 px-6 py-3 rounded-lg font-medium transition-all duration-300 ${
                     activeTab === index
-                      ? 'bg-olive-700 text-cream-100 shadow-md'
-                      : 'bg-cream-100 text-olive-700 hover:bg-olive-100 border border-olive-200'
+                      ? `${colors.bgPrimary} text-cream-100 shadow-md`
+                      : `${colors.bgCream} ${colors.textPrimary} hover:${colors.bgSecondary} border ${colors.borderPrimary}`
                   }`}
                 >
                   <tab.icon className="text-lg" />

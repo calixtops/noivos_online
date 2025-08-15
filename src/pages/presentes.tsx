@@ -4,7 +4,9 @@ import Header from '../components/Header';
 import Footer from '../components/Footer';
 import OptimizedImage from '../components/OptimizedImage';
 import { FaSearch, FaFilter, FaHeart, FaShoppingCart, FaTimes } from 'react-icons/fa';
+import { motion } from 'framer-motion';
 import gifts from '../../data/gifts.json';
+import { useThemeColors } from '../hooks/useThemeColors';
 
 const pixCode = 'sua_chave_pix_aqui';
 
@@ -83,6 +85,7 @@ const Presentes = () => {
   const [selectedGift, setSelectedGift] = useState(null);
   const [isClient, setIsClient] = useState(false);
   const [copyFeedback, setCopyFeedback] = useState({ show: false, message: '' });
+  const colors = useThemeColors();
   
   // Função para copiar com feedback
   const handleCopyPix = async () => {
@@ -156,33 +159,48 @@ const Presentes = () => {
       <Header />
 
       <main className="container mx-auto px-4 py-8 flex-grow">
-        <div className="text-center mb-12 sm:mb-16">
+        <motion.div 
+          className="text-center mb-12 sm:mb-16"
+          initial={{ opacity: 0, y: 30 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.8 }}
+        >
           <div className="mb-6">
-            <div className="w-16 sm:w-20 h-16 sm:h-20 bg-gradient-to-r from-olive-500 to-sage-600 rounded-full flex items-center justify-center mx-auto mb-4">
-              <FaHeart className="text-white text-2xl sm:text-3xl animate-pulse" />
-            </div>
-            <h1 className="text-4xl sm:text-5xl font-serif text-olive-700 mb-4 font-bold">
+            <motion.div 
+              className="w-16 sm:w-20 h-16 sm:h-20 bg-gradient-to-r from-olive-500 to-sage-600 rounded-full flex items-center justify-center mx-auto mb-4"
+              initial={{ scale: 0 }}
+              animate={{ scale: 1 }}
+              transition={{ delay: 0.2, duration: 0.6 }}
+            >
+              <FaHeart className="text-white text-2xl sm:text-3xl" />
+            </motion.div>
+            <h1 className={`text-4xl sm:text-5xl font-serif ${colors.textPrimary} mb-4 font-bold`}>
               Nossa Lista de Presentes
             </h1>
-            <div className="w-24 sm:w-32 h-1 bg-gradient-to-r from-olive-400 to-sage-600 rounded mx-auto mb-6"></div>
+            <motion.div 
+              className={`w-24 sm:w-32 h-1 ${colors.gradientPrimary} rounded mx-auto mb-6`}
+              initial={{ scaleX: 0 }}
+              animate={{ scaleX: 1 }}
+              transition={{ delay: 0.4, duration: 0.8 }}
+            />
           </div>
-          <p className="text-gray-600 max-w-3xl mx-auto text-lg sm:text-xl leading-relaxed">
+          <p className={`${colors.textSecondary} max-w-3xl mx-auto text-lg sm:text-xl leading-relaxed`}>
             Escolha um presente especial para nosso novo lar! Cada item foi pensado com carinho para nossa jornada juntos.
           </p>
-        </div>
+        </motion.div>
 
         {/* Seção de filtros e busca */}
         <div className="bg-white rounded-2xl shadow-xl p-6 sm:p-8 mb-8 sm:mb-12 border border-gray-100">
           <div className="grid grid-cols-1 md:grid-cols-3 gap-4 sm:gap-6">
             {/* Barra de busca */}
             <div className="relative group">
-              <FaSearch className="absolute left-4 top-1/2 transform -translate-y-1/2 text-gray-400 text-sm group-focus-within:text-olive-500 transition-colors" />
+              <FaSearch className={`absolute left-4 top-1/2 transform -translate-y-1/2 text-gray-400 text-sm group-focus-within:${colors.textAccent} transition-colors`} />
               <input
                 type="text"
                 placeholder="Buscar presentes..."
                 value={searchTerm}
                 onChange={(e) => setSearchTerm(e.target.value)}
-                className="w-full pl-12 pr-4 py-3 sm:py-4 text-sm sm:text-base border-2 border-gray-200 rounded-xl focus:ring-2 focus:ring-olive-300 focus:border-olive-300 bg-gray-50 hover:bg-white transition-all duration-200"
+                className={`w-full pl-12 pr-4 py-3 sm:py-4 text-sm sm:text-base border-2 border-gray-200 rounded-xl focus:ring-2 focus:ring-${colors.textSecondary.replace('text-', '')} focus:border-${colors.textSecondary.replace('text-', '')} bg-gray-50 hover:bg-white transition-all duration-200`}
               />
             </div>
 
@@ -226,7 +244,7 @@ const Presentes = () => {
                 <span className="text-lg">💰</span>
                 <span className="font-medium">R$ {Math.min(...gifts.map(g => g.price))} - R$ {Math.max(...gifts.map(g => g.price))}</span>
               </span>
-              <span className="hidden sm:flex items-center gap-2 bg-olive-50 px-3 py-1.5 rounded-full text-olive-700">
+              <span className={`hidden sm:flex items-center gap-2 ${colors.bgSecondary} px-3 py-1.5 rounded-full ${colors.textPrimary}`}>
                 <span className="text-lg">🌿</span>
                 <span className="font-medium">Feito com amor para João & Maria</span>
               </span>
@@ -274,9 +292,9 @@ const Presentes = () => {
 
               <div className="p-5 sm:p-6 flex flex-col flex-grow">
                 <div className="flex items-start justify-between mb-3">
-                  <h3 className="text-lg sm:text-xl font-bold text-gray-900 group-hover:text-olive-700 transition-colors line-clamp-2 leading-tight">
-                    {gift.name}
-                  </h3>
+                                  <h3 className={`text-lg sm:text-xl font-bold text-gray-900 group-hover:${colors.textPrimary} transition-colors line-clamp-2 leading-tight`}>
+                  {gift.name}
+                </h3>
                 </div>
                 
                 <p className="text-gray-600 text-sm sm:text-base mb-4 line-clamp-2 leading-relaxed">
@@ -285,9 +303,9 @@ const Presentes = () => {
                 
                 <div className="mt-auto space-y-4">
                   <div className="flex items-center justify-between">
-                    <div className="text-2xl sm:text-3xl font-bold text-olive-700">
-                      R$ {gift.price}
-                    </div>
+                                    <div className={`text-2xl sm:text-3xl font-bold ${colors.textPrimary}`}>
+                  R$ {gift.price}
+                </div>
                     <div className="text-xs text-gray-500 bg-gray-100 px-3 py-1.5 rounded-full font-medium">
                       {gift.price <= 150 ? 'Econômico' : gift.price <= 300 ? 'Moderado' : 'Premium'}
                     </div>
@@ -295,7 +313,7 @@ const Presentes = () => {
                   
                   <button
                     onClick={() => handlePresentClick(gift)}
-                    className="w-full bg-gradient-to-r from-olive-600 to-sage-700 hover:from-olive-700 hover:to-sage-800 text-white py-3 sm:py-4 px-6 rounded-xl font-semibold transition-all duration-300 flex items-center justify-center gap-3 shadow-lg hover:shadow-xl transform hover:-translate-y-1 text-base sm:text-lg border-2 border-transparent hover:border-olive-300 group/btn"
+                    className={`w-full ${colors.gradientPrimary} hover:from-${colors.textPrimary.replace('text-', '')}-700 hover:to-${colors.textSecondary.replace('text-', '')}-800 text-white py-3 sm:py-4 px-6 rounded-xl font-semibold transition-all duration-300 flex items-center justify-center gap-3 shadow-lg hover:shadow-xl transform hover:-translate-y-1 text-base sm:text-lg border-2 border-transparent hover:${colors.borderSecondary} group/btn`}
                   >
                     <FaShoppingCart className="text-sm sm:text-base group-hover/btn:scale-110 transition-transform duration-200" />
                     Presentear
@@ -327,7 +345,7 @@ const Presentes = () => {
                   onClick={() => handlePageChange(page)}
                   className={`px-4 py-3 rounded-xl transition-all duration-200 font-medium ${
                     currentPage === page
-                      ? 'bg-olive-600 text-white shadow-lg'
+                      ? `${colors.bgPrimary} text-white shadow-lg`
                       : 'bg-white hover:bg-gray-50 border-2 border-gray-200 hover:border-gray-300 shadow-lg hover:shadow-xl'
                   }`}
                 >
@@ -362,7 +380,7 @@ const Presentes = () => {
             <div className="flex justify-center gap-4">
               <button
                 onClick={() => setSearchTerm('')}
-                className="px-6 py-3 bg-olive-600 hover:bg-olive-700 text-white rounded-xl font-medium transition-all duration-200 shadow-lg hover:shadow-xl"
+                className={`px-6 py-3 ${colors.bgPrimary} hover:${colors.hoverPrimary} text-white rounded-xl font-medium transition-all duration-200 shadow-lg hover:shadow-xl`}
               >
                 Limpar busca
               </button>

@@ -4,6 +4,7 @@ import Header from '../components/Header';
 import Footer from '../components/Footer';
 import { motion, AnimatePresence } from 'framer-motion';
 import { FaUser, FaEnvelope, FaComment, FaHeart, FaCheck, FaExclamationTriangle, FaWhatsapp, FaInstagram, FaMapMarkerAlt, FaPhone } from 'react-icons/fa';
+import { useThemeColors } from '../hooks/useThemeColors';
 
 interface FormData {
   name: string;
@@ -27,6 +28,7 @@ const Contato: React.FC = () => {
   const [isLoading, setIsLoading] = useState(false);
   const [isVisible, setIsVisible] = useState(false);
   const sectionRef = useRef<HTMLDivElement>(null);
+  const colors = useThemeColors();
 
   useEffect(() => {
     const observer = new IntersectionObserver(
@@ -95,13 +97,13 @@ const Contato: React.FC = () => {
   };
 
   const attendingOptions = [
-    { value: 'yes', label: 'Sim, com certeza! 🤗', color: 'from-olive-500 to-sage-600' },
+    { value: 'yes', label: 'Sim, com certeza! 🤗', color: `${colors.gradientPrimary}` },
     { value: 'maybe', label: 'Ainda não tenho certeza 🤔', color: 'from-stone-400 to-stone-500' },
     { value: 'no', label: 'Infelizmente não poderei 😔', color: 'from-stone-300 to-stone-400' }
   ];
 
   return (
-    <div className="min-h-screen flex flex-col bg-gradient-to-br from-cream-50 via-cream-25 to-olive-50">
+    <div className={`min-h-screen flex flex-col ${colors.gradientBackground}`}>
       <Head>
         <title>Contato - João & Maria</title>
         <meta name="description" content="Confirme sua presença no casamento de João e Maria - 15 de Dezembro de 2024" />
@@ -113,10 +115,10 @@ const Contato: React.FC = () => {
       <main className="flex-grow">
         {/* Hero Section */}
         <section className="relative py-16 sm:py-20 lg:py-24 overflow-hidden">
-          <div className="absolute inset-0 bg-gradient-to-r from-cream-100/50 to-olive-100/50"></div>
+          <div className={`absolute inset-0 bg-gradient-to-r ${colors.bgCream}/50 to-${colors.bgSecondary}/50`}></div>
           <div className="relative container mx-auto px-4 sm:px-6 lg:px-8 text-center">
             <motion.h1 
-              className="text-4xl sm:text-5xl lg:text-6xl font-serif font-bold text-stone-800 mb-6"
+              className={`text-4xl sm:text-5xl lg:text-6xl font-serif font-bold ${colors.textPrimary} mb-6`}
               initial={{ opacity: 0, y: -30 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.8 }}
@@ -130,7 +132,7 @@ const Contato: React.FC = () => {
               animate={{ scale: 1 }}
               transition={{ delay: 0.3, duration: 0.6 }}
             >
-              <div className="h-px bg-gradient-to-r from-transparent via-olive-400 to-transparent flex-1 max-w-32"></div>
+              <div className={`h-px bg-gradient-to-r from-transparent via-${colors.textSecondary} to-transparent flex-1 max-w-32`}></div>
               <motion.div
                 animate={{ 
                   y: [0, -8, 0],
@@ -142,13 +144,13 @@ const Contato: React.FC = () => {
                   ease: "easeInOut"
                 }}
               >
-                <FaHeart className="text-olive-500 text-3xl animate-heartbeat" />
+                <FaHeart className={`${colors.textAccent} text-3xl animate-heartbeat`} />
               </motion.div>
-              <div className="h-px bg-gradient-to-r from-transparent via-olive-400 to-transparent flex-1 max-w-32"></div>
+              <div className={`h-px bg-gradient-to-r from-transparent via-${colors.textSecondary} to-transparent flex-1 max-w-32`}></div>
             </motion.div>
 
             <motion.p 
-              className="text-xl sm:text-2xl text-stone-600 max-w-3xl mx-auto leading-relaxed"
+              className={`text-xl sm:text-2xl ${colors.textSecondary} max-w-3xl mx-auto leading-relaxed`}
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.5, duration: 0.8 }}
@@ -171,8 +173,8 @@ const Contato: React.FC = () => {
                 animate={isVisible ? { opacity: 1, x: 0 } : {}}
                 transition={{ duration: 0.8 }}
               >
-                <div className="bg-cream rounded-2xl shadow-xl p-6 sm:p-8 border border-olive-200">
-                  <h2 className="text-2xl sm:text-3xl font-serif font-bold text-stone-800 mb-8 text-center">
+                <div className={`${colors.bgCream} rounded-2xl shadow-xl p-6 sm:p-8 border ${colors.borderPrimary}`}>
+                  <h2 className={`text-2xl sm:text-3xl font-serif font-bold ${colors.textPrimary} mb-8 text-center`}>
                     Formulário de Confirmação
                   </h2>
 
@@ -243,8 +245,8 @@ const Contato: React.FC = () => {
                           animate={{ opacity: 1, y: 0 }}
                           transition={{ delay: 0.1 }}
                         >
-                          <label htmlFor="name" className="block text-stone-700 font-semibold mb-3 text-lg">
-                            <FaUser className="inline mr-2 text-olive-500" />
+                          <label htmlFor="name" className={`block ${colors.textSecondary} font-semibold mb-3 text-lg`}>
+                            <FaUser className={`inline mr-2 ${colors.textAccent}`} />
                             Nome Completo
                           </label>
                           <input
@@ -255,7 +257,7 @@ const Contato: React.FC = () => {
                             onChange={handleChange}
                             required
                             placeholder="Digite seu nome completo"
-                            className="w-full px-4 py-3 border border-stone-200 rounded-xl focus:ring-2 focus:ring-olive-300 focus:border-olive-300 transition-all duration-300 text-lg bg-sage-50 hover:bg-cream"
+                            className={`w-full px-4 py-3 border ${colors.borderPrimary} rounded-xl focus:ring-2 focus:ring-${colors.textAccent.replace('text-', '')} focus:border-${colors.textAccent.replace('text-', '')} transition-all duration-300 text-lg ${colors.bgSecondary} hover:${colors.bgCream}`}
                           />
                         </motion.div>
 
@@ -265,8 +267,8 @@ const Contato: React.FC = () => {
                           animate={{ opacity: 1, y: 0 }}
                           transition={{ delay: 0.2 }}
                         >
-                          <label htmlFor="email" className="block text-stone-700 font-semibold mb-3 text-lg">
-                            <FaEnvelope className="inline mr-2 text-olive-500" />
+                          <label htmlFor="email" className={`block ${colors.textSecondary} font-semibold mb-3 text-lg`}>
+                            <FaEnvelope className={`inline mr-2 ${colors.textAccent}`} />
                             Email
                           </label>
                           <input
@@ -277,7 +279,7 @@ const Contato: React.FC = () => {
                             onChange={handleChange}
                             required
                             placeholder="seu@email.com"
-                            className="w-full px-4 py-3 border border-stone-200 rounded-xl focus:ring-2 focus:ring-olive-300 focus:border-olive-300 transition-all duration-300 text-lg bg-sage-50 hover:bg-cream"
+                            className={`w-full px-4 py-3 border ${colors.borderPrimary} rounded-xl focus:ring-2 focus:ring-${colors.textAccent.replace('text-', '')} focus:border-${colors.textAccent.replace('text-', '')} transition-all duration-300 text-lg ${colors.bgSecondary} hover:${colors.bgCream}`}
                           />
                         </motion.div>
 
@@ -287,8 +289,8 @@ const Contato: React.FC = () => {
                           animate={{ opacity: 1, y: 0 }}
                           transition={{ delay: 0.3 }}
                         >
-                          <label className="block text-stone-700 font-semibold mb-3 text-lg">
-                            <FaHeart className="inline mr-2 text-olive-500" />
+                          <label className={`block ${colors.textSecondary} font-semibold mb-3 text-lg`}>
+                            <FaHeart className={`inline mr-2 ${colors.textAccent}`} />
                             Você comparecerá?
                           </label>
                           <div className="space-y-3">
@@ -297,8 +299,8 @@ const Contato: React.FC = () => {
                                 key={option.value}
                                 className={`flex items-center p-4 rounded-xl border-2 cursor-pointer transition-all duration-300 ${
                                   formData.attending === option.value
-                                    ? 'border-olive-500 bg-olive-50'
-                                    : 'border-stone-200 hover:border-olive-300 hover:bg-sage-50'
+                                    ? `${colors.borderSecondary} ${colors.bgSecondary}`
+                                    : `${colors.borderPrimary} hover:${colors.borderSecondary} hover:${colors.bgSecondary}`
                                 }`}
                                 whileHover={{ scale: 1.02 }}
                                 whileTap={{ scale: 0.98 }}
@@ -313,8 +315,8 @@ const Contato: React.FC = () => {
                                 />
                                 <div className={`w-4 h-4 rounded-full mr-3 ${
                                   formData.attending === option.value
-                                    ? 'bg-olive-500'
-                                    : 'bg-stone-300'
+                                    ? `${colors.bgPrimary}`
+                                    : 'bg-gray-300'
                                 }`} />
                                 <span className="text-lg">{option.label}</span>
                               </motion.label>
@@ -330,7 +332,7 @@ const Contato: React.FC = () => {
                             exit={{ opacity: 0, height: 0 }}
                             transition={{ duration: 0.3 }}
                           >
-                            <label htmlFor="guests" className="block text-stone-700 font-semibold mb-3 text-lg">
+                            <label htmlFor="guests" className={`block ${colors.textSecondary} font-semibold mb-3 text-lg`}>
                               Quantas pessoas virão?
                             </label>
                             <select
@@ -338,7 +340,7 @@ const Contato: React.FC = () => {
                               name="guests"
                               value={formData.guests}
                               onChange={handleChange}
-                              className="w-full px-4 py-3 border border-stone-200 rounded-xl focus:ring-2 focus:ring-olive-300 focus:border-olive-300 transition-all duration-300 text-lg bg-sage-50 hover:bg-cream"
+                              className={`w-full px-4 py-3 border ${colors.borderPrimary} rounded-xl focus:ring-2 focus:ring-${colors.textAccent.replace('text-', '')} focus:border-${colors.textAccent.replace('text-', '')} transition-all duration-300 text-lg ${colors.bgSecondary} hover:${colors.bgCream}`}
                             >
                               {[1, 2, 3, 4, 5].map(num => (
                                 <option key={num} value={num}>
@@ -355,8 +357,8 @@ const Contato: React.FC = () => {
                           animate={{ opacity: 1, y: 0 }}
                           transition={{ delay: 0.4 }}
                         >
-                          <label htmlFor="message" className="block text-stone-700 font-semibold mb-3 text-lg">
-                            <FaComment className="inline mr-2 text-olive-500" />
+                          <label htmlFor="message" className={`block ${colors.textSecondary} font-semibold mb-3 text-lg`}>
+                            <FaComment className={`inline mr-2 ${colors.textAccent}`} />
                             Mensagem (opcional)
                           </label>
                           <textarea
@@ -366,7 +368,7 @@ const Contato: React.FC = () => {
                             value={formData.message}
                             onChange={handleChange}
                             placeholder="Deixe uma mensagem carinhosa para os noivos..."
-                            className="w-full px-4 py-3 border border-stone-200 rounded-xl focus:ring-2 focus:ring-olive-300 focus:border-olive-300 transition-all duration-300 text-lg bg-sage-50 hover:bg-cream resize-none"
+                            className={`w-full px-4 py-3 border ${colors.borderPrimary} rounded-xl focus:ring-2 focus:ring-${colors.textAccent.replace('text-', '')} focus:border-${colors.textAccent.replace('text-', '')} transition-all duration-300 text-lg ${colors.bgSecondary} hover:${colors.bgCream} resize-none`}
                           />
                         </motion.div>
 
@@ -374,7 +376,7 @@ const Contato: React.FC = () => {
                         <motion.button
                           type="submit"
                           disabled={isLoading}
-                          className="w-full bg-gradient-to-r from-olive-500 to-sage-600 text-cream py-4 px-6 rounded-xl hover:from-olive-600 hover:to-sage-700 transition-all duration-300 text-lg font-semibold shadow-lg disabled:opacity-50 disabled:cursor-not-allowed"
+                          className={`w-full ${colors.gradientPrimary} text-cream py-4 px-6 rounded-xl hover:${colors.hoverPrimary} transition-all duration-300 text-lg font-semibold shadow-lg disabled:opacity-50 disabled:cursor-not-allowed`}
                           whileHover={{ scale: 1.02, y: -2 }}
                           whileTap={{ scale: 0.98 }}
                           initial={{ opacity: 0, y: 20 }}
@@ -404,7 +406,7 @@ const Contato: React.FC = () => {
                 className="space-y-8"
               >
                 {/* Contato dos Noivos */}
-                <div className="bg-gradient-to-br from-olive-600 to-sage-700 rounded-2xl p-6 sm:p-8 text-cream">
+                <div className={`${colors.gradientPrimary} rounded-2xl p-6 sm:p-8 text-cream`}>
                   <h3 className="text-2xl font-serif font-bold mb-6">Fale Conosco</h3>
                   <div className="space-y-4">
                     <a 
@@ -423,7 +425,7 @@ const Contato: React.FC = () => {
                     </a>
                     
                     <a 
-                      href="https://www.instagram.com/calixtops_/"
+                      href="https://www.instagram.com/"
                       target="_blank"
                       rel="noopener noreferrer"
                       className="flex items-center gap-4 hover:bg-cream/10 rounded-lg p-2 transition-colors group"
@@ -433,38 +435,38 @@ const Contato: React.FC = () => {
                       </div>
                       <div>
                         <p className="font-semibold">Instagram</p>
-                        <p className="text-cream/90">@calixtops_</p>
+                        <p className="text-cream/90">@Instagram</p>
                       </div>
                     </a>
                   </div>
                 </div>
 
                 {/* Informações do Evento */}
-                <div className="bg-cream rounded-2xl shadow-xl p-6 sm:p-8 border border-olive-200">
-                  <h3 className="text-2xl font-serif font-bold text-stone-800 mb-6">Detalhes do Evento</h3>
+                <div className={`${colors.bgCream} rounded-2xl shadow-xl p-6 sm:p-8 border ${colors.borderPrimary}`}>
+                  <h3 className={`text-2xl font-serif font-bold ${colors.textPrimary} mb-6`}>Detalhes do Evento</h3>
                   <div className="space-y-4">
                     <div className="flex items-start gap-4">
-                      <FaMapMarkerAlt className="text-olive-500 text-xl mt-1" />
+                      <FaMapMarkerAlt className={`${colors.textAccent} text-xl mt-1`} />
                       <div>
-                        <p className="font-semibold text-stone-800">Local</p>
-                        <p className="text-stone-600">Casa Branca Eventos</p>
-                        <p className="text-stone-600">R. Do Jangadeiro, 190 - Jacaúna, Aquiraz - CE</p>
+                        <p className={`font-semibold ${colors.textPrimary}`}>Local</p>
+                        <p className={`${colors.textSecondary}`}>Casa Branca Eventos</p>
+                        <p className={`${colors.textSecondary}`}>R. Do Jangadeiro, 190 - Jacaúna, Aquiraz - CE</p>
                       </div>
                     </div>
                     
                     <div className="flex items-start gap-4">
-                      <FaHeart className="text-olive-500 text-xl mt-1 animate-pulse-love" />
+                      <FaHeart className={`${colors.textAccent} text-xl mt-1 animate-pulse-love`} />
                       <div>
-                        <p className="font-semibold text-stone-800">Data e Horário</p>
-                        <p className="text-stone-600">15 de Dezembro de 2024</p>
-                        <p className="text-stone-600">A partir das 16h</p>
+                        <p className={`font-semibold ${colors.textPrimary}`}>Data e Horário</p>
+                        <p className={`${colors.textSecondary}`}>15 de Dezembro de 2024</p>
+                        <p className={`${colors.textSecondary}`}>A partir das 16h</p>
                       </div>
                     </div>
                   </div>
                   
                   <motion.a
                     href="/programacao"
-                    className="mt-6 inline-flex items-center gap-2 bg-gradient-to-r from-olive-500 to-sage-600 text-cream px-6 py-3 rounded-full font-semibold hover:from-olive-600 hover:to-sage-700 transition-all duration-300"
+                    className={`mt-6 inline-flex items-center gap-2 ${colors.gradientPrimary} text-cream px-6 py-3 rounded-full font-semibold hover:${colors.hoverPrimary} transition-all duration-300`}
                     whileHover={{ scale: 1.05, y: -2 }}
                     whileTap={{ scale: 0.95 }}
                   >
@@ -473,24 +475,24 @@ const Contato: React.FC = () => {
                 </div>
 
                 {/* Dicas Importantes */}
-                <div className="bg-gradient-to-br from-sage-50 to-sage-100 rounded-2xl p-6 sm:p-8 border border-sage-200">
-                  <h3 className="text-xl font-serif font-bold text-stone-800 mb-4">🌿 Dicas Importantes</h3>
-                  <ul className="space-y-3 text-stone-700">
+                <div className={`${colors.bgSecondary} rounded-2xl p-6 sm:p-8 border ${colors.borderPrimary}`}>
+                  <h3 className={`text-xl font-serif font-bold ${colors.textPrimary} mb-4`}>🌿 Dicas Importantes</h3>
+                  <ul className={`space-y-3 ${colors.textSecondary}`}>
                     <li className="flex items-start gap-3">
-                      <div className="w-2 h-2 bg-olive-500 rounded-full mt-2 flex-shrink-0"></div>
+                      <div className={`w-2 h-2 ${colors.bgPrimary} rounded-full mt-2 flex-shrink-0`}></div>
                       <span>Confirme sua presença até 15 dias antes do evento</span>
                     </li>
                     <li className="flex items-start gap-3">
-                      <div className="w-2 h-2 bg-olive-500 rounded-full mt-2 flex-shrink-0"></div>
+                      <div className={`w-2 h-2 ${colors.bgPrimary} rounded-full mt-2 flex-shrink-0`}></div>
                       <span>Dress code: Traje esporte fino</span>
                     </li>
                     <li className="flex items-start gap-3">
-                      <div className="w-2 h-2 bg-olive-500 rounded-full mt-2 flex-shrink-0"></div>
+                      <div className={`w-2 h-2 ${colors.bgPrimary} rounded-full mt-2 flex-shrink-0`}></div>
                       <span>
                         Veja opções de hospedagem na aba{' '}
                         <motion.a
                           href="/pousadas"
-                          className="text-olive-600 font-semibold hover:text-olive-700 underline decoration-olive-300 hover:decoration-olive-500 transition-all duration-300"
+                          className={`${colors.textAccent} font-semibold hover:${colors.textPrimary} underline decoration-${colors.textAccent.replace('text-', '')} hover:decoration-${colors.textPrimary.replace('text-', '')} transition-all duration-300`}
                           whileHover={{ scale: 1.05 }}
                           whileTap={{ scale: 0.95 }}
                         >

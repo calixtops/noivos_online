@@ -4,12 +4,16 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { useState, useEffect } from 'react';
 import { FaBars, FaTimes, FaHeart } from 'react-icons/fa';
 import MinimalMusicPlayer from './MinimalMusicPlayer';
+import { useThemeColors } from '../hooks/useThemeColors';
+import { useCoupleData } from '../hooks/useCoupleData';
 
 const Header = () => {
   const router = useRouter();
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isScrolled, setIsScrolled] = useState(false);
   const [isMounted, setIsMounted] = useState(false);
+  const colors = useThemeColors();
+  const { coupleData } = useCoupleData();
   
   const navItems = [
     { path: '/', label: 'Home', icon: '🏠' },
@@ -56,7 +60,7 @@ const Header = () => {
 
   return (
     <motion.header 
-      className="bg-white/90 backdrop-blur-md sticky top-0 z-50 border-b border-olive-100/50 shadow-lg shadow-olive-100/20"
+      className={`bg-white/90 backdrop-blur-md sticky top-0 z-50 border-b ${colors.borderPrimary}/50 shadow-lg`}
       initial={{ y: -20 }}
       animate={{ y: 0 }}
       transition={{ duration: 0.3, ease: "easeOut" }}
@@ -71,25 +75,25 @@ const Header = () => {
           >
             <Link href="/" className="group">
               <div className="flex items-center space-x-3">
-                <div className="w-10 h-10 sm:w-12 sm:h-12 bg-gradient-to-br from-olive-400 to-olive-600 rounded-full flex items-center justify-center text-white text-xl font-bold shadow-lg shadow-olive-300/30 group-hover:shadow-xl group-hover:shadow-olive-300/40 transition-all duration-300">
+                <div className={`w-10 h-10 sm:w-12 sm:h-12 ${colors.gradientPrimary} rounded-full flex items-center justify-center text-white text-xl font-bold shadow-lg group-hover:shadow-xl transition-all duration-300`}>
                   <FaHeart className="w-5 h-5 sm:w-6 sm:h-6" />
                 </div>
                 <div className="hidden sm:block">
-                  <h1 className="text-xl lg:text-2xl font-forum font-bold bg-gradient-to-r from-olive-600 to-olive-800 bg-clip-text text-transparent">
-                    João & Maria
+                  <h1 className={`text-xl lg:text-2xl font-forum font-bold ${colors.textPrimary}`}>
+                    {coupleData?.names || 'Carregando...'}
                   </h1>
                   <div className="flex items-center gap-2">
                     <motion.div 
-                      className="h-px bg-gradient-to-r from-olive-400 to-olive-600 flex-1"
+                      className={`h-px ${colors.borderSecondary} flex-1`}
                       initial={{ scaleX: 0 }}
                       animate={{ scaleX: 1 }}
                       transition={{ duration: 0.8, delay: 0.3 }}
                     />
-                    <p className="text-sm text-olive-600/80 font-medium px-2">
-                      15 de dezembro, 2024
+                    <p className={`text-sm ${colors.textSecondary}/80 font-medium px-2`}>
+                      {coupleData?.formattedDate || 'Carregando...'}
                     </p>
                     <motion.div 
-                      className="h-px bg-gradient-to-r from-olive-600 to-olive-400 flex-1"
+                      className={`h-px ${colors.borderSecondary} flex-1`}
                       initial={{ scaleX: 0 }}
                       animate={{ scaleX: 1 }}
                       transition={{ duration: 0.8, delay: 0.3 }}
@@ -113,8 +117,8 @@ const Header = () => {
                     href={item.path}
                     className={`flex items-center space-x-2 px-4 py-2 rounded-lg transition-all duration-300 font-medium ${
                       router.pathname === item.path 
-                        ? 'bg-olive-100 text-olive-700 shadow-md' 
-                        : 'text-olive-600 hover:bg-olive-50 hover:text-olive-700'
+                        ? `${colors.bgSecondary} ${colors.textPrimary} shadow-md` 
+                        : `${colors.textSecondary} hover:${colors.bgSecondary} hover:${colors.textPrimary}`
                     }`}
                   >
                     <span className="text-lg">{item.icon}</span>
@@ -137,7 +141,7 @@ const Header = () => {
             
             {/* Mobile Menu Button */}
             <motion.button
-              className="relative z-50 p-2 rounded-lg bg-olive-50 text-olive-600 hover:bg-olive-100 transition-colors"
+              className={`relative z-50 p-2 rounded-lg ${colors.bgSecondary} ${colors.textSecondary} hover:${colors.bgPrimary} hover:text-cream-100 transition-colors`}
               onClick={toggleMenu}
               whileTap={{ scale: 0.95 }}
               aria-label="Toggle menu"
@@ -173,7 +177,7 @@ const Header = () => {
         <AnimatePresence>
           {isMenuOpen && (
             <motion.div
-              className="lg:hidden absolute left-0 right-0 top-full bg-white/95 backdrop-blur-md border-b border-olive-100 shadow-xl"
+              className={`lg:hidden absolute left-0 right-0 top-full bg-white/95 backdrop-blur-md border-b ${colors.borderPrimary} shadow-xl`}
               initial={{ opacity: 0, height: 0 }}
               animate={{ opacity: 1, height: 'auto' }}
               exit={{ opacity: 0, height: 0 }}
@@ -192,8 +196,8 @@ const Header = () => {
                         href={item.path}
                         className={`flex items-center justify-between px-4 py-3 rounded-lg transition-all duration-300 ${
                           router.pathname === item.path 
-                            ? 'bg-olive-100 text-olive-700 shadow-lg' 
-                            : 'text-olive-600 hover:bg-olive-50'
+                            ? `${colors.bgSecondary} ${colors.textPrimary} shadow-lg` 
+                            : `${colors.textSecondary} hover:${colors.bgSecondary}`
                         }`}
                         onClick={() => setIsMenuOpen(false)}
                       >

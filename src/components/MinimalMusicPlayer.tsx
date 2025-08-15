@@ -1,6 +1,7 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { FaPlay, FaPause, FaStepBackward, FaStepForward, FaChevronDown, FaChevronUp, FaMusic, FaTimes } from 'react-icons/fa';
 import { useAudio } from '../contexts/AudioContext';
+import { useThemeColors } from '../hooks/useThemeColors';
 import { motion } from 'framer-motion';
 
 interface MinimalMusicPlayerProps {
@@ -11,6 +12,7 @@ const MinimalMusicPlayer: React.FC<MinimalMusicPlayerProps> = ({ isMobile = fals
   const [isExpanded, setIsExpanded] = useState(false);
   const [isHovered, setIsHovered] = useState(false);
   const timeoutRef = useRef<NodeJS.Timeout | null>(null);
+  const colors = useThemeColors();
   
   const { 
     isPlaying, 
@@ -93,7 +95,7 @@ const MinimalMusicPlayer: React.FC<MinimalMusicPlayerProps> = ({ isMobile = fals
 
   return (
     <div 
-      className="relative z-[60]"
+      className="relative z-[60] minimal-music-player"
       data-music-player
       onMouseEnter={handleMouseEnter}
       onMouseLeave={handleMouseLeave}
@@ -101,12 +103,14 @@ const MinimalMusicPlayer: React.FC<MinimalMusicPlayerProps> = ({ isMobile = fals
       {/* Player Compacto */}
       <div className="flex items-center gap-2">
         {/* Botão Principal */}
-        <button
+        <motion.button
           onClick={togglePlay}
           className="relative group"
           disabled={!isHydrated}
+          whileHover={{ scale: 1.05 }}
+          whileTap={{ scale: 0.95 }}
         >
-          <div className="w-10 h-10 bg-gradient-to-br from-olive-500 to-olive-700 rounded-full flex items-center justify-center text-white shadow-lg hover:shadow-xl transition-all duration-300 group-hover:scale-105">
+          <div className={`w-10 h-10 ${colors.gradientPrimary} rounded-full flex items-center justify-center text-white shadow-lg hover:shadow-xl transition-all duration-300 group-hover:scale-105`}>
             {isPlaying ? (
               <FaPause className="w-4 h-4" />
             ) : (
@@ -116,9 +120,13 @@ const MinimalMusicPlayer: React.FC<MinimalMusicPlayerProps> = ({ isMobile = fals
           
           {/* Indicador de Música Tocando */}
           {isPlaying && (
-            <div className="absolute -top-1 -right-1 w-3 h-3 bg-red-500 rounded-full animate-pulse" />
+            <motion.div 
+              className="absolute -top-1 -right-1 w-3 h-3 bg-red-500 rounded-full"
+              animate={{ scale: [1, 1.2, 1] }}
+              transition={{ duration: 1, repeat: Infinity }}
+            />
           )}
-        </button>
+        </motion.button>
 
         {/* Controles Expandidos */}
         {(isExpanded || isHovered) && (
@@ -126,12 +134,12 @@ const MinimalMusicPlayer: React.FC<MinimalMusicPlayerProps> = ({ isMobile = fals
             initial={{ opacity: 0, x: -10 }}
             animate={{ opacity: 1, x: 0 }}
             exit={{ opacity: 0, x: -10 }}
-            className="flex items-center gap-2 bg-white/95 backdrop-blur-md border border-olive-200 rounded-full px-3 py-2 shadow-lg"
+            className={`flex items-center gap-2 bg-white/95 backdrop-blur-md border ${colors.borderPrimary} rounded-full px-3 py-2 shadow-lg`}
           >
             {/* Botão Anterior */}
             <button
               onClick={previousTrack}
-              className="w-8 h-8 bg-olive-100 rounded-full flex items-center justify-center text-olive-700 hover:bg-olive-200 transition-colors"
+              className={`w-8 h-8 ${colors.bgSecondary} rounded-full flex items-center justify-center ${colors.textPrimary} hover:${colors.bgPrimary} hover:text-cream-100 transition-colors`}
               disabled={!isHydrated}
             >
               <FaStepBackward className="w-3 h-3" />
@@ -139,10 +147,10 @@ const MinimalMusicPlayer: React.FC<MinimalMusicPlayerProps> = ({ isMobile = fals
 
             {/* Nome da Música */}
             <div className="max-w-32 sm:max-w-40">
-              <p className="text-xs font-medium text-olive-800 truncate">
+              <p className={`text-xs font-medium ${colors.textPrimary} truncate`}>
                 {currentTrackName || 'Carregando...'}
               </p>
-              <p className="text-xs text-olive-600">
+              <p className={`text-xs ${colors.textSecondary}`}>
                 {currentTrackIndex + 1} de {musicCount}
               </p>
             </div>
@@ -150,7 +158,7 @@ const MinimalMusicPlayer: React.FC<MinimalMusicPlayerProps> = ({ isMobile = fals
             {/* Botão Próximo */}
             <button
               onClick={nextTrack}
-              className="w-8 h-8 bg-olive-100 rounded-full flex items-center justify-center text-olive-700 hover:bg-olive-200 transition-colors"
+              className={`w-8 h-8 ${colors.bgSecondary} rounded-full flex items-center justify-center ${colors.textPrimary} hover:${colors.bgPrimary} hover:text-cream-100 transition-colors`}
               disabled={!isHydrated}
             >
               <FaStepForward className="w-3 h-3" />
@@ -159,7 +167,7 @@ const MinimalMusicPlayer: React.FC<MinimalMusicPlayerProps> = ({ isMobile = fals
             {/* Botão Fechar */}
             <button
               onClick={handleCloseHover}
-              className="w-6 h-6 bg-olive-100 rounded-full flex items-center justify-center text-olive-600 hover:bg-olive-200 transition-colors"
+              className={`w-6 h-6 ${colors.bgSecondary} rounded-full flex items-center justify-center ${colors.textSecondary} hover:${colors.bgPrimary} hover:text-cream-100 transition-colors`}
             >
               <FaTimes className="w-3 h-3" />
             </button>
@@ -170,7 +178,7 @@ const MinimalMusicPlayer: React.FC<MinimalMusicPlayerProps> = ({ isMobile = fals
         {!isExpanded && !isHovered && (
           <button
             onClick={toggleExpanded}
-            className="w-8 h-8 bg-olive-100 rounded-full flex items-center justify-center text-olive-600 hover:bg-olive-200 transition-colors"
+            className={`w-8 h-8 ${colors.bgSecondary} rounded-full flex items-center justify-center ${colors.textSecondary} hover:${colors.bgPrimary} hover:text-cream-100 transition-colors`}
           >
             <FaChevronUp className="w-3 h-3" />
           </button>
@@ -183,16 +191,16 @@ const MinimalMusicPlayer: React.FC<MinimalMusicPlayerProps> = ({ isMobile = fals
           initial={{ opacity: 0, y: -10 }}
           animate={{ opacity: 1, y: 0 }}
           exit={{ opacity: 0, y: -10 }}
-          className="absolute top-full right-0 mt-2 w-64 bg-white/95 backdrop-blur-md border border-olive-200 rounded-xl p-4 shadow-xl"
+          className={`absolute top-full right-0 mt-2 w-64 bg-white/95 backdrop-blur-md border ${colors.borderPrimary} rounded-xl p-4 shadow-xl`}
         >
           <div className="flex items-center justify-between mb-3">
             <div className="flex items-center gap-2">
-              <FaMusic className="text-olive-600" />
-              <span className="font-medium text-olive-800">Player de Música</span>
+              <FaMusic className={`${colors.textAccent}`} />
+              <span className={`font-medium ${colors.textPrimary}`}>Player de Música</span>
             </div>
             <button
               onClick={toggleExpanded}
-              className="w-6 h-6 bg-olive-100 rounded-full flex items-center justify-center text-olive-600 hover:bg-olive-200 transition-colors"
+              className={`w-6 h-6 ${colors.bgSecondary} rounded-full flex items-center justify-center ${colors.textSecondary} hover:${colors.bgPrimary} hover:text-cream-100 transition-colors`}
             >
               <FaTimes className="w-3 h-3" />
             </button>
@@ -200,10 +208,10 @@ const MinimalMusicPlayer: React.FC<MinimalMusicPlayerProps> = ({ isMobile = fals
 
           <div className="space-y-3">
             <div className="text-center">
-              <p className="text-sm font-medium text-olive-800 truncate">
+              <p className={`text-sm font-medium ${colors.textPrimary} truncate`}>
                 {currentTrackName || 'Carregando...'}
               </p>
-              <p className="text-xs text-olive-600">
+              <p className={`text-xs ${colors.textSecondary}`}>
                 {currentTrackIndex + 1} de {musicCount}
               </p>
             </div>
@@ -211,7 +219,7 @@ const MinimalMusicPlayer: React.FC<MinimalMusicPlayerProps> = ({ isMobile = fals
             <div className="flex items-center justify-center gap-3">
               <button
                 onClick={previousTrack}
-                className="w-10 h-10 bg-olive-100 rounded-full flex items-center justify-center text-olive-700 hover:bg-olive-200 transition-colors"
+                className={`w-10 h-10 ${colors.bgSecondary} rounded-full flex items-center justify-center ${colors.textPrimary} hover:${colors.bgPrimary} hover:text-cream-100 transition-colors`}
                 disabled={!isHydrated}
               >
                 <FaStepBackward className="w-4 h-4" />
@@ -219,7 +227,7 @@ const MinimalMusicPlayer: React.FC<MinimalMusicPlayerProps> = ({ isMobile = fals
 
               <button
                 onClick={togglePlay}
-                className="w-12 h-12 bg-gradient-to-br from-olive-500 to-olive-700 rounded-full flex items-center justify-center text-white shadow-lg hover:shadow-xl transition-all duration-300"
+                className={`w-12 h-12 ${colors.gradientPrimary} rounded-full flex items-center justify-center text-white shadow-lg hover:shadow-xl transition-all duration-300`}
                 disabled={!isHydrated}
               >
                 {isPlaying ? (
@@ -231,7 +239,7 @@ const MinimalMusicPlayer: React.FC<MinimalMusicPlayerProps> = ({ isMobile = fals
 
               <button
                 onClick={nextTrack}
-                className="w-10 h-10 bg-olive-100 rounded-full flex items-center justify-center text-olive-700 hover:bg-olive-200 transition-colors"
+                className={`w-10 h-10 ${colors.bgSecondary} rounded-full flex items-center justify-center ${colors.textPrimary} hover:${colors.bgPrimary} hover:text-cream-100 transition-colors`}
                 disabled={!isHydrated}
               >
                 <FaStepForward className="w-4 h-4" />

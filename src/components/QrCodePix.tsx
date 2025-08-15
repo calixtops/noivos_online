@@ -1,10 +1,12 @@
 import React, { useState } from 'react';
 import { motion } from 'framer-motion';
 import { FaCopy, FaQrcode, FaWhatsapp, FaCheck } from 'react-icons/fa';
+import { useThemeColors } from '../hooks/useThemeColors';
 
 const QrCodePix = () => {
   const [copied, setCopied] = useState(false);
   const [showQR, setShowQR] = useState(false);
+  const colors = useThemeColors();
 
   // Dados fictícios do PIX para demonstração
   const pixData = {
@@ -37,7 +39,7 @@ const QrCodePix = () => {
   };
 
   return (
-    <div className="bg-white rounded-2xl shadow-xl border border-olive-200 p-6 max-w-md mx-auto">
+    <div className={`bg-white rounded-2xl shadow-xl border ${colors.borderPrimary} p-6 max-w-md mx-auto`}>
       <motion.div
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
@@ -45,13 +47,13 @@ const QrCodePix = () => {
       >
         {/* Header */}
         <div className="text-center mb-6">
-          <div className="w-16 h-16 bg-gradient-to-br from-olive-500 to-sage-600 rounded-full flex items-center justify-center mx-auto mb-4">
+          <div className={`w-16 h-16 ${colors.gradientPrimary} rounded-full flex items-center justify-center mx-auto mb-4`}>
             <FaQrcode className="text-white text-2xl" />
           </div>
-          <h3 className="text-xl font-serif font-bold text-stone-800 mb-2">
+          <h3 className={`text-xl font-serif font-bold ${colors.textPrimary} mb-2`}>
             Contribuir via PIX
           </h3>
-          <p className="text-stone-600 text-sm">
+          <p className={`${colors.textSecondary} text-sm`}>
             Escaneie o QR Code ou copie a chave PIX
           </p>
         </div>
@@ -63,7 +65,7 @@ const QrCodePix = () => {
               initial={{ scale: 0.8, opacity: 0 }}
               animate={{ scale: 1, opacity: 1 }}
               transition={{ duration: 0.3 }}
-              className="bg-white p-4 rounded-xl border-2 border-olive-200 inline-block"
+              className={`bg-white p-4 rounded-xl border-2 ${colors.borderPrimary} inline-block`}
             >
               <img
                 src={qrCodeUrl}
@@ -74,13 +76,13 @@ const QrCodePix = () => {
           ) : (
             <motion.button
               onClick={() => setShowQR(true)}
-              className="w-48 h-48 bg-gradient-to-br from-olive-100 to-sage-100 rounded-xl border-2 border-dashed border-olive-300 flex items-center justify-center mx-auto hover:border-olive-400 transition-colors"
+              className={`w-48 h-48 bg-gradient-to-br ${colors.bgSecondary} to-${colors.bgSecondary.replace('100', '200')} rounded-xl border-2 border-dashed ${colors.borderSecondary} flex items-center justify-center mx-auto hover:${colors.borderPrimary} transition-colors`}
               whileHover={{ scale: 1.02 }}
               whileTap={{ scale: 0.98 }}
             >
               <div className="text-center">
-                <FaQrcode className="text-olive-600 text-4xl mx-auto mb-2" />
-                <p className="text-olive-700 font-medium">Clique para ver QR Code</p>
+                <FaQrcode className={`${colors.textSecondary} text-4xl mx-auto mb-2`} />
+                <p className={`${colors.textPrimary} font-medium`}>Clique para ver QR Code</p>
               </div>
             </motion.button>
           )}
@@ -88,70 +90,50 @@ const QrCodePix = () => {
 
         {/* Chave PIX */}
         <div className="mb-6">
-          <label className="block text-sm font-medium text-stone-700 mb-2">
+          <label className={`block text-sm font-medium ${colors.textSecondary} mb-2`}>
             Chave PIX:
           </label>
           <div className="flex items-center gap-2">
-            <div className="flex-1 bg-stone-50 border border-stone-200 rounded-lg px-3 py-2 text-sm font-mono text-stone-800">
+            <div className={`flex-1 bg-stone-50 border border-stone-200 rounded-lg px-3 py-2 text-sm font-mono ${colors.textPrimary}`}>
               {pixData.key}
             </div>
             <motion.button
               onClick={copyToClipboard}
-              className="p-2 bg-olive-600 hover:bg-olive-700 text-white rounded-lg transition-colors"
+              className={`p-2 ${colors.bgPrimary} hover:${colors.hoverPrimary} text-white rounded-lg transition-colors`}
               whileHover={{ scale: 1.05 }}
               whileTap={{ scale: 0.95 }}
-              title="Copiar chave PIX"
             >
-              {copied ? <FaCheck className="text-sm" /> : <FaCopy className="text-sm" />}
+              {copied ? <FaCheck /> : <FaCopy />}
             </motion.button>
           </div>
-        </div>
-
-        {/* Informações */}
-        <div className="space-y-3 mb-6">
-          <div className="flex justify-between text-sm">
-            <span className="text-stone-600">Nome:</span>
-            <span className="font-medium text-stone-800">{pixData.name}</span>
-          </div>
-          <div className="flex justify-between text-sm">
-            <span className="text-stone-600">Tipo:</span>
-            <span className="font-medium text-stone-800">E-mail</span>
-          </div>
-          <div className="flex justify-between text-sm">
-            <span className="text-stone-600">Cidade:</span>
-            <span className="font-medium text-stone-800">{pixData.city}</span>
-          </div>
+          {copied && (
+            <motion.p
+              initial={{ opacity: 0, y: -10 }}
+              animate={{ opacity: 1, y: 0 }}
+              className={`text-sm ${colors.textSecondary} mt-2 text-center`}
+            >
+              Chave copiada!
+            </motion.p>
+          )}
         </div>
 
         {/* Botões de Ação */}
         <div className="space-y-3">
           <motion.button
             onClick={shareWhatsApp}
-            className="w-full bg-green-600 hover:bg-green-700 text-white py-3 px-4 rounded-lg font-medium transition-colors flex items-center justify-center gap-2"
+            className="w-full bg-green-500 hover:bg-green-600 text-white py-3 px-4 rounded-lg font-medium transition-colors flex items-center justify-center gap-2"
             whileHover={{ scale: 1.02 }}
             whileTap={{ scale: 0.98 }}
           >
             <FaWhatsapp className="text-lg" />
-            Compartilhar no WhatsApp
+            Compartilhar via WhatsApp
           </motion.button>
-          
-          {showQR && (
-            <motion.button
-              onClick={() => setShowQR(false)}
-              className="w-full bg-stone-100 hover:bg-stone-200 text-stone-700 py-2 px-4 rounded-lg font-medium transition-colors"
-              initial={{ opacity: 0, y: 10 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.3 }}
-            >
-              Ocultar QR Code
-            </motion.button>
-          )}
         </div>
 
         {/* Aviso */}
-        <div className="mt-4 p-3 bg-blue-50 border border-blue-200 rounded-lg">
-          <p className="text-xs text-blue-700 text-center">
-            💡 <strong>Dica:</strong> Use qualquer app de banco para escanear o QR Code ou fazer PIX pela chave
+        <div className={`mt-6 p-4 ${colors.bgSecondary} rounded-lg border ${colors.borderPrimary}`}>
+          <p className={`text-sm ${colors.textSecondary} text-center`}>
+            💝 Qualquer valor é bem-vindo! Sua contribuição nos ajudará a realizar nosso sonho.
           </p>
         </div>
       </motion.div>

@@ -1,10 +1,9 @@
-import { useState, useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import Head from 'next/head';
-import { 
-  FaHeart, FaUser, FaEnvelope, FaCalendar, FaCheck, FaTimes, FaQuestion, 
-  FaEye, FaExpandArrowsAlt, FaTrash, FaUsers, FaPercentage, FaComments,
-  FaChartBar, FaSync, FaExclamationTriangle, FaCheckCircle
-} from 'react-icons/fa';
+import { motion, AnimatePresence } from 'framer-motion';
+import { FaCheck, FaTimes, FaTrash, FaEye, FaEyeSlash, FaDownload, FaPrint, FaFilter, FaSearch, FaHeart, FaUsers, FaCalendarAlt, FaMapMarkerAlt, FaQuestion, FaExclamationTriangle } from 'react-icons/fa';
+import { useThemeColors } from '../../hooks/useThemeColors';
+import { useCoupleData } from '../../hooks/useCoupleData';
 
 interface Confirmacao {
   _id: string;
@@ -21,6 +20,8 @@ interface Stats {
   confirmados: number;
   recusados: number;
   talvez: number;
+  pendentes: number;
+  naoConfirmados: number;
   totalConvidados: number;
   comMensagem: number;
   semMensagem: number;
@@ -38,6 +39,11 @@ const AdminConfirmacoes = () => {
   const [showDeleteModal, setShowDeleteModal] = useState<{ id: string; name: string } | null>(null);
   const [refreshing, setRefreshing] = useState(false);
   const [isDemo, setIsDemo] = useState(false);
+  const [filter, setFilter] = useState('all');
+  const [searchTerm, setSearchTerm] = useState('');
+  const [showDetails, setShowDetails] = useState({});
+  const colors = useThemeColors();
+  const { coupleData } = useCoupleData();
 
   useEffect(() => {
     fetchConfirmacoes();
@@ -96,7 +102,7 @@ const AdminConfirmacoes = () => {
       case 'yes': return <FaCheck className="text-green-500" />;
       case 'no': return <FaTimes className="text-red-500" />;
       case 'maybe': return <FaQuestion className="text-yellow-500" />;
-      default: return <FaQuestion className="text-gray-500" />;
+      default: return <FaQuestion className="text-yellow-500" />;
     }
   };
 
@@ -105,7 +111,7 @@ const AdminConfirmacoes = () => {
       case 'yes': return 'Confirmado';
       case 'no': return 'Não vai';
       case 'maybe': return 'Talvez';
-      default: return 'Desconhecido';
+      default: return 'Pendente';
     }
   };
 
@@ -133,6 +139,29 @@ const AdminConfirmacoes = () => {
   const closeDeleteModal = () => {
     setShowDeleteModal(null);
   };
+
+  const toggleDetails = (id: string) => {
+    setShowDetails(prev => ({
+      ...prev,
+      [id]: !prev[id]
+    }));
+  };
+
+  const handleDelete = (id: string) => {
+    openDeleteModal(id, 'Confirmação');
+  };
+
+  const filteredConfirmacoes = confirmacoes.filter(confirmacao => {
+    const matchesSearch = confirmacao.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
+                         confirmacao.email.toLowerCase().includes(searchTerm.toLowerCase());
+    
+    const matchesFilter = filter === 'all' || 
+                         (filter === 'confirmado' && confirmacao.attending === 'yes') ||
+                         (filter === 'pendente' && confirmacao.attending === 'maybe') ||
+                         (filter === 'nao_confirmado' && confirmacao.attending === 'no');
+    
+    return matchesSearch && matchesFilter;
+  });
 
   if (loading) {
     return (
@@ -165,375 +194,272 @@ const AdminConfirmacoes = () => {
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-cream-50 to-olive-50 p-4">
+    <div className={`min-h-screen ${colors.gradientBackground}`}>
       <Head>
-        <title>Confirmações - Admin | João & Maria</title>
+        <title>Confirmações - {coupleData?.names || 'Carregando...'}</title>
+        <meta name="description" content="Painel administrativo para gerenciar confirmações de presença" />
       </Head>
 
-      <div className="max-w-7xl mx-auto">
-        <header className="text-center mb-8">
-          <h1 className="text-4xl font-serif font-bold text-olive-800 mb-2">
-            <FaHeart className="inline mr-3 text-olive-500" />
-            Dashboard de Confirmações
-          </h1>
-          <p className="text-stone-600 text-lg">João & Maria - 15 de Dezembro de 2024</p>
-          
-          {/* Indicador de Demonstração */}
-          {isDemo && (
-            <div className="mt-4 inline-flex items-center gap-2 bg-blue-100 border border-blue-300 text-blue-800 px-4 py-2 rounded-lg">
-              <FaExclamationTriangle className="text-blue-600" />
-              <span className="text-sm font-medium">Modo Demonstração - Dados Fictícios</span>
-            </div>
-          )}
-        </header>
-
-        {/* Dashboard Principal */}
-        {stats && (
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
-            {/* Total de Respostas */}
-            <div className="bg-white p-6 rounded-2xl shadow-lg border border-gray-100">
-              <div className="flex items-center justify-between">
-                <div>
-                  <p className="text-sm font-medium text-gray-600">Total de Respostas</p>
-                  <p className="text-3xl font-bold text-olive-600">{stats.total}</p>
-                </div>
-                <div className="w-12 h-12 bg-olive-100 rounded-full flex items-center justify-center">
-                  <FaUsers className="text-olive-600 text-xl" />
-                </div>
+      {/* Header */}
+      <header className={`${colors.bgPrimary} text-cream-100 py-6 shadow-lg`}>
+        <div className="container mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="flex items-center justify-between">
+            <div className="flex items-center gap-4">
+              <div className={`w-12 h-12 ${colors.gradientPrimary} rounded-full flex items-center justify-center`}>
+                <FaHeart className="text-white text-xl" />
+              </div>
+              <div>
+                <h1 className="text-2xl sm:text-3xl font-serif font-bold">Confirmações</h1>
+                <p className="text-cream-200">{coupleData?.names || 'Carregando...'} - {coupleData?.formattedDate || 'Carregando...'}</p>
               </div>
             </div>
-
-            {/* Taxa de Confirmação */}
-            <div className="bg-white p-6 rounded-2xl shadow-lg border border-gray-100">
-              <div className="flex items-center justify-between">
-                <div>
-                  <p className="text-sm font-medium text-gray-600">Taxa de Confirmação</p>
-                  <p className="text-3xl font-bold text-green-600">{stats.taxaConfirmacao}%</p>
-                </div>
-                <div className="w-12 h-12 bg-green-100 rounded-full flex items-center justify-center">
-                  <FaPercentage className="text-green-600 text-xl" />
-                </div>
+            
+            {isDemo && (
+              <div className={`px-4 py-2 ${colors.bgSecondary} ${colors.textPrimary} rounded-lg text-sm font-medium`}>
+                Modo Demonstração - Dados Fictícios
               </div>
-            </div>
-
-            {/* Total de Convidados */}
-            <div className="bg-white p-6 rounded-2xl shadow-lg border border-gray-100">
-              <div className="flex items-center justify-between">
-                <div>
-                  <p className="text-sm font-medium text-gray-600">Convidados Confirmados</p>
-                  <p className="text-3xl font-bold text-blue-600">{stats.totalConvidados}</p>
-                </div>
-                <div className="w-12 h-12 bg-blue-100 rounded-full flex items-center justify-center">
-                  <FaCheckCircle className="text-blue-600 text-xl" />
-                </div>
-              </div>
-            </div>
-
-            {/* Média de Convidados */}
-            <div className="bg-white p-6 rounded-2xl shadow-lg border border-gray-100">
-              <div className="flex items-center justify-between">
-                <div>
-                  <p className="text-sm font-medium text-gray-600">Média por Família</p>
-                  <p className="text-3xl font-bold text-purple-600">{stats.mediaConvidados}</p>
-                </div>
-                <div className="w-12 h-12 bg-purple-100 rounded-full flex items-center justify-center">
-                  <FaChartBar className="text-purple-600 text-xl" />
-                </div>
-              </div>
-            </div>
+            )}
           </div>
-        )}
+        </div>
+      </header>
 
-        {/* Estatísticas Detalhadas */}
-        {stats && (
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
-            <div className="bg-white p-6 rounded-2xl shadow-lg border border-gray-100">
-              <h3 className="text-lg font-semibold text-gray-800 mb-4 flex items-center gap-2">
-                <FaCheck className="text-green-500" />
-                Status das Respostas
-              </h3>
-              <div className="space-y-3">
-                <div className="flex justify-between items-center">
-                  <span className="text-sm text-gray-600">Confirmados</span>
-                  <span className="font-bold text-green-600">{stats.confirmados}</span>
+      <main className="container mx-auto px-4 sm:px-6 lg:px-8 py-8">
+        {/* Stats Cards */}
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
+          {[
+            { 
+              title: 'Total de Convidados', 
+              value: stats?.total || 0, 
+              icon: FaUsers, 
+              color: 'from-blue-500 to-blue-600' 
+            },
+            { 
+              title: 'Confirmados', 
+              value: stats?.confirmados || 0, 
+              icon: FaCheck, 
+              color: 'from-green-500 to-green-600' 
+            },
+            { 
+              title: 'Pendentes', 
+              value: stats?.pendentes || 0, 
+              icon: FaCalendarAlt, 
+              color: 'from-yellow-500 to-yellow-600' 
+            },
+            { 
+              title: 'Não Confirmados', 
+              value: stats?.naoConfirmados || 0, 
+              icon: FaTimes, 
+              color: 'from-red-500 to-red-600' 
+            }
+          ].map((stat, index) => (
+            <motion.div
+              key={stat.title}
+              className={`${colors.bgCream} rounded-2xl p-6 shadow-lg border ${colors.borderPrimary}`}
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: index * 0.1 }}
+            >
+              <div className="flex items-center justify-between">
+                <div>
+                  <p className={`text-sm font-medium ${colors.textSecondary}`}>{stat.title}</p>
+                  <p className={`text-3xl font-bold ${colors.textPrimary}`}>{stat.value}</p>
                 </div>
-                <div className="flex justify-between items-center">
-                  <span className="text-sm text-gray-600">Não vão</span>
-                  <span className="font-bold text-red-600">{stats.recusados}</span>
-                </div>
-                <div className="flex justify-between items-center">
-                  <span className="text-sm text-gray-600">Talvez</span>
-                  <span className="font-bold text-yellow-600">{stats.talvez}</span>
+                <div className={`w-12 h-12 bg-gradient-to-r ${stat.color} rounded-full flex items-center justify-center`}>
+                  <stat.icon className="text-white text-xl" />
                 </div>
               </div>
-            </div>
-
-            <div className="bg-white p-6 rounded-2xl shadow-lg border border-gray-100">
-              <h3 className="text-lg font-semibold text-gray-800 mb-4 flex items-center gap-2">
-                <FaComments className="text-blue-500" />
-                Mensagens
-              </h3>
-              <div className="space-y-3">
-                <div className="flex justify-between items-center">
-                  <span className="text-sm text-gray-600">Com mensagem</span>
-                  <span className="font-bold text-blue-600">{stats.comMensagem}</span>
-                </div>
-                <div className="flex justify-between items-center">
-                  <span className="text-sm text-gray-600">Sem mensagem</span>
-                  <span className="font-bold text-gray-600">{stats.semMensagem}</span>
-                </div>
-              </div>
-            </div>
-
-            <div className="bg-white p-6 rounded-2xl shadow-lg border border-gray-100">
-              <h3 className="text-lg font-semibold text-gray-800 mb-4 flex items-center gap-2">
-                <FaUsers className="text-purple-500" />
-                Convidados
-              </h3>
-              <div className="space-y-3">
-                <div className="flex justify-between items-center">
-                  <span className="text-sm text-gray-600">Total confirmados</span>
-                  <span className="font-bold text-purple-600">{stats.totalConvidados}</span>
-                </div>
-                <div className="flex justify-between items-center">
-                  <span className="text-sm text-gray-600">Média por família</span>
-                  <span className="font-bold text-purple-600">{stats.mediaConvidados}</span>
-                </div>
-              </div>
-            </div>
-          </div>
-        )}
-
-        {/* Botão de Atualizar */}
-        <div className="flex justify-center mb-6">
-          <button
-            onClick={fetchConfirmacoes}
-            disabled={refreshing}
-            className="bg-olive-500 hover:bg-olive-600 disabled:bg-olive-300 text-white px-8 py-3 rounded-xl transition-colors flex items-center gap-2 font-medium"
-          >
-            <FaSync className={`text-sm ${refreshing ? 'animate-spin' : ''}`} />
-            {refreshing ? 'Atualizando...' : 'Atualizar Lista'}
-          </button>
+            </motion.div>
+          ))}
         </div>
 
-        {/* Lista de Confirmações */}
-        <div className="bg-white rounded-2xl shadow-lg overflow-hidden border border-gray-100">
-          <div className="p-4 sm:p-6 bg-olive-500 text-white">
-            <h2 className="text-xl sm:text-2xl font-semibold flex items-center gap-2">
-              <FaHeart className="text-olive-200" />
-              Confirmações Recebidas ({confirmacoes.length})
+        {/* Filters */}
+        <div className={`${colors.bgCream} rounded-2xl p-6 shadow-lg border ${colors.borderPrimary} mb-8`}>
+          <div className="flex flex-col sm:flex-row gap-4">
+            {/* Search */}
+            <div className="flex-1">
+              <div className="relative">
+                <FaSearch className={`absolute left-3 top-1/2 transform -translate-y-1/2 ${colors.textSecondary}`} />
+                <input
+                  type="text"
+                  placeholder="Buscar por nome..."
+                  value={searchTerm}
+                  onChange={(e) => setSearchTerm(e.target.value)}
+                  className={`w-full pl-10 pr-4 py-3 border ${colors.borderPrimary} rounded-lg focus:ring-2 focus:ring-${colors.textSecondary.replace('text-', '')} focus:border-${colors.textSecondary.replace('text-', '')} ${colors.textPrimary} bg-white`}
+                />
+              </div>
+            </div>
+            
+            {/* Filter */}
+            <select
+              value={filter}
+              onChange={(e) => setFilter(e.target.value)}
+              className={`px-4 py-3 border ${colors.borderPrimary} rounded-lg focus:ring-2 focus:ring-${colors.textSecondary.replace('text-', '')} focus:border-${colors.textSecondary.replace('text-', '')} ${colors.textPrimary} bg-white`}
+            >
+              <option value="all">Todos os Status</option>
+              <option value="confirmado">Confirmados</option>
+              <option value="pendente">Pendentes</option>
+              <option value="nao_confirmado">Não Confirmados</option>
+            </select>
+          </div>
+        </div>
+
+        {/* Confirmações List */}
+        <div className={`${colors.bgCream} rounded-2xl shadow-lg border ${colors.borderPrimary} overflow-hidden`}>
+          <div className={`${colors.bgSecondary} px-6 py-4 border-b ${colors.borderPrimary}`}>
+            <h2 className={`text-xl font-serif font-bold ${colors.textPrimary}`}>
+              Lista de Confirmações
             </h2>
           </div>
           
-          {confirmacoes.length === 0 ? (
-            <div className="p-8 sm:p-12 text-center text-stone-500">
-              <div className="w-12 h-12 sm:w-16 sm:h-16 bg-gray-100 rounded-full flex items-center justify-center mx-auto mb-4">
-                <FaHeart className="text-gray-400 text-xl sm:text-2xl" />
-              </div>
-              <p className="text-base sm:text-lg">Nenhuma confirmação recebida ainda.</p>
-              <p className="text-sm mt-2">As confirmações aparecerão aqui quando os convidados responderem.</p>
-            </div>
-          ) : (
-            <div className="overflow-x-auto">
-              <table className="w-full">
-                <thead className="bg-gray-50">
-                  <tr>
-                    <th className="px-3 sm:px-6 py-3 sm:py-4 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Status</th>
-                    <th className="px-3 sm:px-6 py-3 sm:py-4 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Nome</th>
-                    <th className="hidden sm:table-cell px-3 sm:px-6 py-3 sm:py-4 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Email</th>
-                    <th className="px-3 sm:px-6 py-3 sm:py-4 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Convidados</th>
-                    <th className="hidden md:table-cell px-3 sm:px-6 py-3 sm:py-4 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Data</th>
-                    <th className="hidden lg:table-cell px-3 sm:px-6 py-3 sm:py-4 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Mensagem</th>
-                    <th className="px-3 sm:px-6 py-3 sm:py-4 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Ações</th>
-                  </tr>
-                </thead>
-                <tbody className="divide-y divide-gray-200">
-                  {confirmacoes.map((confirmacao) => (
-                    <tr key={confirmacao._id} className="hover:bg-gray-50 transition-colors">
-                      <td className="px-3 sm:px-6 py-3 sm:py-4">
-                        <div className="flex items-center gap-1 sm:gap-2">
-                          {getStatusIcon(confirmacao.attending)}
-                          <span className={`px-1.5 sm:px-2 py-0.5 sm:py-1 rounded-full text-xs font-medium border ${getStatusColor(confirmacao.attending)}`}>
-                            {getStatusText(confirmacao.attending)}
-                          </span>
-                        </div>
-                      </td>
-                      <td className="px-3 sm:px-6 py-3 sm:py-4">
-                        <div className="flex items-center gap-1 sm:gap-2">
-                          <FaUser className="text-gray-400 text-xs sm:text-sm" />
-                          <span className="font-medium text-gray-900 text-sm sm:text-base">{confirmacao.name}</span>
-                        </div>
-                      </td>
-                      <td className="hidden sm:table-cell px-3 sm:px-6 py-3 sm:py-4">
-                        <div className="flex items-center gap-1 sm:gap-2">
-                          <FaEnvelope className="text-gray-400 text-xs sm:text-sm" />
-                          <span className="text-xs sm:text-sm text-gray-600 truncate max-w-[150px]">{confirmacao.email}</span>
-                        </div>
-                      </td>
-                      <td className="px-3 sm:px-6 py-3 sm:py-4 text-center">
-                        <span className="bg-olive-100 text-olive-800 px-2 sm:px-3 py-0.5 sm:py-1 rounded-full text-xs sm:text-sm font-medium">
-                          {confirmacao.guests || 0}
-                        </span>
-                      </td>
-                      <td className="hidden md:table-cell px-3 sm:px-6 py-3 sm:py-4">
-                        <div className="flex items-center gap-1 sm:gap-2">
-                          <FaCalendar className="text-gray-400 text-xs sm:text-sm" />
-                          <span className="text-xs sm:text-sm text-gray-600">
-                            {new Date(confirmacao.createdAt).toLocaleDateString('pt-BR', {
-                              day: '2-digit',
-                              month: '2-digit',
-                              year: 'numeric',
-                              hour: '2-digit',
-                              minute: '2-digit'
-                            })}
-                          </span>
-                        </div>
-                      </td>
-                      <td className="hidden lg:table-cell px-3 sm:px-6 py-3 sm:py-4 max-w-xs">
-                        {confirmacao.message ? (
-                          <div className="flex items-center gap-1 sm:gap-2">
-                            <div className="text-xs sm:text-sm text-gray-600 truncate flex-1" title={confirmacao.message}>
-                              {confirmacao.message}
-                            </div>
-                            <button
-                              onClick={() => openMessageModal(
-                                confirmacao.name, 
-                                confirmacao.message,
-                                new Date(confirmacao.createdAt).toLocaleDateString('pt-BR', {
-                                  day: '2-digit',
-                                  month: '2-digit',
-                                  year: 'numeric',
-                                  hour: '2-digit',
-                                  minute: '2-digit'
-                                })
-                              )}
-                              className="text-olive-500 hover:text-olive-700 transition-colors p-0.5 sm:p-1"
-                              title="Ver mensagem completa"
-                            >
-                              <FaEye className="text-xs sm:text-sm" />
-                            </button>
-                          </div>
-                        ) : (
-                          <span className="text-gray-400 text-xs sm:text-sm italic">Sem mensagem</span>
-                        )}
-                      </td>
-                      <td className="px-3 sm:px-6 py-3 sm:py-4">
-                        <div className="flex items-center gap-1 sm:gap-2">
-                          <button
-                            onClick={() => openDeleteModal(confirmacao._id, confirmacao.name)}
-                            disabled={deletingId === confirmacao._id}
-                            className="text-red-500 hover:text-red-700 transition-colors p-0.5 sm:p-1 disabled:opacity-50"
-                            title="Deletar confirmação"
-                          >
-                            <FaTrash className="text-xs sm:text-sm" />
-                          </button>
-                        </div>
-                      </td>
-                    </tr>
-                  ))}
-                </tbody>
-              </table>
-            </div>
-          )}
+          <div className="overflow-x-auto">
+            <table className="w-full">
+              <thead className={`${colors.bgSecondary} border-b ${colors.borderPrimary}`}>
+                <tr>
+                  <th className={`px-6 py-4 text-left ${colors.textPrimary} font-semibold`}>Nome</th>
+                  <th className={`px-6 py-4 text-left ${colors.textPrimary} font-semibold`}>Email</th>
+                  <th className={`px-6 py-4 text-left ${colors.textPrimary} font-semibold`}>Status</th>
+                  <th className={`px-6 py-4 text-left ${colors.textPrimary} font-semibold`}>Data</th>
+                  <th className={`px-6 py-4 text-center ${colors.textPrimary} font-semibold`}>Ações</th>
+                </tr>
+              </thead>
+              <tbody>
+                {filteredConfirmacoes.map((confirmacao, index) => (
+                  <motion.tr
+                    key={confirmacao._id}
+                    className={`border-b ${colors.borderPrimary} hover:${colors.bgSecondary} transition-colors`}
+                    initial={{ opacity: 0, x: -20 }}
+                    animate={{ opacity: 1, x: 0 }}
+                    transition={{ delay: index * 0.05 }}
+                  >
+                    <td className={`px-6 py-4 ${colors.textPrimary} font-medium`}>
+                      {confirmacao.name}
+                    </td>
+                    <td className={`px-6 py-4 ${colors.textSecondary}`}>
+                      {confirmacao.email}
+                    </td>
+                    <td className="px-6 py-4">
+                      <span className={`px-3 py-1 rounded-full text-xs font-medium ${
+                        confirmacao.attending === 'yes' 
+                          ? 'bg-green-100 text-green-800' 
+                          : confirmacao.attending === 'maybe'
+                          ? 'bg-yellow-100 text-yellow-800'
+                          : 'bg-red-100 text-red-800'
+                      }`}>
+                        {confirmacao.attending === 'yes' ? 'Confirmado' :
+                         confirmacao.attending === 'maybe' ? 'Pendente' : 'Não Confirmado'}
+                      </span>
+                    </td>
+                    <td className={`px-6 py-4 ${colors.textSecondary} text-sm`}>
+                      {new Date(confirmacao.createdAt).toLocaleDateString('pt-BR')}
+                    </td>
+                    <td className="px-6 py-4">
+                      <div className="flex items-center justify-center gap-2">
+                        <motion.button
+                          onClick={() => toggleDetails(confirmacao._id)}
+                          className={`p-2 rounded-lg ${colors.bgSecondary} ${colors.textPrimary} hover:${colors.bgPrimary} hover:text-cream-100 transition-colors`}
+                          whileHover={{ scale: 1.05 }}
+                          whileTap={{ scale: 0.95 }}
+                        >
+                          {showDetails[confirmacao._id] ? <FaEyeSlash /> : <FaEye />}
+                        </motion.button>
+                        
+                        <motion.button
+                          onClick={() => handleDelete(confirmacao._id)}
+                          className="p-2 rounded-lg bg-red-100 text-red-600 hover:bg-red-200 transition-colors"
+                          whileHover={{ scale: 1.05 }}
+                          whileTap={{ scale: 0.95 }}
+                        >
+                          <FaTrash />
+                        </motion.button>
+                      </div>
+                    </td>
+                  </motion.tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
         </div>
 
-        {/* Modal para mensagem completa */}
-        {selectedMessage && (
-          <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black bg-opacity-50" onClick={closeMessageModal}>
-            <div 
-              className="bg-white rounded-2xl shadow-xl max-w-lg w-full max-h-[80vh] overflow-hidden"
-              onClick={(e) => e.stopPropagation()}
-            >
-              <div className="flex items-center justify-between p-4 sm:p-6 bg-olive-500 text-white">
-                <div>
-                  <h3 className="text-lg sm:text-xl font-semibold flex items-center gap-2">
-                    <FaExpandArrowsAlt />
-                    Mensagem de {selectedMessage.name}
+        {/* Details Modal */}
+        <AnimatePresence>
+          {Object.keys(showDetails).map(id => {
+            const confirmacao = confirmacoes.find(c => c._id === id);
+            if (!confirmacao || !showDetails[id]) return null;
+            
+            return (
+              <motion.div
+                key={id}
+                className="fixed inset-0 bg-black/50 flex items-center justify-center p-4 z-50"
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                exit={{ opacity: 0 }}
+                onClick={() => toggleDetails(id)}
+              >
+                <motion.div
+                  className={`${colors.bgCream} rounded-2xl p-6 max-w-md w-full shadow-2xl`}
+                  initial={{ scale: 0.9, opacity: 0 }}
+                  animate={{ scale: 1, opacity: 1 }}
+                  exit={{ scale: 0.9, opacity: 0 }}
+                  onClick={(e) => e.stopPropagation()}
+                >
+                  <h3 className={`text-xl font-serif font-bold ${colors.textPrimary} mb-4`}>
+                    Detalhes da Confirmação
                   </h3>
-                  <p className="text-olive-100 text-xs sm:text-sm mt-1">
-                    Enviada em {selectedMessage.date}
-                  </p>
-                </div>
-                <button
-                  onClick={closeMessageModal}
-                  className="text-white hover:text-olive-200 transition-colors p-1 sm:p-2"
-                  title="Fechar"
-                >
-                  <FaTimes className="text-lg sm:text-xl" />
-                </button>
-              </div>
-              
-              <div className="p-4 sm:p-6 max-h-96 overflow-y-auto">
-                <div className="bg-gray-50 p-3 sm:p-4 rounded-lg border border-gray-200">
-                  <p className="text-gray-800 leading-relaxed whitespace-pre-wrap text-sm sm:text-base">
-                    {selectedMessage.message}
-                  </p>
-                </div>
-              </div>
-              
-              <div className="px-4 sm:px-6 py-3 sm:py-4 bg-gray-50 border-t border-gray-200">
-                <button
-                  onClick={closeMessageModal}
-                  className="w-full bg-olive-500 hover:bg-olive-600 text-white py-2 px-4 rounded-lg transition-colors text-sm sm:text-base"
-                >
-                  Fechar
-                </button>
-              </div>
-            </div>
-          </div>
-        )}
-
-        {/* Modal de confirmação de exclusão */}
-        {showDeleteModal && (
-          <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black bg-opacity-50" onClick={closeDeleteModal}>
-            <div 
-              className="bg-white rounded-2xl shadow-xl max-w-md w-full"
-              onClick={(e) => e.stopPropagation()}
-            >
-              <div className="flex items-center justify-between p-4 sm:p-6 bg-red-500 text-white">
-                <div>
-                  <h3 className="text-lg sm:text-xl font-semibold flex items-center gap-2">
-                    <FaTrash />
-                    Confirmar Exclusão
-                  </h3>
-                </div>
-                <button
-                  onClick={closeDeleteModal}
-                  className="text-white hover:text-red-200 transition-colors p-1 sm:p-2"
-                  title="Cancelar"
-                >
-                  <FaTimes className="text-lg sm:text-xl" />
-                </button>
-              </div>
-              
-              <div className="p-4 sm:p-6">
-                <p className="text-gray-700 mb-3 sm:mb-4 text-sm sm:text-base">
-                  Tem certeza que deseja deletar a confirmação de <strong>{showDeleteModal.name}</strong>?
-                </p>
-                <p className="text-xs sm:text-sm text-gray-500 mb-4 sm:mb-6">
-                  Esta ação não pode ser desfeita.
-                </p>
-              </div>
-              
-              <div className="px-4 sm:px-6 py-3 sm:py-4 bg-gray-50 border-t border-gray-200 flex gap-2 sm:gap-3">
-                <button
-                  onClick={closeDeleteModal}
-                  className="flex-1 bg-gray-300 hover:bg-gray-400 text-gray-700 py-2 px-3 sm:px-4 rounded-lg transition-colors text-sm sm:text-base"
-                >
-                  Cancelar
-                </button>
-                <button
-                  onClick={() => deleteConfirmacao(showDeleteModal.id)}
-                  disabled={deletingId === showDeleteModal.id}
-                  className="flex-1 bg-red-500 hover:bg-red-600 disabled:bg-red-300 text-white py-2 px-3 sm:px-4 rounded-lg transition-colors text-sm sm:text-base"
-                >
-                  {deletingId === showDeleteModal.id ? 'Deletando...' : 'Deletar'}
-                </button>
-              </div>
-            </div>
-          </div>
-        )}
-      </div>
+                  
+                  <div className="space-y-3">
+                    <div>
+                      <label className={`text-sm font-medium ${colors.textSecondary}`}>Nome:</label>
+                      <p className={`${colors.textPrimary} font-medium`}>{confirmacao.name}</p>
+                    </div>
+                    
+                    <div>
+                      <label className={`text-sm font-medium ${colors.textSecondary}`}>Email:</label>
+                      <p className={`${colors.textPrimary}`}>{confirmacao.email}</p>
+                    </div>
+                    
+                    <div>
+                      <label className={`text-sm font-medium ${colors.textSecondary}`}>Mensagem:</label>
+                      <p className={`${colors.textPrimary} text-sm`}>{confirmacao.message || 'Nenhuma mensagem'}</p>
+                    </div>
+                    
+                    <div>
+                      <label className={`text-sm font-medium ${colors.textSecondary}`}>Status:</label>
+                      <span className={`px-2 py-1 rounded-full text-xs font-medium ${
+                        confirmacao.attending === 'yes' 
+                          ? 'bg-green-100 text-green-800' 
+                          : confirmacao.attending === 'no'
+                          ? 'bg-red-100 text-red-800'
+                          : 'bg-yellow-100 text-yellow-800'
+                      }`}>
+                        {confirmacao.attending === 'yes' ? 'Confirmado' :
+                         confirmacao.attending === 'no' ? 'Não Confirmado' : 'Pendente'}
+                      </span>
+                    </div>
+                    
+                    <div>
+                      <label className={`text-sm font-medium ${colors.textSecondary}`}>Data:</label>
+                      <p className={`${colors.textPrimary} text-sm`}>
+                        {new Date(confirmacao.createdAt).toLocaleString('pt-BR')}
+                      </p>
+                    </div>
+                  </div>
+                  
+                  <div className="flex justify-end mt-6">
+                    <motion.button
+                      onClick={() => toggleDetails(id)}
+                      className={`px-4 py-2 ${colors.bgPrimary} text-cream-100 rounded-lg hover:${colors.hoverPrimary} transition-colors`}
+                      whileHover={{ scale: 1.05 }}
+                      whileTap={{ scale: 0.95 }}
+                    >
+                      Fechar
+                    </motion.button>
+                  </div>
+                </motion.div>
+              </motion.div>
+            );
+          })}
+        </AnimatePresence>
+      </main>
     </div>
   );
 };

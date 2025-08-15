@@ -5,6 +5,7 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { useState, useEffect, useRef } from 'react';
 import Image from 'next/image';
 import { FaHeart, FaChevronLeft, FaChevronRight, FaExpand, FaTimes, FaPlay, FaPause } from 'react-icons/fa';
+import { useThemeColors } from '../hooks/useThemeColors';
 
 // Interface para as fotos
 interface Photo {
@@ -71,6 +72,7 @@ const Historia = () => {
   const [isLoadingPhotos, setIsLoadingPhotos] = useState(true);
   const sectionRef = useRef<HTMLDivElement>(null);
   const thumbnailsPerPage = 10;
+  const colors = useThemeColors();
 
   // Função para carregar fotos dinamicamente
   const loadPhotos = async () => {
@@ -249,7 +251,7 @@ const Historia = () => {
   }, []);
 
   return (
-    <div className="min-h-screen flex flex-col bg-gradient-to-br from-cream-50 via-cream-25 to-olive-50">
+    <div className={`min-h-screen flex flex-col ${colors.gradientBackground}`}>
       <Head>
         <title>Nossa História - João & Maria</title>
         <meta name="description" content="A história de amor de João e Maria - Do primeiro encontro ao grande dia" />
@@ -261,10 +263,10 @@ const Historia = () => {
       <main className="flex-grow">
         {/* Hero Section */}
         <section className="relative py-16 sm:py-20 lg:py-24 overflow-hidden">
-          <div className="absolute inset-0 bg-gradient-to-r from-cream-100/50 to-olive-100/50"></div>
+          <div className={`absolute inset-0 bg-gradient-to-r ${colors.bgCream}/50 to-${colors.bgSecondary}/50`}></div>
           <div className="relative container mx-auto px-4 sm:px-6 lg:px-8 text-center">
             <motion.h1 
-              className="text-4xl sm:text-5xl lg:text-6xl font-serif font-bold text-stone-800 mb-6"
+              className={`text-4xl sm:text-5xl lg:text-6xl font-serif font-bold ${colors.textPrimary} mb-6`}
               initial={{ opacity: 0, y: -30 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.8 }}
@@ -278,7 +280,7 @@ const Historia = () => {
               animate={{ scale: 1 }}
               transition={{ delay: 0.3, duration: 0.6 }}
             >
-              <div className="h-px bg-gradient-to-r from-transparent via-olive-400 to-transparent flex-1 max-w-32"></div>
+              <div className={`h-px bg-gradient-to-r from-transparent via-${colors.textSecondary} to-transparent flex-1 max-w-32`}></div>
               <motion.div
                 animate={{ 
                   y: [0, -8, 0],
@@ -290,13 +292,13 @@ const Historia = () => {
                   ease: "easeInOut"
                 }}
               >
-                <FaHeart className="text-olive-500 text-3xl animate-heartbeat" />
+                <FaHeart className={`${colors.textAccent} text-3xl animate-heartbeat`} />
               </motion.div>
-              <div className="h-px bg-gradient-to-r from-transparent via-olive-400 to-transparent flex-1 max-w-32"></div>
+              <div className={`h-px bg-gradient-to-r from-transparent via-${colors.textSecondary} to-transparent flex-1 max-w-32`}></div>
             </motion.div>
 
             <motion.p 
-              className="text-xl sm:text-2xl text-stone-600 max-w-3xl mx-auto leading-relaxed"
+              className={`text-xl sm:text-2xl ${colors.textSecondary} max-w-3xl mx-auto leading-relaxed`}
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.5, duration: 0.8 }}
@@ -316,18 +318,18 @@ const Historia = () => {
               transition={{ duration: 0.8 }}
               viewport={{ once: true }}
             >
-              <h2 className="text-3xl sm:text-4xl font-serif font-bold text-stone-800 mb-6">
+              <h2 className={`text-3xl sm:text-4xl font-serif font-bold ${colors.textPrimary} mb-6`}>
                 Nossa História de Amor
               </h2>
-              <div className="space-y-6 text-lg text-stone-600 leading-relaxed max-w-3xl mx-auto">
+              <div className={`space-y-6 text-lg ${colors.textSecondary} leading-relaxed max-w-3xl mx-auto`}>
                 <p>
-                  <span className="font-semibold text-olive-700">Primeiro Encontro:</span> Nossa história começou em uma ensolarada tarde de março de 2018, quando nos conhecemos em uma cafeteria no centro da cidade. O que deveria ser apenas uma conversa rápida se transformou em horas de risadas, sonhos compartilhados e a certeza de que algo especial estava acontecendo.
+                  <span className={`font-semibold ${colors.textAccent}`}>Primeiro Encontro:</span> Nossa história começou em uma ensolarada tarde de março de 2018, quando nos conhecemos em uma cafeteria no centro da cidade. O que deveria ser apenas uma conversa rápida se transformou em horas de risadas, sonhos compartilhados e a certeza de que algo especial estava acontecendo.
                 </p>
                 <p>
                   Desde então, cada dia tem sido uma nova aventura. Aprendemos a nos conhecer, a nos apoiar e a crescer juntos. Nossa jornada tem sido marcada por momentos especiais, desafios superados e muito amor.
                 </p>
                 <p>
-                  <span className="font-semibold text-olive-700">Nosso Grande Dia:</span> Em dezembro de 2024, celebramos o início de nossa jornada como família. E vocês estão convidados a testemunhar e celebrar esse momento de muito amor, emoção e felicidade.
+                  <span className={`font-semibold ${colors.textAccent}`}>Nosso Grande Dia:</span> Em dezembro de 2024, celebramos o início de nossa jornada como família. E vocês estão convidados a testemunhar e celebrar esse momento de muito amor, emoção e felicidade.
                 </p>
               </div>
             </motion.div>
@@ -337,11 +339,11 @@ const Historia = () => {
         {/* Timeline */}
         <section 
           ref={sectionRef}
-          className="py-16 sm:py-20 px-4 sm:px-6 lg:px-8 bg-gradient-to-br from-sage-50 to-cream-100"
+          className={`py-16 sm:py-20 px-4 sm:px-6 lg:px-8 ${colors.gradientBackground}`}
         >
           <div className="max-w-6xl mx-auto">
             <motion.h2 
-              className="text-3xl sm:text-4xl font-serif font-bold text-center text-stone-800 mb-16"
+              className={`text-3xl sm:text-4xl font-serif font-bold text-center ${colors.textPrimary} mb-16`}
               initial={{ opacity: 0, y: 20 }}
               animate={isVisible ? { opacity: 1, y: 0 } : {}}
               transition={{ duration: 0.8 }}
@@ -351,7 +353,7 @@ const Historia = () => {
 
             <div className="relative">
               {/* Linha central */}
-              <div className="absolute left-1/2 transform -translate-x-1/2 w-1 h-full bg-gradient-to-b from-olive-200 via-sage-400 to-olive-600 hidden lg:block"></div>
+              <div className={`absolute left-1/2 transform -translate-x-1/2 w-1 h-full bg-gradient-to-b ${colors.borderSecondary} via-${colors.textSecondary} to-${colors.textPrimary} hidden lg:block`}></div>
 
               <div className="space-y-8 lg:space-y-16">
                 {timeline.map((item, index) => (
@@ -363,7 +365,7 @@ const Historia = () => {
                   >
                     <div className={`flex-1 ${index % 2 === 0 ? 'lg:text-right' : 'lg:text-left'} text-center lg:text-left`}>
                       <motion.div
-                        className="bg-cream rounded-2xl p-6 sm:p-8 shadow-lg border border-olive-200"
+                        className={`${colors.bgCream} rounded-2xl p-6 sm:p-8 shadow-lg border ${colors.borderPrimary}`}
                         initial={{ opacity: 0, x: index % 2 === 0 ? -50 : 50 }}
                         animate={isVisible ? { opacity: 1, x: 0 } : {}}
                         transition={{ delay: index * 0.2, duration: 0.8 }}
@@ -371,17 +373,17 @@ const Historia = () => {
                       >
                         <div className="flex items-center justify-center lg:justify-start gap-3 mb-4">
                           <motion.div
-                            className="w-12 h-12 bg-gradient-to-br from-olive-500 to-sage-600 rounded-full flex items-center justify-center text-white shadow-lg text-2xl"
+                            className={`w-12 h-12 ${colors.gradientPrimary} rounded-full flex items-center justify-center text-white shadow-lg text-2xl`}
                             whileHover={{ scale: 1.1, rotate: 5 }}
                           >
                             {item.emoji}
                           </motion.div>
-                          <span className="text-2xl sm:text-3xl font-bold text-stone-800">{item.year}</span>
+                          <span className={`text-2xl sm:text-3xl font-bold ${colors.textPrimary}`}>{item.year}</span>
                         </div>
-                        <h3 className="text-xl sm:text-2xl font-serif font-bold text-stone-800 mb-3">
+                        <h3 className={`text-xl sm:text-2xl font-serif font-bold ${colors.textPrimary} mb-3`}>
                           {item.title}
                         </h3>
-                        <p className="text-stone-600 leading-relaxed">
+                        <p className={`${colors.textSecondary} leading-relaxed`}>
                           {item.description}
                         </p>
                       </motion.div>
@@ -389,7 +391,7 @@ const Historia = () => {
 
                     {/* Ponto central na timeline */}
                     <motion.div
-                      className="hidden lg:flex w-6 h-6 bg-cream border-4 border-olive-500 rounded-full z-10 shadow-lg"
+                      className={`hidden lg:flex w-6 h-6 ${colors.bgCream} border-4 ${colors.borderSecondary} rounded-full z-10 shadow-lg`}
                       initial={{ scale: 0 }}
                       animate={isVisible ? { scale: 1 } : {}}
                       transition={{ delay: index * 0.2 + 0.4, duration: 0.4 }}
@@ -407,7 +409,7 @@ const Historia = () => {
         <section className="py-16 sm:py-20 px-4 sm:px-6 lg:px-8">
           <div className="max-w-6xl mx-auto">
             <motion.h2 
-              className="text-3xl sm:text-4xl font-serif font-bold text-center text-stone-800 mb-16"
+              className={`text-3xl sm:text-4xl font-serif font-bold text-center ${colors.textPrimary} mb-16`}
               initial={{ opacity: 0, y: 20 }}
               whileInView={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.8 }}
@@ -420,21 +422,21 @@ const Historia = () => {
               {/* Loading state */}
               {isLoadingPhotos ? (
                 <div className="relative w-full max-w-4xl h-[400px] sm:h-[500px] lg:h-[600px] mb-8 flex items-center justify-center">
-                  <div className="bg-cream rounded-2xl border border-olive-200 w-full h-full flex items-center justify-center">
+                  <div className={`${colors.bgCream} rounded-2xl border ${colors.borderPrimary} w-full h-full flex items-center justify-center`}>
                     <div className="text-center">
                       <motion.div
-                        className="w-16 h-16 border-4 border-olive-500 border-t-transparent rounded-full mx-auto mb-4"
+                        className={`w-16 h-16 border-4 ${colors.borderSecondary} border-t-transparent rounded-full mx-auto mb-4`}
                         animate={{ rotate: 360 }}
                         transition={{ duration: 1, repeat: Infinity, ease: "linear" }}
                       />
-                      <p className="text-olive-700 font-medium">Carregando nossas fotos...</p>
+                      <p className={`${colors.textSecondary} font-medium`}>Carregando nossas fotos...</p>
                     </div>
                   </div>
                 </div>
               ) : galleryPhotos.length === 0 ? (
                 <div className="relative w-full max-w-4xl h-[400px] sm:h-[500px] lg:h-[600px] mb-8 flex items-center justify-center">
-                  <div className="bg-cream rounded-2xl border border-olive-200 w-full h-full flex items-center justify-center">
-                    <p className="text-olive-700 font-medium">Nenhuma foto encontrada</p>
+                  <div className={`${colors.bgCream} rounded-2xl border ${colors.borderPrimary} w-full h-full flex items-center justify-center`}>
+                    <p className={`${colors.textSecondary} font-medium`}>Nenhuma foto encontrada</p>
                   </div>
                 </div>
               ) : (
@@ -450,7 +452,7 @@ const Historia = () => {
                   <AnimatePresence mode="wait">
                     <motion.div
                       key={current}
-                      className="absolute inset-0 rounded-2xl overflow-hidden shadow-2xl border border-olive-200"
+                      className={`absolute inset-0 rounded-2xl overflow-hidden shadow-2xl border ${colors.borderPrimary}`}
                       initial={{ opacity: 0, x: 300 }}
                       animate={{ opacity: 1, x: 0 }}
                       exit={{ opacity: 0, x: -300 }}
@@ -498,22 +500,22 @@ const Historia = () => {
                   {/* Controles de Navegação */}
                   <motion.button
                     onClick={prevPhoto}
-                    className="absolute left-4 top-1/2 -translate-y-1/2 w-12 h-12 bg-cream/90 hover:bg-cream rounded-full shadow-lg flex items-center justify-center transition-all duration-300 hover:scale-110 border border-olive-200"
+                    className={`absolute left-4 top-1/2 -translate-y-1/2 w-12 h-12 ${colors.bgCream}/90 hover:${colors.bgCream} rounded-full shadow-lg flex items-center justify-center transition-all duration-300 hover:scale-110 border ${colors.borderPrimary}`}
                     whileHover={{ scale: 1.1 }}
                     whileTap={{ scale: 0.95 }}
                     aria-label="Foto anterior"
                   >
-                    <FaChevronLeft className="text-stone-800 text-lg" />
+                    <FaChevronLeft className={`${colors.textPrimary} text-lg`} />
                   </motion.button>
 
                   <motion.button
                     onClick={nextPhoto}
-                    className="absolute right-4 top-1/2 -translate-y-1/2 w-12 h-12 bg-cream/90 hover:bg-cream rounded-full shadow-lg flex items-center justify-center transition-all duration-300 hover:scale-110 border border-olive-200"
+                    className={`absolute right-4 top-1/2 -translate-y-1/2 w-12 h-12 ${colors.bgCream}/90 hover:${colors.bgCream} rounded-full shadow-lg flex items-center justify-center transition-all duration-300 hover:scale-110 border ${colors.borderPrimary}`}
                     whileHover={{ scale: 1.1 }}
                     whileTap={{ scale: 0.95 }}
                     aria-label="Próxima foto"
                   >
-                    <FaChevronRight className="text-stone-800 text-lg" />
+                    <FaChevronRight className={`${colors.textPrimary} text-lg`} />
                   </motion.button>
                 </motion.div>
 
